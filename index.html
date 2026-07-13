@@ -1,0 +1,2812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ProTrader PrimXBet v2.0.1</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0a0e17; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #1a1f2b; }
+        ::-webkit-scrollbar-thumb { background: #2a7de1; border-radius: 10px; }
+        .container { max-width: 450px; width: 100%; padding: 10px 12px 80px 12px; }
+
+        .auth-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 90vh;
+            padding: 20px 0;
+        }
+        .auth-page .logo-big {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2a7de1;
+            margin-bottom: 30px;
+        }
+        .auth-page .logo-big i { color: #ffd700; font-size: 36px; }
+        .auth-page .logo-big span { color: #fff; font-weight: 300; }
+        .auth-page .logo-big .version { font-size: 12px; color: #8899aa; display: block; margin-top: 4px; }
+        
+        .auth-box {
+            background: linear-gradient(135deg, #0d1a2b, #162033);
+            border-radius: 20px;
+            padding: 28px 20px;
+            border: 1px solid #1e2d42;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+        }
+        .auth-box h2 {
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        .auth-box .sub {
+            color: #8899aa;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .auth-box .input-group {
+            margin-bottom: 14px;
+        }
+        .auth-box .input-group label {
+            font-size: 11px;
+            color: #8899aa;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 4px;
+        }
+        .auth-box .input-group input, 
+        .auth-box .input-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #1e2d42;
+            background: #0a0e17;
+            color: #fff;
+            font-size: 14px;
+        }
+        .auth-box .input-group input:focus,
+        .auth-box .input-group select:focus {
+            outline: none;
+            border-color: #2a7de1;
+        }
+        .auth-box .btn-auth {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            color: #fff;
+            margin-top: 6px;
+        }
+        .auth-box .btn-auth:hover { transform: scale(0.97); }
+        .auth-box .btn-auth:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .auth-box .auth-switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #8899aa;
+        }
+        .auth-box .auth-switch a {
+            color: #2a7de1;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .auth-box .auth-switch a:hover { text-decoration: underline; }
+        .auth-box .error-msg {
+            color: #ef5350;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        .auth-box .success-msg {
+            color: #4caf50;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .app-hidden { display: none !important; }
+        .app-visible { display: block !important; }
+
+        .top-header {
+            background: linear-gradient(135deg, #0d1520, #1a2332);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid #1e2d42;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .top-header .logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #2a7de1; }
+        .top-header .logo i { color: #ffd700; font-size: 18px; }
+        .top-header .logo span { color: #fff; font-weight: 300; font-size: 12px; }
+        .top-header .logo .ver { color: #8899aa; font-size: 9px; }
+        .top-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2a7de1, #6a1b9a); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #2a7de1; font-size: 16px; color: #fff; }
+
+        .balance-card {
+            background: linear-gradient(135deg, #0d1a2b, #162033);
+            border-radius: 16px;
+            padding: 14px 18px;
+            border: 1px solid #1e2d42;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .balance-card .label { font-size: 11px; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; }
+        .balance-card .amount { font-size: 28px; font-weight: 700; color: #4caf50; margin: 2px 0; }
+        .balance-card .amount i { font-size: 20px; margin-right: 6px; color: #ffd700; }
+        .balance-card .row { display: flex; justify-content: space-between; margin-top: 6px; flex-wrap: wrap; gap: 4px; }
+        .balance-card .row .item { font-size: 12px; color: #8899aa; }
+        .balance-card .row .item span { color: #fff; font-weight: 600; }
+        .balance-card .row .item .green { color: #4caf50; }
+        .balance-card .row .item .red { color: #ef5350; }
+
+        .pnl-banner {
+            background: #0d1520;
+            border-radius: 12px;
+            padding: 10px 14px;
+            border: 1px solid #1e2d42;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .pnl-banner .label { font-size: 10px; color: #8899aa; }
+        .pnl-banner .value { font-size: 18px; font-weight: 700; }
+        .pnl-banner .value.green { color: #4caf50; }
+        .pnl-banner .value.red { color: #ef5350; }
+        .pnl-banner .value .small { font-size: 13px; font-weight: 400; }
+
+        .trade-limit {
+            background: #0d1520;
+            border-radius: 12px;
+            padding: 8px 14px;
+            border: 1px solid #1e2d42;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #8899aa;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .trade-limit .highlight { color: #ffd700; font-weight: 700; }
+        .trade-limit .winrate { color: #4caf50; }
+        .trade-limit .lossrate { color: #ef5350; }
+
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .quick-actions .qa-btn {
+            background: #0d1520;
+            border: 1px solid #1e2d42;
+            border-radius: 12px;
+            padding: 10px 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #8899aa;
+            font-size: 10px;
+        }
+        .quick-actions .qa-btn i { font-size: 20px; display: block; margin-bottom: 3px; }
+        .quick-actions .qa-btn:hover { background: #1a2332; border-color: #2a7de1; transform: translateY(-2px); }
+        .quick-actions .qa-btn .green { color: #4caf50; }
+        .quick-actions .qa-btn .red { color: #ef5350; }
+        .quick-actions .qa-btn .gold { color: #ffd700; }
+
+        .chart-box {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 10px;
+            border: 1px solid #1e2d42;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .chart-box .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .chart-box .chart-header .symbol { font-size: 14px; font-weight: 700; }
+        .chart-box .chart-header .symbol i { color: #ffd700; margin-right: 4px; }
+        .chart-box .chart-header .price { font-size: 16px; font-weight: 700; }
+        
+        .currency-selector {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        .currency-selector .curr-btn {
+            background: #0a0e17;
+            border: 1px solid #1e2d42;
+            border-radius: 6px;
+            padding: 4px 10px;
+            color: #8899aa;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .currency-selector .curr-btn:hover {
+            border-color: #2a7de1;
+            color: #fff;
+        }
+        .currency-selector .curr-btn.active {
+            border-color: #ffd700;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        canvas { width: 100%; height: 200px; background: #0a0e17; border-radius: 8px; display: block; }
+        .chart-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+            font-size: 10px;
+            color: #8899aa;
+            flex-wrap: wrap;
+        }
+        .chart-stats span { color: #fff; font-weight: 600; }
+        .chart-stats .up { color: #4caf50; }
+        .chart-stats .down { color: #ef5350; }
+
+        .quick-trade-form {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #1e2d42;
+            margin-top: 10px;
+        }
+        .quick-trade-form .trade-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .quick-trade-form .trade-row input,
+        .quick-trade-form .trade-row select {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #1e2d42;
+            background: #0a0e17;
+            color: #fff;
+            font-size: 12px;
+        }
+        .quick-trade-form .trade-row input:focus,
+        .quick-trade-form .trade-row select:focus {
+            outline: none;
+            border-color: #2a7de1;
+        }
+        .quick-trade-form .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .quick-trade-form .btn-trade {
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .quick-trade-form .btn-trade:hover { transform: scale(0.97); }
+        .quick-trade-form .btn-buy { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+        .quick-trade-form .btn-sell { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
+        .quick-trade-form .trade-hint {
+            text-align: center;
+            font-size: 10px;
+            color: #8899aa;
+            margin-top: 6px;
+        }
+
+        .trade-form { background: #0d1520; border-radius: 16px; padding: 14px; border: 1px solid #1e2d42; }
+        .trade-form .input-group { margin-bottom: 10px; }
+        .trade-form .input-group label { font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+        .trade-form .input-group input, .trade-form .input-group select {
+            width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2d42;
+            background: #0a0e17; color: #fff; font-size: 13px;
+        }
+        .trade-form .input-group input:focus, .trade-form .input-group select:focus { outline: none; border-color: #2a7de1; }
+        .trade-form .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .trade-form .btn-trade { padding: 10px; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .trade-form .btn-trade:hover { transform: scale(0.97); }
+        .btn-buy { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+        .btn-sell { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
+
+        .open-positions {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #1e2d42;
+            margin-top: 10px;
+        }
+        .open-positions h4 { font-size: 12px; color: #8899aa; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .open-positions .pos-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid #1a2332;
+            font-size: 11px;
+        }
+        .open-positions .pos-item .buy { color: #4caf50; }
+        .open-positions .pos-item .sell { color: #ef5350; }
+        .open-positions .pos-item .pnl-green { color: #4caf50; }
+        .open-positions .pos-item .pnl-red { color: #ef5350; }
+
+        /* FUNDS */
+        .funds-container {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid #1e2d42;
+        }
+        .funds-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .funds-tabs .tab-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #1e2d42;
+            border-radius: 8px;
+            background: #0a0e17;
+            color: #8899aa;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .funds-tabs .tab-btn:hover { border-color: #2a7de1; color: #fff; }
+        .funds-tabs .tab-btn.active { border-color: #2a7de1; color: #2a7de1; background: rgba(42,125,225,0.1); }
+        .funds-tabs .tab-btn.deposit-tab.active { border-color: #4caf50; color: #4caf50; background: rgba(76,175,80,0.1); }
+        .funds-tabs .tab-btn.withdraw-tab.active { border-color: #ef5350; color: #ef5350; background: rgba(239,83,80,0.1); }
+        .funds-content { display: none; }
+        .funds-content.active { display: block; }
+
+        .deposit-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .deposit-options .method {
+            background: #0a0e17;
+            border: 1px solid #1e2d42;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .deposit-options .method:hover { border-color: #2a7de1; transform: translateY(-2px); }
+        .deposit-options .method i { font-size: 28px; color: #2a7de1; display: block; margin-bottom: 4px; }
+        .deposit-options .method .name { font-size: 12px; font-weight: 600; }
+        .deposit-options .method .sub { font-size: 10px; color: #8899aa; }
+
+        .usdt-box {
+            background: linear-gradient(135deg, #0d1a2b, #1a2332);
+            border: 1px solid #f7931a;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+        }
+        .usdt-box .usdt-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .usdt-box .usdt-header i { font-size: 28px; color: #f7931a; }
+        .usdt-box .usdt-header .title { font-size: 14px; font-weight: 700; color: #fff; }
+        .usdt-box .usdt-header .network {
+            font-size: 10px; color: #8899aa; background: #0a0e17;
+            padding: 2px 10px; border-radius: 12px; border: 1px solid #1e2d42;
+            margin-left: auto;
+        }
+        .usdt-box .address-box {
+            background: #0a0e17;
+            border: 1px solid #1e2d42;
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .usdt-box .address-box .address {
+            font-size: 12px; color: #ffd700; font-weight: 600;
+            word-break: break-all; font-family: 'Courier New', monospace;
+        }
+        .usdt-box .address-box .copy-btn {
+            background: #2a7de1; border: none; color: #fff;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer;
+            font-size: 11px; font-weight: 600; transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .usdt-box .address-box .copy-btn:hover { transform: scale(0.95); background: #1a5fb0; }
+        .usdt-box .address-box .copy-btn.copied { background: #4caf50; }
+        .usdt-box .usdt-note { font-size: 10px; color: #8899aa; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+        .usdt-box .usdt-note i { color: #f7931a; }
+
+        .withdraw-form-inner .input-group { margin-bottom: 10px; }
+        .withdraw-form-inner .input-group label {
+            font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px;
+        }
+        .withdraw-form-inner .input-group input,
+        .withdraw-form-inner .input-group select {
+            width: 100%; padding: 8px 10px; border-radius: 8px;
+            border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 13px;
+        }
+        .withdraw-form-inner .input-group input:focus,
+        .withdraw-form-inner .input-group select:focus { outline: none; border-color: #2a7de1; }
+        .withdraw-form-inner .input-group .field-hint {
+            font-size: 10px; color: #8899aa; margin-top: 3px;
+        }
+        .withdraw-form-inner .withdraw-method-icon {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 12px; border-radius: 8px; margin-bottom: 8px;
+            background: #0a0e17; border: 1px solid #1e2d42;
+        }
+        .withdraw-form-inner .withdraw-method-icon i { font-size: 20px; }
+        .withdraw-form-inner .withdraw-method-icon .method-name { font-weight: 600; font-size: 13px; }
+
+        .btn-submit {
+            width: 100%; padding: 10px; border: none; border-radius: 8px;
+            font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s;
+        }
+        .btn-submit:hover { transform: scale(0.97); }
+        .btn-deposit-submit { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
+        .btn-withdraw-submit { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
+        .btn-pending { background: linear-gradient(135deg, #f57c00, #e65100); color: #fff; }
+        .btn-usdt { background: linear-gradient(135deg, #f7931a, #e67e22); color: #fff; }
+
+        .history-section {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #1e2d42;
+            margin-top: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .history-section h4 {
+            font-size: 12px; color: #8899aa; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .history-section .history-item {
+            display: flex; justify-content: space-between;
+            padding: 6px 0; border-bottom: 1px solid #1a2332;
+            font-size: 11px; align-items: center;
+        }
+        .history-section .history-item .type-deposit { color: #4caf50; }
+        .history-section .history-item .type-withdraw { color: #ef5350; }
+        .history-section .history-item .type-trade-win { color: #4caf50; }
+        .history-section .history-item .type-trade-loss { color: #ef5350; }
+        .history-section .history-item .status-pending { color: #f57c00; }
+        .history-section .history-item .status-confirmed { color: #4caf50; }
+        .history-section .history-item .status-rejected { color: #ef5350; }
+        .history-section .history-item .amount { font-weight: 600; }
+        .history-section .history-item .date { font-size: 9px; color: #8899aa; }
+
+        .profile-card {
+            background: #0d1520;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #1e2d42;
+            text-align: center;
+        }
+        .profile-card .avatar-big {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: linear-gradient(135deg, #2a7de1, #6a1b9a);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; margin: 0 auto 8px;
+            border: 3px solid #2a7de1; color: #fff; cursor: pointer;
+            position: relative; overflow: hidden;
+        }
+        .profile-card .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-card .avatar-big .upload-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.7); padding: 4px; font-size: 10px; display: none;
+        }
+        .profile-card .avatar-big:hover .upload-overlay { display: block; }
+        .profile-card .name { font-size: 18px; font-weight: 700; }
+        .profile-card .email { font-size: 12px; color: #8899aa; }
+        .profile-card .kyc-status {
+            display: inline-block; padding: 3px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 600; margin-top: 4px;
+        }
+        .profile-card .kyc-status.verified { background: #1b5e20; color: #4caf50; }
+        .profile-card .kyc-status.pending { background: #4a148c; color: #ce93d8; }
+        .profile-card .kyc-status.unverified { background: #b71c1c; color: #ef5350; }
+
+        .profile-card .stats {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 8px; margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid #1e2d42;
+        }
+        .profile-card .stats .stat { text-align: center; }
+        .profile-card .stats .stat .num { font-size: 16px; font-weight: 700; color: #fff; }
+        .profile-card .stats .stat .lbl { font-size: 10px; color: #8899aa; }
+
+        .profile-menu {
+            margin-top: 10px; background: #0d1520;
+            border-radius: 16px; border: 1px solid #1e2d42; overflow: hidden;
+        }
+        .profile-menu .menu-item {
+            padding: 12px 16px; border-bottom: 1px solid #1a2332;
+            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s;
+        }
+        .profile-menu .menu-item:hover { background: #1a2332; }
+        .profile-menu .menu-item i { width: 18px; color: #2a7de1; font-size: 14px; }
+        .profile-menu .menu-item .text { flex: 1; font-size: 13px; }
+        .profile-menu .menu-item .arrow { color: #8899aa; font-size: 12px; }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            max-width: 450px; width: 100%; background: linear-gradient(135deg, #0d1520, #1a2332);
+            border-top: 1px solid #1e2d42; display: flex; justify-content: space-around;
+            padding: 6px 0 10px 0; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+            border-radius: 16px 16px 0 0;
+        }
+        .bottom-nav .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+            cursor: pointer; padding: 4px 10px; border-radius: 8px; transition: all 0.3s;
+            color: #8899aa; font-size: 9px; border: none; background: transparent;
+        }
+        .bottom-nav .nav-item i { font-size: 20px; }
+        .bottom-nav .nav-item.active { color: #2a7de1; }
+        .bottom-nav .nav-item:hover { color: #fff; }
+        .bottom-nav .nav-item .badge {
+            background: #ef5350; color: #fff; font-size: 8px;
+            padding: 1px 5px; border-radius: 10px;
+            position: absolute; margin-top: -6px; margin-left: 14px;
+        }
+        .balance-zero {
+            color: #ef5350 !important;
+            animation: blink 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0.3; }
+        }
+        .logout-btn {
+            background: #ef5350; color: #fff; border: none;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .logout-btn:hover { transform: scale(0.95); background: #d32f2f; }
+
+        .pending-badge {
+            background: #f57c00; color: #fff; padding: 2px 10px;
+            border-radius: 12px; font-size: 10px; font-weight: 600;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .input-group { margin-bottom: 10px; }
+        .input-group label {
+            font-size: 11px; color: #8899aa;
+            display: flex; align-items: center; gap: 5px; margin-bottom: 3px;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%; padding: 8px 10px; border-radius: 8px;
+            border: 1px solid #1e2d42; background: #0a0e17;
+            color: #fff; font-size: 13px;
+        }
+        .input-group input:focus,
+        .input-group select:focus { outline: none; border-color: #2a7de1; }
+
+        @media (max-width: 450px) {
+            .container { padding: 6px 6px 80px 6px; }
+            .quick-actions { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+            .quick-actions .qa-btn { padding: 8px 2px; font-size: 9px; }
+            .quick-actions .qa-btn i { font-size: 16px; }
+            .balance-card .amount { font-size: 22px; }
+            .quick-trade-form .trade-row { grid-template-columns: 1fr 1fr; }
+            .auth-box { padding: 20px 14px; }
+            .usdt-box .address-box { flex-direction: column; gap: 6px; }
+            .usdt-box .address-box .copy-btn { width: 100%; text-align: center; }
+            .currency-selector .curr-btn { font-size: 8px; padding: 3px 6px; }
+            .funds-tabs .tab-btn { font-size: 10px; padding: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ============================================================ -->
+    <!-- AUTH: REGISTER PAGE -->
+    <!-- ============================================================ -->
+    <div id="registerPage" class="auth-page">
+        <div class="logo-big">
+            <i class="fas fa-chart-line"></i> Pro<span>Trader</span>
+            <span class="version">PrimXBet v2.0.1</span>
+        </div>
+        <div class="auth-box">
+            <h2>📝 Create Account</h2>
+            <div class="sub">Register to start trading</div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="regName" placeholder="Enter your full name" />
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="regEmail" placeholder="Enter your email" />
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="regPassword" placeholder="Min 6 characters" />
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-address-card"></i> Address</label>
+                <input type="text" id="regAddress" placeholder="Enter your address" />
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-id-card"></i> ID Card / CNIC Number</label>
+                <input type="text" id="regIdNumber" placeholder="e.g. 12345-6789012-3" />
+            </div>
+            
+            <div id="regError" class="error-msg"></div>
+            <div id="regSuccess" class="success-msg"></div>
+            
+            <button class="btn-auth" onclick="registerUser()">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+            
+            <div class="auth-switch">
+                Already have an account? <a onclick="showAuth('login')">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- AUTH: LOGIN PAGE -->
+    <!-- ============================================================ -->
+    <div id="loginPage" class="auth-page" style="display:none;">
+        <div class="logo-big">
+            <i class="fas fa-chart-line"></i> Pro<span>Trader</span>
+            <span class="version">PrimXBet v2.0.1</span>
+        </div>
+        <div class="auth-box">
+            <h2>🔐 Welcome Back</h2>
+            <div class="sub">Login to continue trading</div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" />
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" />
+            </div>
+            
+            <div id="loginError" class="error-msg"></div>
+            
+            <button class="btn-auth" onclick="loginUser()">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            
+            <div class="auth-switch">
+                Don't have an account? <a onclick="showAuth('register')">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MAIN APP -->
+    <!-- ============================================================ -->
+    <div id="mainApp" class="app-hidden">
+
+        <!-- TOP HEADER -->
+        <div class="top-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i> 
+                <span>Pro<span>Trader</span></span>
+                <span class="ver">v2.0.1</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:11px; color:#8899aa;" id="headerUserName">User</span>
+                <span id="pendingIndicator" style="display:none;" class="pending-badge"><i class="fas fa-clock"></i> Pending</span>
+                <button class="logout-btn" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i></button>
+                <div class="avatar" onclick="showPage('profile')"><i class="fas fa-user"></i></div>
+            </div>
+        </div>
+
+        <!-- BALANCE CARD -->
+        <div class="balance-card">
+            <div class="label"><i class="fas fa-wallet"></i> Total Balance</div>
+            <div class="amount"><i class="fas fa-dollar-sign"></i> <span id="balanceDisplay">0.00</span></div>
+            <div class="row">
+                <div class="item">📈 P&L: <span id="pnlDisplay" class="green">+0.00</span></div>
+                <div class="item">📊 Trades: <span id="tradeCount">0</span></div>
+                <div class="item">📉 Equity: <span id="equityDisplay">0.00</span></div>
+            </div>
+            <div style="margin-top:6px; font-size:10px; color:#8899aa; display:flex; gap:10px; flex-wrap:wrap;">
+                <span><i class="fas fa-hourglass-half" style="color:#f57c00;"></i> Pending: <span id="pendingBalance">$0.00</span></span>
+                <span><i class="fas fa-check-circle" style="color:#4caf50;"></i> Confirmed: <span id="confirmedBalance">$0.00</span></span>
+            </div>
+        </div>
+
+        <!-- LIVE P&L + STATS -->
+        <div class="pnl-banner">
+            <div>
+                <div class="label"><i class="fas fa-sync-alt"></i> Live P&L</div>
+                <div class="value green" id="livePnl">+0.00 <span class="small">$</span></div>
+            </div>
+            <div style="text-align:right;">
+                <div class="label">Active Trades</div>
+                <div style="font-size:18px; font-weight:700; color:#fff;" id="activeTradeCount">0</div>
+            </div>
+            <div style="text-align:right;">
+                <div class="label">Win Rate</div>
+                <div style="font-size:16px; font-weight:700; color:#ffd700;" id="winRateDisplay">0%</div>
+            </div>
+        </div>
+
+        <!-- TRADE STATS -->
+        <div class="trade-limit">
+            <span><i class="fas fa-trophy" style="color:#ffd700;"></i> <span class="winrate" id="winsDisplay">Wins: 0</span></span>
+            <span><i class="fas fa-times-circle" style="color:#ef5350;"></i> <span class="lossrate" id="lossesDisplay">Losses: 0</span></span>
+            <span><i class="fas fa-balance-scale"></i> <span id="winLossRatio">Ratio: 0.0</span></span>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: DASHBOARD -->
+        <!-- ============================================================ -->
+        <div class="page active" id="page-dashboard">
+            <div class="quick-actions">
+                <div class="qa-btn" onclick="showPage('trade')"><i class="fas fa-exchange-alt green"></i> Trade</div>
+                <div class="qa-btn" onclick="showPage('funds')"><i class="fas fa-coins gold"></i> Funds</div>
+                <div class="qa-btn" onclick="showPage('history')"><i class="fas fa-history gold"></i> History</div>
+                <div class="qa-btn" onclick="showPage('profile')"><i class="fas fa-user-circle"></i> Profile</div>
+            </div>
+
+            <!-- CHART -->
+            <div class="chart-box">
+                <div class="currency-selector">
+                    <button class="curr-btn active" onclick="changeCurrency('EUR/USD', '€', 1.2000)">🇪🇺 EUR/USD</button>
+                    <button class="curr-btn" onclick="changeCurrency('BTC/USD', '₿', 65000)">₿ BTC/USD</button>
+                    <button class="curr-btn" onclick="changeCurrency('GOLD/USD', 'Au', 2400)">🥇 GOLD/USD</button>
+                    <button class="curr-btn" onclick="changeCurrency('SOL/USD', '◎', 180)">◎ SOL/USD</button>
+                    <button class="curr-btn" onclick="changeCurrency('ZEC/USD', 'ⓩ', 45)">ⓩ ZEC/USD</button>
+                    <button class="curr-btn" onclick="changeCurrency('USD/JPY', '¥', 148)">¥ USD/JPY</button>
+                    <button class="curr-btn" onclick="changeCurrency('IND/USD', '₹', 83)">₹ IND/USD</button>
+                </div>
+                <div class="chart-header">
+                    <div class="symbol" id="chartSymbol"><i class="fas fa-coins"></i> EUR/USD</div>
+                    <div class="price" id="currentPrice">1.20000</div>
+                </div>
+                <canvas id="chartCanvas" height="200"></canvas>
+                <div class="chart-stats">
+                    <span>O: <span id="statOpen">-</span></span>
+                    <span>H: <span class="up" id="statHigh">-</span></span>
+                    <span>L: <span class="down" id="statLow">-</span></span>
+                    <span>C: <span id="statClose">-</span></span>
+                    <span>Chg: <span id="statChange">-</span></span>
+                    <span style="margin-left:auto;">📌 <span id="entryDisplay">No Entry</span></span>
+                </div>
+            </div>
+
+            <!-- QUICK TRADE FORM -->
+            <div class="quick-trade-form">
+                <div class="trade-row">
+                    <select id="quickTradeType">
+                        <option value="buy">📈 BUY</option>
+                        <option value="sell">📉 SELL</option>
+                    </select>
+                    <input type="number" id="quickTradeAmount" value="100" min="1" step="1" placeholder="Amount $" />
+                    <select id="quickTradeExpiry">
+                        <option value="1">1m</option>
+                        <option value="2" selected>2m</option>
+                        <option value="5">5m</option>
+                        <option value="10">10m</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-trade btn-buy" onclick="quickTrade('buy')">
+                        <i class="fas fa-arrow-up"></i> BUY
+                    </button>
+                    <button class="btn-trade btn-sell" onclick="quickTrade('sell')">
+                        <i class="fas fa-arrow-down"></i> SELL
+                    </button>
+                </div>
+                <div class="trade-hint">
+                    <i class="fas fa-info-circle"></i> Realistic trading - Win/Loss pattern
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="open-positions" style="max-height:150px; overflow-y:auto; margin-top:10px;">
+                <h4><i class="fas fa-history"></i> Recent Activity</h4>
+                <div id="recentActivity">
+                    <div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                        <i class="fas fa-inbox"></i> No activity yet
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: TRADE -->
+        <!-- ============================================================ -->
+        <div class="page" id="page-trade">
+            <div class="trade-form">
+                <h4 style="margin-bottom:10px; color:#8899aa; font-size:13px;">
+                    <i class="fas fa-exchange-alt" style="color:#2a7de1;"></i> New Order
+                </h4>
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> Direction</label>
+                    <select id="tradeType">
+                        <option value="buy">📈 BUY (Long)</option>
+                        <option value="sell">📉 SELL (Short)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-coins"></i> Amount ($)</label>
+                    <input type="number" id="tradeAmount" value="100" min="1" step="1" />
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-stopwatch"></i> Expiry (Minutes)</label>
+                    <select id="tradeExpiry">
+                        <option value="1">1 Minute</option>
+                        <option value="2">2 Minutes</option>
+                        <option value="5">5 Minutes</option>
+                        <option value="10">10 Minutes</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-trade btn-buy" onclick="placeTrade('buy')">
+                        <i class="fas fa-arrow-up"></i> BUY
+                    </button>
+                    <button class="btn-trade btn-sell" onclick="placeTrade('sell')">
+                        <i class="fas fa-arrow-down"></i> SELL
+                    </button>
+                </div>
+                <div style="margin-top:8px; text-align:center; font-size:11px; color:#8899aa;">
+                    <i class="fas fa-info-circle"></i> Realistic trading - Random Win/Loss
+                </div>
+            </div>
+
+            <div class="open-positions">
+                <h4><i class="fas fa-folder-open"></i> Open Positions (<span id="openCount">0</span>)</h4>
+                <div id="openPositions">
+                    <div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                        <i class="fas fa-inbox"></i> No open trades
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;">
+                    <button class="btn-trade" style="background:#1a2332; color:#fff; border:1px solid #1e2d42; padding:6px; border-radius:6px; cursor:pointer; font-size:11px;" onclick="closeAllTrades()">
+                        <i class="fas fa-times-circle"></i> Close All
+                    </button>
+                    <button class="btn-trade" style="background:#1a2332; color:#fff; border:1px solid #1e2d42; padding:6px; border-radius:6px; cursor:pointer; font-size:11px;" onclick="takeProfit()">
+                        <i class="fas fa-dollar-sign"></i> Take Profit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: FUNDS (Deposit + Withdraw Combined) -->
+        <!-- ============================================================ -->
+        <div class="page" id="page-funds">
+            <div class="funds-container">
+                <h4 style="color:#8899aa; font-size:13px; margin-bottom:6px;">
+                    <i class="fas fa-coins" style="color:#ffd700;"></i> Deposit & Withdraw
+                </h4>
+                
+                <div class="funds-tabs">
+                    <button class="tab-btn deposit-tab active" onclick="switchFundsTab('deposit')">
+                        <i class="fas fa-plus-circle"></i> Deposit
+                    </button>
+                    <button class="tab-btn withdraw-tab" onclick="switchFundsTab('withdraw')">
+                        <i class="fas fa-minus-circle"></i> Withdraw
+                    </button>
+                </div>
+
+                <!-- DEPOSIT TAB -->
+                <div class="funds-content active" id="fundsDeposit">
+                    <div class="deposit-options">
+                        <div class="method" onclick="depositMethod('Bank Transfer')">
+                            <i class="fas fa-university"></i>
+                            <div class="name">Bank Transfer</div>
+                            <div class="sub">1-3 days</div>
+                        </div>
+                        <div class="method" onclick="depositMethod('Credit Card')">
+                            <i class="fas fa-credit-card"></i>
+                            <div class="name">Credit Card</div>
+                            <div class="sub">Instant</div>
+                        </div>
+                        <div class="method" onclick="depositMethod('E-Wallet')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div class="name">E-Wallet</div>
+                            <div class="sub">Instant</div>
+                        </div>
+                        <div class="method" onclick="showUSDT()" style="border-color:#f7931a;">
+                            <i class="fab fa-bitcoin" style="color:#f7931a;"></i>
+                            <div class="name" style="color:#f7931a;">USDT</div>
+                            <div class="sub">TRC20 Network</div>
+                        </div>
+                    </div>
+
+                    <div id="usdtDepositBox" class="usdt-box" style="display:none;">
+                        <div class="usdt-header">
+                            <i class="fab fa-bitcoin"></i>
+                            <div class="title">USDT Deposit</div>
+                            <span class="network">TRC20</span>
+                        </div>
+                        <div class="address-box">
+                            <span class="address" id="usdtAddress">THkT28F2fH9h6YLR1c6bEk7rLoUb4ZESTE</span>
+                            <button class="copy-btn" onclick="copyUSDT()">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <div class="usdt-note">
+                            <i class="fas fa-info-circle"></i>
+                            Send only USDT (TRC20) to this address. Minimum deposit: 10 USDT
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div class="input-group">
+                                <label><i class="fas fa-dollar-sign"></i> Amount (USDT)</label>
+                                <input type="number" id="usdtAmount" value="100" min="10" step="10" />
+                            </div>
+                            <button class="btn-submit btn-usdt" onclick="processUSDTDeposit()">
+                                <i class="fas fa-clock"></i> Request Deposit (Pending)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px;" id="manualDeposit">
+                        <div class="input-group">
+                            <label><i class="fas fa-dollar-sign"></i> Amount ($)</label>
+                            <input type="number" id="depositAmount" value="100" min="10" step="10" />
+                        </div>
+                        <button class="btn-submit btn-pending" onclick="requestDeposit()">
+                            <i class="fas fa-clock"></i> Request Deposit (Pending)
+                        </button>
+                        <div style="margin-top:8px; font-size:10px; color:#8899aa; text-align:center;">
+                            <i class="fas fa-info-circle"></i> Admin will confirm from Firebase Console
+                        </div>
+                    </div>
+
+                    <!-- Deposit History -->
+                    <div class="history-section" style="margin-top:10px;">
+                        <h4><i class="fas fa-history" style="color:#4caf50;"></i> Deposit History</h4>
+                        <div id="depositHistory">
+                            <div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                                <i class="fas fa-inbox"></i> No deposits yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WITHDRAW TAB -->
+                <div class="funds-content" id="fundsWithdraw">
+                    <div class="withdraw-form-inner">
+                        <div class="input-group">
+                            <label><i class="fas fa-credit-card"></i> Withdrawal Method</label>
+                            <select id="withdrawMethod" onchange="updateWithdrawFields()">
+                                <option value="jazzcash">📱 JazzCash</option>
+                                <option value="easypaisa">📱 EasyPaisa</option>
+                                <option value="bank">🏦 Bank Transfer</option>
+                                <option value="btc">₿ Bitcoin (BTC)</option>
+                                <option value="eth">⟠ Ethereum (ETH)</option>
+                                <option value="usdt">🪙 USDT (TRC20)</option>
+                            </select>
+                        </div>
+
+                        <div class="withdraw-method-icon" id="methodIconDisplay">
+                            <i class="fas fa-mobile-alt" style="color:#e91e63;"></i>
+                            <span class="method-name" id="methodNameDisplay">JazzCash</span>
+                        </div>
+
+                        <div id="withdrawFields">
+                            <div id="mobileFields">
+                                <div class="input-group">
+                                    <label><i class="fas fa-phone"></i> Mobile Number</label>
+                                    <input type="tel" id="withdrawMobile" placeholder="e.g. 03XX-XXXXXXX" />
+                                    <div class="field-hint">Enter your JazzCash/EasyPaisa registered number</div>
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-user"></i> Account Holder Name</label>
+                                    <input type="text" id="withdrawName" placeholder="Enter your full name" />
+                                </div>
+                            </div>
+
+                            <div id="bankFields" style="display:none;">
+                                <div class="input-group">
+                                    <label><i class="fas fa-university"></i> Bank Name</label>
+                                    <input type="text" id="withdrawBankName" placeholder="e.g. HBL, UBL, Meezan Bank" />
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-user"></i> Account Holder Name</label>
+                                    <input type="text" id="withdrawBankAccountName" placeholder="Enter account holder name" />
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-hashtag"></i> Account Number</label>
+                                    <input type="text" id="withdrawBankAccountNo" placeholder="Enter bank account number" />
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-code"></i> IBAN (Optional)</label>
+                                    <input type="text" id="withdrawIban" placeholder="Enter IBAN if available" />
+                                </div>
+                            </div>
+
+                            <div id="cryptoFields" style="display:none;">
+                                <div class="input-group">
+                                    <label><i class="fas fa-link"></i> Wallet Address</label>
+                                    <input type="text" id="withdrawWalletAddress" placeholder="Enter your wallet address" />
+                                    <div class="field-hint" id="cryptoHint">Send to your BTC wallet address</div>
+                                </div>
+                                <div class="input-group">
+                                    <label><i class="fas fa-tag"></i> Network (Optional)</label>
+                                    <select id="withdrawNetwork">
+                                        <option value="default">Default Network</option>
+                                        <option value="trc20">TRC20</option>
+                                        <option value="erc20">ERC20</option>
+                                        <option value="bep20">BEP20</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label><i class="fas fa-dollar-sign"></i> Amount ($)</label>
+                            <input type="number" id="withdrawAmount" value="50" min="10" step="10" />
+                        </div>
+
+                        <button class="btn-submit btn-withdraw-submit" onclick="processWithdraw()">
+                            <i class="fas fa-paper-plane"></i> Request Withdrawal (Pending)
+                        </button>
+
+                        <div style="margin-top:8px; font-size:10px; color:#8899aa; text-align:center;">
+                            <i class="fas fa-info-circle"></i> Admin will confirm from Firebase Console
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal History -->
+                    <div class="history-section" style="margin-top:10px;">
+                        <h4><i class="fas fa-history" style="color:#ef5350;"></i> Withdrawal History</h4>
+                        <div id="withdrawHistory">
+                            <div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                                <i class="fas fa-inbox"></i> No withdrawals yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: HISTORY (Trade History) -->
+        <!-- ============================================================ -->
+        <div class="page" id="page-history">
+            <div class="funds-container">
+                <h4 style="color:#8899aa; font-size:13px; margin-bottom:6px;">
+                    <i class="fas fa-history" style="color:#ffd700;"></i> Trade History
+                </h4>
+                
+                <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                    <button class="tab-btn" style="flex:1; padding:6px; border:1px solid #1e2d42; border-radius:6px; background:#0a0e17; color:#8899aa; font-size:11px; cursor:pointer;" onclick="filterTradeHistory('all')" id="filterAll">📊 All</button>
+                    <button class="tab-btn" style="flex:1; padding:6px; border:1px solid #1e2d42; border-radius:6px; background:#0a0e17; color:#4caf50; font-size:11px; cursor:pointer;" onclick="filterTradeHistory('win')" id="filterWin">✅ Wins</button>
+                    <button class="tab-btn" style="flex:1; padding:6px; border:1px solid #1e2d42; border-radius:6px; background:#0a0e17; color:#ef5350; font-size:11px; cursor:pointer;" onclick="filterTradeHistory('loss')" id="filterLoss">❌ Losses</button>
+                    <button class="tab-btn" style="flex:1; padding:6px; border:1px solid #1e2d42; border-radius:6px; background:#0a0e17; color:#f57c00; font-size:11px; cursor:pointer;" onclick="filterTradeHistory('open')" id="filterOpen">⏳ Open</button>
+                </div>
+
+                <div class="history-section" style="max-height:400px;">
+                    <div id="tradeHistory">
+                        <div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                            <i class="fas fa-inbox"></i> No trades yet
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:10px; display:flex; justify-content:space-between; font-size:11px; color:#8899aa; padding:8px; background:#0a0e17; border-radius:8px; border:1px solid #1e2d42; flex-wrap:wrap; gap:4px;">
+                    <span>Total Trades: <span id="totalTradesCount" style="color:#fff;">0</span></span>
+                    <span>Wins: <span id="totalWinsCount" style="color:#4caf50;">0</span></span>
+                    <span>Losses: <span id="totalLossesCount" style="color:#ef5350;">0</span></span>
+                    <span>Win Rate: <span id="totalWinRate" style="color:#ffd700;">0%</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE: PROFILE -->
+        <!-- ============================================================ -->
+        <div class="page" id="page-profile">
+            <div class="profile-card">
+                <div class="avatar-big" id="profileAvatar" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fas fa-user" id="avatarIcon"></i>
+                    <div class="upload-overlay"><i class="fas fa-camera"></i> Change</div>
+                    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadAvatar(event)" />
+                </div>
+                <div class="name" id="profileName">User</div>
+                <div class="email" id="profileEmail">user@email.com</div>
+                <span class="kyc-status verified" id="kycStatusBadge">✅ Verified</span>
+                <div class="stats">
+                    <div class="stat"><div class="num" id="profileTrades">0</div><div class="lbl">Trades</div></div>
+                    <div class="stat"><div class="num" id="profilePnL" style="color:#4caf50;">+0.00</div><div class="lbl">P&L</div></div>
+                    <div class="stat"><div class="num" id="profileBalance">0</div><div class="lbl">Balance</div></div>
+                </div>
+            </div>
+
+            <div class="profile-menu">
+                <div class="menu-item" onclick="showPage('dashboard')"><i class="fas fa-home"></i><div class="text">Dashboard</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+                <div class="menu-item" onclick="showPage('trade')"><i class="fas fa-exchange-alt"></i><div class="text">Trading</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+                <div class="menu-item" onclick="showPage('funds')"><i class="fas fa-coins" style="color:#ffd700;"></i><div class="text">Deposit / Withdraw</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+                <div class="menu-item" onclick="showPage('history')"><i class="fas fa-history" style="color:#ffd700;"></i><div class="text">Trade History</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+                <div class="menu-item" onclick="resetAll()"><i class="fas fa-redo" style="color:#ffd700;"></i><div class="text">Reset Account</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+                <div class="menu-item" onclick="logoutUser()" style="border-bottom:none;"><i class="fas fa-sign-out-alt" style="color:#ef5350;"></i><div class="text" style="color:#ef5350;">Logout</div><div class="arrow"><i class="fas fa-chevron-right"></i></div></div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="showPage('dashboard')" data-page="dashboard">
+                <i class="fas fa-home"></i><span>Home</span>
+            </button>
+            <button class="nav-item" onclick="showPage('trade')" data-page="trade">
+                <i class="fas fa-exchange-alt"></i><span>Trade</span>
+                <span class="badge" id="tradeBadge" style="display:none;">0</span>
+            </button>
+            <button class="nav-item" onclick="showPage('funds')" data-page="funds">
+                <i class="fas fa-coins" style="color:#ffd700;"></i><span>Funds</span>
+            </button>
+            <button class="nav-item" onclick="showPage('history')" data-page="history">
+                <i class="fas fa-history" style="color:#ffd700;"></i><span>History</span>
+            </button>
+            <button class="nav-item" onclick="showPage('profile')" data-page="profile">
+                <i class="fas fa-user"></i><span>Profile</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ================================================================
+    //  FIREBASE CONFIGURATION
+    // ================================================================
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyCTq2PFa6TwjSNt7c1qWPQmg5TLeqfWZ2g",
+        authDomain: "primexbt-pro.firebaseapp.com",
+        projectId: "primexbt-pro",
+        storageBucket: "primexbt-pro.firebasestorage.app",
+        messagingSenderId: "506455751305",
+        appId: "1:506455751305:web:1837651278bf43a2eaa458",
+        measurementId: "G-JFT7JY1J9Q"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ================================================================
+    //  APP STATE
+    // ================================================================
+
+    let currentUser = null;
+    let userDocId = null;
+    let balance = 0;
+    let pendingBalance = 0;
+    let confirmedBalance = 0;
+    let totalPnl = 0;
+    let openTrades = [];
+    let allTrades = [];
+    let tradeCount = 0;
+    let wins = 0;
+    let losses = 0;
+    let isRunning = true;
+    let candleInterval = null;
+    let speed = 1000;
+    let entryPoints = [];
+    let currentFilter = 'all';
+    const MAX_CANDLES = 200;
+    let candles = [];
+    let currentPrice = 1.2000;
+    let currentSymbol = 'EUR/USD';
+    let currentBasePrice = 1.2000;
+
+    // Currency Data
+    const currencyData = {
+        'EUR/USD': { symbol: '€', base: 1.2000, change: 0.0015 },
+        'BTC/USD': { symbol: '₿', base: 65000, change: 150 },
+        'GOLD/USD': { symbol: 'Au', base: 2400, change: 5 },
+        'SOL/USD': { symbol: '◎', base: 180, change: 2 },
+        'ZEC/USD': { symbol: 'ⓩ', base: 45, change: 0.8 },
+        'USD/JPY': { symbol: '¥', base: 148, change: 0.5 },
+        'IND/USD': { symbol: '₹', base: 83, change: 0.2 }
+    };
+
+    // ================================================================
+    //  CURRENCY FUNCTIONS
+    // ================================================================
+
+    function changeCurrency(symbol, icon, basePrice) {
+        currentSymbol = symbol;
+        currentBasePrice = basePrice;
+        
+        document.querySelectorAll('.curr-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.curr-btn').forEach(btn => {
+            if (btn.textContent.includes(symbol.split('/')[0])) {
+                btn.classList.add('active');
+            }
+        });
+        
+        document.getElementById('chartSymbol').innerHTML = `<i class="fas fa-coins"></i> ${symbol}`;
+        generateInitialCandles();
+        drawChart();
+        updateStats();
+        addHistory(`🔄 Switched to ${symbol}`, 'gold');
+    }
+
+    // ================================================================
+    //  FUNDS - TABS SWITCH
+    // ================================================================
+
+    function switchFundsTab(tab) {
+        document.querySelectorAll('.funds-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.funds-content').forEach(content => content.classList.remove('active'));
+        
+        if (tab === 'deposit') {
+            document.querySelector('.funds-tabs .deposit-tab').classList.add('active');
+            document.getElementById('fundsDeposit').classList.add('active');
+        } else {
+            document.querySelector('.funds-tabs .withdraw-tab').classList.add('active');
+            document.getElementById('fundsWithdraw').classList.add('active');
+        }
+    }
+
+    // ================================================================
+    //  TRADE HISTORY FILTER
+    // ================================================================
+
+    function filterTradeHistory(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('#page-history .tab-btn').forEach(btn => {
+            btn.style.borderColor = '#1e2d42';
+            btn.style.color = '#8899aa';
+            btn.style.background = '#0a0e17';
+        });
+        
+        const btnMap = {
+            'all': 'filterAll',
+            'win': 'filterWin',
+            'loss': 'filterLoss',
+            'open': 'filterOpen'
+        };
+        
+        const activeBtn = document.getElementById(btnMap[filter]);
+        if (activeBtn) {
+            activeBtn.style.borderColor = '#2a7de1';
+            activeBtn.style.color = '#2a7de1';
+            activeBtn.style.background = 'rgba(42,125,225,0.1)';
+        }
+        
+        loadTradeHistory();
+    }
+
+    // ================================================================
+    //  WITHDRAW - UPDATE FIELDS
+    // ================================================================
+
+    function updateWithdrawFields() {
+        const method = document.getElementById('withdrawMethod').value;
+        const mobileFields = document.getElementById('mobileFields');
+        const bankFields = document.getElementById('bankFields');
+        const cryptoFields = document.getElementById('cryptoFields');
+        const iconDisplay = document.getElementById('methodIconDisplay');
+        const nameDisplay = document.getElementById('methodNameDisplay');
+        const cryptoHint = document.getElementById('cryptoHint');
+
+        mobileFields.style.display = 'none';
+        bankFields.style.display = 'none';
+        cryptoFields.style.display = 'none';
+
+        const methodMap = {
+            'jazzcash': { icon: 'fa-mobile-alt', color: '#e91e63', name: 'JazzCash', emoji: '📱' },
+            'easypaisa': { icon: 'fa-mobile-alt', color: '#ff6f00', name: 'EasyPaisa', emoji: '📱' },
+            'bank': { icon: 'fa-university', color: '#2a7de1', name: 'Bank Transfer', emoji: '🏦' },
+            'btc': { icon: 'fa-bitcoin', color: '#f7931a', name: 'Bitcoin (BTC)', emoji: '₿' },
+            'eth': { icon: 'fa-ethereum', color: '#627eea', name: 'Ethereum (ETH)', emoji: '⟠' },
+            'usdt': { icon: 'fa-dollar-sign', color: '#f7931a', name: 'USDT (TRC20)', emoji: '🪙' }
+        };
+
+        const info = methodMap[method] || methodMap['jazzcash'];
+        iconDisplay.innerHTML = `<i class="fab ${info.icon}" style="color:${info.color};"></i><span class="method-name">${info.emoji} ${info.name}</span>`;
+
+        switch(method) {
+            case 'jazzcash':
+            case 'easypaisa':
+                mobileFields.style.display = 'block';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'bank':
+                bankFields.style.display = 'block';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'btc':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your Bitcoin (BTC) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'eth':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your Ethereum (ETH) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'usdt':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your USDT (TRC20) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+        }
+    }
+
+    // ================================================================
+    //  FIREBASE FUNCTIONS
+    // ================================================================
+
+    async function createUserInFirestore(userData) {
+        try {
+            const docRef = await db.collection('users').add({
+                name: userData.name,
+                email: userData.email,
+                password: userData.password,
+                address: userData.address,
+                idNumber: userData.idNumber,
+                avatar: userData.avatar || null,
+                balance: 0,
+                pendingBalance: 0,
+                confirmedBalance: 0,
+                totalPnl: 0,
+                wins: 0,
+                losses: 0,
+                trades: [],
+                deposits: [],
+                withdrawals: [],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                kycStatus: 'verified'
+            });
+            return docRef.id;
+        } catch (error) {
+            console.error('Error creating user:', error);
+            throw error;
+        }
+    }
+
+    async function getUserFromFirestore(email) {
+        try {
+            const snapshot = await db.collection('users')
+                .where('email', '==', email)
+                .limit(1)
+                .get();
+            if (snapshot.empty) return null;
+            const doc = snapshot.docs[0];
+            return { id: doc.id, ...doc.data() };
+        } catch (error) {
+            console.error('Error getting user:', error);
+            throw error;
+        }
+    }
+
+    async function updateUserInFirestore(docId, data) {
+        try {
+            await db.collection('users').doc(docId).update(data);
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw error;
+        }
+    }
+
+    // ================================================================
+    //  DEPOSIT FUNCTIONS (FIXED - No Index Required)
+    // ================================================================
+
+    async function requestDeposit() {
+        const amount = parseFloat(document.getElementById('depositAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount < 10) { alert('❌ Minimum deposit is $10'); return; }
+        
+        try {
+            const depositRef = await db.collection('deposits').add({
+                userId: userDocId,
+                userEmail: currentUser.email,
+                userName: currentUser.name,
+                amount: amount,
+                method: 'Manual',
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                confirmedAt: null,
+                txId: null
+            });
+
+            await db.collection('users').doc(userDocId).update({
+                pendingBalance: firebase.firestore.FieldValue.increment(amount),
+                deposits: firebase.firestore.FieldValue.arrayUnion(depositRef.id)
+            });
+
+            addHistory(`⏳ Deposit request: $${amount} (Pending)`, 'orange');
+            alert(`✅ Deposit request of $${amount} submitted!\n\n⏳ Status: PENDING\n👨‍💼 Admin will confirm from Firebase Console`);
+            
+            loadDepositHistory();
+            
+        } catch (error) {
+            alert('❌ Error submitting deposit: ' + error.message);
+        }
+    }
+
+    async function processUSDTDeposit() {
+        const amount = parseFloat(document.getElementById('usdtAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount < 10) { alert('❌ Minimum deposit is 10 USDT'); return; }
+        
+        try {
+            const depositRef = await db.collection('deposits').add({
+                userId: userDocId,
+                userEmail: currentUser.email,
+                userName: currentUser.name,
+                amount: amount,
+                method: 'USDT (TRC20)',
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                confirmedAt: null,
+                txId: null,
+                walletAddress: 'THkT28F2fH9h6YLR1c6bEk7rLoUb4ZESTE'
+            });
+
+            await db.collection('users').doc(userDocId).update({
+                pendingBalance: firebase.firestore.FieldValue.increment(amount),
+                deposits: firebase.firestore.FieldValue.arrayUnion(depositRef.id)
+            });
+
+            addHistory(`⏳ USDT Deposit: ${amount} USDT (Pending)`, 'orange');
+            alert(`✅ USDT Deposit request of ${amount} USDT submitted!\n\n⏳ Status: PENDING\n👨‍💼 Admin will confirm from Firebase Console`);
+            
+            document.getElementById('usdtDepositBox').style.display = 'none';
+            document.getElementById('manualDeposit').style.display = 'block';
+            loadDepositHistory();
+            
+        } catch (error) {
+            alert('❌ Error submitting deposit: ' + error.message);
+        }
+    }
+
+    function showUSDT() {
+        const box = document.getElementById('usdtDepositBox');
+        const manual = document.getElementById('manualDeposit');
+        if (box.style.display === 'none') {
+            box.style.display = 'block';
+            manual.style.display = 'none';
+        } else {
+            box.style.display = 'none';
+            manual.style.display = 'block';
+        }
+    }
+
+    function copyUSDT() {
+        const address = document.getElementById('usdtAddress').innerText;
+        navigator.clipboard.writeText(address).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+            addHistory('📋 USDT Address copied', 'gold');
+        }).catch(() => {
+            const textArea = document.createElement('textarea');
+            textArea.value = address;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+            addHistory('📋 USDT Address copied', 'gold');
+        });
+    }
+
+    function depositMethod(method) {
+        document.getElementById('depositAmount').value = 100;
+        document.getElementById('usdtDepositBox').style.display = 'none';
+        document.getElementById('manualDeposit').style.display = 'block';
+        addHistory(`💳 Selected ${method} for deposit`, 'gold');
+    }
+
+    // ================================================================
+    //  WITHDRAW FUNCTIONS (FIXED - No Index Required)
+    // ================================================================
+
+    async function processWithdraw() {
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        const method = document.getElementById('withdrawMethod').value;
+        
+        const methodMap = {
+            'jazzcash': 'JazzCash',
+            'easypaisa': 'EasyPaisa',
+            'bank': 'Bank Transfer',
+            'btc': 'Bitcoin (BTC)',
+            'eth': 'Ethereum (ETH)',
+            'usdt': 'USDT (TRC20)'
+        };
+        
+        const methodName = methodMap[method] || method;
+
+        let accountDetails = {};
+
+        switch(method) {
+            case 'jazzcash':
+            case 'easypaisa':
+                const mobile = document.getElementById('withdrawMobile').value.trim();
+                const name = document.getElementById('withdrawName').value.trim();
+                if (!mobile) { alert('❌ Please enter mobile number'); return; }
+                if (!name) { alert('❌ Please enter account holder name'); return; }
+                accountDetails = { mobile, name, method: methodName };
+                break;
+            case 'bank':
+                const bankName = document.getElementById('withdrawBankName').value.trim();
+                const accName = document.getElementById('withdrawBankAccountName').value.trim();
+                const accNo = document.getElementById('withdrawBankAccountNo').value.trim();
+                const iban = document.getElementById('withdrawIban').value.trim();
+                if (!bankName) { alert('❌ Please enter bank name'); return; }
+                if (!accName) { alert('❌ Please enter account holder name'); return; }
+                if (!accNo) { alert('❌ Please enter account number'); return; }
+                accountDetails = { bankName, accName, accNo, iban, method: methodName };
+                break;
+            case 'btc':
+            case 'eth':
+            case 'usdt':
+                const wallet = document.getElementById('withdrawWalletAddress').value.trim();
+                const network = document.getElementById('withdrawNetwork').value;
+                if (!wallet) { alert('❌ Please enter wallet address'); return; }
+                accountDetails = { wallet, network, method: methodName };
+                break;
+            default:
+                alert('❌ Please select a withdrawal method');
+                return;
+        }
+
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
+        if (amount < 10) { alert('❌ Minimum withdrawal is $10'); return; }
+
+        try {
+            const withdrawRef = await db.collection('withdrawals').add({
+                userId: userDocId,
+                userEmail: currentUser.email,
+                userName: currentUser.name,
+                amount: amount,
+                method: method,
+                methodName: methodName,
+                accountDetails: accountDetails,
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                processedAt: null,
+                txId: null
+            });
+
+            await db.collection('users').doc(userDocId).update({
+                withdrawals: firebase.firestore.FieldValue.arrayUnion(withdrawRef.id)
+            });
+
+            const newBalance = balance - amount;
+            await updateUserInFirestore(userDocId, { balance: newBalance });
+            balance = newBalance;
+
+            addHistory(`🏧 Withdrawal requested: $${amount} via ${methodName} (Pending)`, 'orange');
+            updateAllUI();
+            alert(`✅ Withdrawal request of $${amount} submitted!\n\n⏳ Status: PENDING\n👨‍💼 Admin will confirm from Firebase Console`);
+            
+            loadWithdrawHistory();
+
+        } catch (error) {
+            alert('❌ Error processing withdrawal: ' + error.message);
+        }
+    }
+
+    // ================================================================
+    //  HISTORY FUNCTIONS (FIXED - No Index Required)
+    // ================================================================
+
+    async function loadDepositHistory() {
+        if (!userDocId) return;
+        try {
+            // Query without orderBy to avoid index requirement
+            const snapshot = await db.collection('deposits')
+                .where('userId', '==', userDocId)
+                .get();
+            
+            const container = document.getElementById('depositHistory');
+            
+            // Manual sorting in JavaScript
+            const deposits = [];
+            snapshot.forEach(doc => {
+                deposits.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Sort by createdAt descending (newest first)
+            deposits.sort((a, b) => {
+                const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+                const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+                return dateB - dateA;
+            });
+
+            if (deposits.length === 0) {
+                container.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                    <i class="fas fa-inbox"></i> No deposits yet</div>`;
+                return;
+            }
+
+            let html = '';
+            deposits.forEach(data => {
+                const date = data.createdAt ? data.createdAt.toDate().toLocaleString() : 'N/A';
+                const statusClass = data.status === 'pending' ? 'status-pending' : 
+                                   data.status === 'confirmed' ? 'status-confirmed' : 'status-rejected';
+                const statusIcon = data.status === 'pending' ? '⏳' : 
+                                  data.status === 'confirmed' ? '✅' : '❌';
+                
+                html += `<div class="history-item">
+                    <div>
+                        <span class="type-deposit">💰 ${data.method}</span>
+                        <div class="date">${date}</div>
+                    </div>
+                    <div>
+                        <span class="amount">$${data.amount.toFixed(2)}</span>
+                        <span class="${statusClass}"> ${statusIcon} ${data.status}</span>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Error loading deposit history:', error);
+            // Show empty state on error
+            document.getElementById('depositHistory').innerHTML = 
+                `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                    <i class="fas fa-inbox"></i> No deposits yet</div>`;
+        }
+    }
+
+    async function loadWithdrawHistory() {
+        if (!userDocId) return;
+        try {
+            // Query without orderBy to avoid index requirement
+            const snapshot = await db.collection('withdrawals')
+                .where('userId', '==', userDocId)
+                .get();
+            
+            const container = document.getElementById('withdrawHistory');
+            
+            // Manual sorting in JavaScript
+            const withdrawals = [];
+            snapshot.forEach(doc => {
+                withdrawals.push({ id: doc.id, ...doc.data() });
+            });
+            
+            // Sort by createdAt descending (newest first)
+            withdrawals.sort((a, b) => {
+                const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
+                const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
+                return dateB - dateA;
+            });
+
+            if (withdrawals.length === 0) {
+                container.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                    <i class="fas fa-inbox"></i> No withdrawals yet</div>`;
+                return;
+            }
+
+            let html = '';
+            withdrawals.forEach(data => {
+                const date = data.createdAt ? data.createdAt.toDate().toLocaleString() : 'N/A';
+                const statusClass = data.status === 'pending' ? 'status-pending' : 
+                                   data.status === 'confirmed' ? 'status-confirmed' : 'status-rejected';
+                const statusIcon = data.status === 'pending' ? '⏳' : 
+                                  data.status === 'confirmed' ? '✅' : '❌';
+                
+                html += `<div class="history-item">
+                    <div>
+                        <span class="type-withdraw">🏧 ${data.methodName || data.method}</span>
+                        <div class="date">${date}</div>
+                    </div>
+                    <div>
+                        <span class="amount">$${data.amount.toFixed(2)}</span>
+                        <span class="${statusClass}"> ${statusIcon} ${data.status}</span>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html;
+        } catch (error) {
+            console.error('Error loading withdrawal history:', error);
+            // Show empty state on error
+            document.getElementById('withdrawHistory').innerHTML = 
+                `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                    <i class="fas fa-inbox"></i> No withdrawals yet</div>`;
+        }
+    }
+
+    // ================================================================
+    //  TRADE HISTORY (FIXED)
+    // ================================================================
+
+    function loadTradeHistory() {
+        const container = document.getElementById('tradeHistory');
+        
+        let filteredTrades = [...allTrades];
+        
+        if (currentFilter === 'win') {
+            filteredTrades = filteredTrades.filter(t => t.closed && t.pnl > 0);
+        } else if (currentFilter === 'loss') {
+            filteredTrades = filteredTrades.filter(t => t.closed && t.pnl < 0);
+        } else if (currentFilter === 'open') {
+            filteredTrades = filteredTrades.filter(t => !t.closed);
+        }
+        
+        // Sort by timestamp (newest first)
+        filteredTrades.sort((a, b) => b.timestamp - a.timestamp);
+        
+        if (filteredTrades.length === 0) {
+            container.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                <i class="fas fa-inbox"></i> No trades found</div>`;
+            updateTradeStats();
+            return;
+        }
+
+        let html = '';
+        filteredTrades.forEach(t => {
+            const isWin = t.pnl > 0;
+            const typeClass = isWin ? 'type-trade-win' : 'type-trade-loss';
+            const status = t.closed ? (isWin ? '✅ WIN' : '❌ LOSS') : '⏳ OPEN';
+            const statusColor = t.closed ? (isWin ? '#4caf50' : '#ef5350') : '#f57c00';
+            const pnlDisplay = t.pnl !== undefined ? (t.pnl >= 0 ? '+' : '') + t.pnl.toFixed(2) : '0.00';
+            const date = t.timestamp ? new Date(t.timestamp).toLocaleString() : 'N/A';
+            
+            html += `<div class="history-item">
+                <div>
+                    <span class="${typeClass}">${t.type.toUpperCase()} ${t.symbol || 'EUR/USD'}</span>
+                    <div class="date">${date}</div>
+                    <div style="font-size:9px; color:#8899aa;">@ ${t.entry.toFixed(5)} ${t.closed ? '→ Exit: '+t.exit.toFixed(5) : ''}</div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="amount" style="color:${isWin ? '#4caf50' : '#ef5350'};">$${t.amount}</div>
+                    <div style="font-size:11px; font-weight:600; color:${statusColor};">${status}</div>
+                    <div style="font-size:10px; color:${isWin ? '#4caf50' : '#ef5350'};">${pnlDisplay}</div>
+                </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+        updateTradeStats();
+    }
+
+    function updateTradeStats() {
+        const total = allTrades.length;
+        const winCount = allTrades.filter(t => t.closed && t.pnl > 0).length;
+        const lossCount = allTrades.filter(t => t.closed && t.pnl < 0).length;
+        const winRate = total > 0 ? (winCount / total * 100) : 0;
+        
+        document.getElementById('totalTradesCount').innerText = total;
+        document.getElementById('totalWinsCount').innerText = winCount;
+        document.getElementById('totalLossesCount').innerText = lossCount;
+        document.getElementById('totalWinRate').innerText = winRate.toFixed(0) + '%';
+    }
+
+    // ================================================================
+    //  REAL-TIME LISTENERS
+    // ================================================================
+
+    function listenToUserData(userId) {
+        return db.collection('users').doc(userId)
+            .onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    balance = data.balance || 0;
+                    pendingBalance = data.pendingBalance || 0;
+                    confirmedBalance = data.confirmedBalance || 0;
+                    totalPnl = data.totalPnl || 0;
+                    wins = data.wins || 0;
+                    losses = data.losses || 0;
+                    allTrades = data.trades || [];
+                    tradeCount = allTrades.length;
+                    
+                    openTrades = allTrades.filter(t => !t.closed);
+                    entryPoints = openTrades.map(t => ({
+                        id: t.id,
+                        price: t.entry,
+                        type: t.type
+                    }));
+                    
+                    updateAllUI();
+                    drawChart();
+                    updateStats();
+                    loadTradeHistory();
+                    
+                    if (pendingBalance > 0) {
+                        document.getElementById('pendingIndicator').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('pendingIndicator').style.display = 'none';
+                    }
+                    
+                    document.getElementById('pendingBalance').innerText = '$' + pendingBalance.toFixed(2);
+                    document.getElementById('confirmedBalance').innerText = '$' + confirmedBalance.toFixed(2);
+                    
+                    loadDepositHistory();
+                    loadWithdrawHistory();
+                }
+            }, (error) => {
+                console.error('Error listening to user data:', error);
+            });
+    }
+
+    function listenForDepositConfirmations(userId) {
+        return db.collection('deposits')
+            .where('userId', '==', userId)
+            .where('status', '==', 'confirmed')
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        const data = change.doc.data();
+                        const amount = data.amount || 0;
+                        
+                        db.collection('users').doc(userId).update({
+                            balance: firebase.firestore.FieldValue.increment(amount),
+                            confirmedBalance: firebase.firestore.FieldValue.increment(amount),
+                            pendingBalance: firebase.firestore.FieldValue.increment(-amount)
+                        });
+                        
+                        addHistory(`✅ Deposit confirmed: $${amount} (${data.method})`, 'green');
+                        showNotification(`✅ $${amount} deposit confirmed!`, 'success');
+                        loadDepositHistory();
+                    }
+                });
+            }, (error) => {
+                console.error('Error listening for confirmations:', error);
+            });
+    }
+
+    function listenForWithdrawalConfirmations(userId) {
+        return db.collection('withdrawals')
+            .where('userId', '==', userId)
+            .where('status', '==', 'confirmed')
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        const data = change.doc.data();
+                        addHistory(`✅ Withdrawal confirmed: $${data.amount} (${data.methodName})`, 'green');
+                        showNotification(`✅ Withdrawal of $${data.amount} confirmed!`, 'success');
+                        loadWithdrawHistory();
+                    }
+                });
+            }, (error) => {
+                console.error('Error listening for withdrawal confirmations:', error);
+            });
+    }
+
+    // ================================================================
+    //  AUTH FUNCTIONS
+    // ================================================================
+
+    async function registerUser() {
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim().toLowerCase();
+        const password = document.getElementById('regPassword').value.trim();
+        const address = document.getElementById('regAddress').value.trim();
+        const idNumber = document.getElementById('regIdNumber').value.trim();
+        
+        const errorEl = document.getElementById('regError');
+        const successEl = document.getElementById('regSuccess');
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        // Validation
+        if (!name) { errorEl.innerText = '❌ Please enter your full name'; errorEl.style.display = 'block'; return; }
+        if (!email) { errorEl.innerText = '❌ Please enter email address'; errorEl.style.display = 'block'; return; }
+        if (!email.includes('@') || !email.includes('.')) { errorEl.innerText = '❌ Please enter a valid email'; errorEl.style.display = 'block'; return; }
+        if (!password || password.length < 6) { errorEl.innerText = '❌ Password must be at least 6 characters'; errorEl.style.display = 'block'; return; }
+        if (!address) { errorEl.innerText = '❌ Please enter your address'; errorEl.style.display = 'block'; return; }
+        if (!idNumber) { errorEl.innerText = '❌ Please enter ID Card number'; errorEl.style.display = 'block'; return; }
+
+        // Check if email already exists
+        const existingUser = await getUserFromFirestore(email);
+        if (existingUser) {
+            errorEl.innerText = '❌ This email is already registered. Please login.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        const btn = document.querySelector('#registerPage .btn-auth');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+
+        try {
+            const userData = { name, email, password, address, idNumber, avatar: null };
+            const docId = await createUserInFirestore(userData);
+            userDocId = docId;
+            currentUser = { id: docId, name, email, password, address, idNumber, balance: 0, pendingBalance: 0, confirmedBalance: 0 };
+            
+            localStorage.setItem('proTraderSession', JSON.stringify({ userId: docId, email: email }));
+            
+            successEl.innerText = '✅ Registration successful! Redirecting...';
+            successEl.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+            
+            setTimeout(() => showMainApp(), 1000);
+        } catch (error) {
+            errorEl.innerText = '❌ Registration failed: ' + error.message;
+            errorEl.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+        }
+    }
+
+    async function loginUser() {
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+        const password = document.getElementById('loginPassword').value.trim();
+        const errorEl = document.getElementById('loginError');
+        errorEl.style.display = 'none';
+
+        if (!email || !password) {
+            errorEl.innerText = '❌ Please enter email and password';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const user = await getUserFromFirestore(email);
+            if (!user) {
+                errorEl.innerText = '❌ Account not found. Please register first.';
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (user.password !== password) {
+                errorEl.innerText = '❌ Incorrect password. Please try again.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            userDocId = user.id;
+            currentUser = user;
+            localStorage.setItem('proTraderSession', JSON.stringify({ userId: user.id, email: email }));
+            showMainApp();
+        } catch (error) {
+            errorEl.innerText = '❌ Login failed: ' + error.message;
+            errorEl.style.display = 'block';
+        }
+    }
+
+    function logoutUser() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('proTraderSession');
+            currentUser = null;
+            userDocId = null;
+            document.getElementById('mainApp').className = 'app-hidden';
+            if (window.userListener) { window.userListener(); window.userListener = null; }
+            if (window.depositListener) { window.depositListener(); window.depositListener = null; }
+            if (window.withdrawListener) { window.withdrawListener(); window.withdrawListener = null; }
+            showAuth('login');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            stopAutoRun();
+        }
+    }
+
+    function showAuth(page) {
+        document.getElementById('registerPage').style.display = page === 'register' ? 'flex' : 'none';
+        document.getElementById('loginPage').style.display = page === 'login' ? 'flex' : 'none';
+        document.getElementById('mainApp').className = 'app-hidden';
+        document.getElementById('regError').style.display = 'none';
+        document.getElementById('regSuccess').style.display = 'none';
+        document.getElementById('loginError').style.display = 'none';
+    }
+
+    // ================================================================
+    //  MAIN APP FUNCTIONS
+    // ================================================================
+
+    function showMainApp() {
+        document.getElementById('registerPage').style.display = 'none';
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').className = 'app-visible';
+        
+        document.getElementById('headerUserName').innerText = currentUser.name || 'User';
+        document.getElementById('profileName').innerText = currentUser.name || 'User';
+        document.getElementById('profileEmail').innerText = currentUser.email || 'user@email.com';
+        
+        if (currentUser.avatar) {
+            document.getElementById('avatarIcon').style.display = 'none';
+            document.getElementById('profileAvatar').innerHTML = 
+                `<img src="${currentUser.avatar}" style="width:100%;height:100%;object-fit:cover;" />`;
+        }
+        
+        if (window.userListener) window.userListener();
+        window.userListener = listenToUserData(userDocId);
+        
+        if (window.depositListener) window.depositListener();
+        window.depositListener = listenForDepositConfirmations(userDocId);
+        
+        if (window.withdrawListener) window.withdrawListener();
+        window.withdrawListener = listenForWithdrawalConfirmations(userDocId);
+        
+        showPage('dashboard');
+        if (candles.length === 0) generateInitialCandles();
+        if (!candleInterval) startAutoRun();
+        loadUserDataFromFirestore();
+        
+        loadDepositHistory();
+        loadWithdrawHistory();
+        loadTradeHistory();
+    }
+
+    function loadUserDataFromFirestore() {
+        balance = currentUser.balance || 0;
+        pendingBalance = currentUser.pendingBalance || 0;
+        confirmedBalance = currentUser.confirmedBalance || 0;
+        totalPnl = currentUser.totalPnl || 0;
+        allTrades = currentUser.trades || [];
+        wins = currentUser.wins || 0;
+        losses = currentUser.losses || 0;
+        tradeCount = allTrades.length;
+        openTrades = allTrades.filter(t => !t.closed);
+        entryPoints = openTrades.map(t => ({ id: t.id, price: t.entry, type: t.type }));
+        
+        updateAllUI();
+        drawChart();
+        updateStats();
+        loadTradeHistory();
+        
+        document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
+        document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
+    }
+
+    // ================================================================
+    //  TRADING ENGINE
+    // ================================================================
+
+    function uploadAvatar(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = e.target.result;
+            currentUser.avatar = dataUrl;
+            document.getElementById('avatarIcon').style.display = 'none';
+            document.getElementById('profileAvatar').innerHTML = 
+                `<img src="${dataUrl}" style="width:100%;height:100%;object-fit:cover;" />`;
+            updateUserInFirestore(userDocId, { avatar: dataUrl });
+            addHistory('📸 Profile picture updated', 'gold');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function generateInitialCandles() {
+        candles = [];
+        const data = currencyData[currentSymbol] || currencyData['EUR/USD'];
+        let price = data.base;
+        const changeAmount = data.change;
+        
+        for (let i = 0; i < MAX_CANDLES; i++) {
+            const open = price;
+            const change = (Math.random() - 0.48) * changeAmount;
+            const close = Math.max(0.0001, open + change);
+            const high = Math.max(open, close) + Math.random() * changeAmount * 0.8;
+            const low = Math.min(open, close) - Math.random() * changeAmount * 0.8;
+            candles.push({ open, high, low, close, volume: Math.floor(Math.random() * 1000) + 100 });
+            price = close;
+        }
+        currentPrice = candles[candles.length - 1].close;
+        document.getElementById('currentPrice').innerText = currentPrice.toFixed(5);
+    }
+
+    function addCandle() {
+        const last = candles[candles.length - 1];
+        const data = currencyData[currentSymbol] || currencyData['EUR/USD'];
+        const changeAmount = data.change;
+        const change = (Math.random() - 0.48) * changeAmount;
+        const open = last.close;
+        const close = Math.max(0.0001, open + change);
+        const high = Math.max(open, close) + Math.random() * changeAmount * 0.8;
+        const low = Math.min(open, close) - Math.random() * changeAmount * 0.8;
+        const volume = Math.floor(Math.random() * 1000) + 100;
+        
+        const newCandle = { open, high, low, close, volume };
+        candles.push(newCandle);
+        if (candles.length > MAX_CANDLES) candles.shift();
+        currentPrice = close;
+        document.getElementById('currentPrice').innerText = currentPrice.toFixed(5);
+
+        updateLivePnL(close);
+        closeExpiredTrades(close);
+        drawChart();
+        updateStats();
+        updateAllUI();
+    }
+
+    function updateLivePnL(price) {
+        let totalPnlLive = 0;
+        openTrades.forEach(t => {
+            if (!t.closed) {
+                let pnl;
+                if (t.type === 'buy') {
+                    pnl = (price - t.entry) * (t.amount / t.entry);
+                } else {
+                    pnl = (t.entry - price) * (t.amount / t.entry);
+                }
+                t.currentPnl = pnl;
+                totalPnlLive += pnl;
+            }
+        });
+
+        const pnlEl = document.getElementById('livePnl');
+        pnlEl.innerText = (totalPnlLive >= 0 ? '+' : '') + totalPnlLive.toFixed(2) + ' $';
+        pnlEl.className = 'value ' + (totalPnlLive >= 0 ? 'green' : 'red');
+        document.getElementById('activeTradeCount').innerText = openTrades.length;
+    }
+
+    function generateTradeResult(trade) {
+        const isWin = Math.random() < 0.55;
+        if (isWin) {
+            const profitPercent = 0.05 + (Math.random() * 0.20);
+            const pnl = trade.amount * profitPercent;
+            trade.pnl = pnl;
+            wins++;
+            return { result: 'win', pnl: pnl, percent: profitPercent };
+        } else {
+            const lossPercent = 0.10 + (Math.random() * 0.30);
+            const pnl = -(trade.amount * lossPercent);
+            trade.pnl = pnl;
+            losses++;
+            return { result: 'loss', pnl: pnl, percent: lossPercent };
+        }
+    }
+
+    async function closeExpiredTrades(exitPrice) {
+        const toClose = [];
+        for (let i = 0; i < openTrades.length; i++) {
+            const t = openTrades[i];
+            t.expiry--;
+            if (t.expiry <= 0) toClose.push(i);
+        }
+        
+        if (toClose.length === 0) return;
+        
+        for (let i = toClose.length - 1; i >= 0; i--) {
+            const idx = toClose[i];
+            const trade = openTrades[idx];
+            trade.exit = exitPrice;
+            trade.closed = true;
+            
+            const result = generateTradeResult(trade);
+            const newBalance = balance + trade.amount + trade.pnl;
+            balance = newBalance;
+            totalPnl += trade.pnl;
+            
+            const pnlStr = trade.pnl >= 0 ? `+${trade.pnl.toFixed(2)}` : trade.pnl.toFixed(2);
+            const color = trade.pnl >= 0 ? 'green' : 'red';
+            const emoji = trade.pnl >= 0 ? '✅ WIN' : '❌ LOSS';
+            const percentStr = result.result === 'win' ? `+${(result.percent * 100).toFixed(1)}%` : `-${(result.percent * 100).toFixed(1)}%`;
+            
+            addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(5)} | ${percentStr} | PnL: $${pnlStr}`, color);
+            
+            const entryIdx = entryPoints.findIndex(e => e.id === trade.id);
+            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+            
+            openTrades.splice(idx, 1);
+        }
+        
+        try {
+            await updateUserInFirestore(userDocId, {
+                balance: balance,
+                totalPnl: totalPnl,
+                wins: wins,
+                losses: losses,
+                trades: allTrades
+            });
+        } catch (error) {
+            console.error('Error saving trades:', error);
+        }
+        
+        updateAllUI();
+        updateLivePnL(currentPrice);
+        drawChart();
+        loadTradeHistory();
+        
+        if (balance <= 0) {
+            balance = 0;
+            document.getElementById('balanceDisplay').className = 'balance-zero';
+            document.getElementById('equityDisplay').className = 'balance-zero';
+            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
+            isRunning = false;
+            stopAutoRun();
+        }
+    }
+
+    function closeAllTrades() {
+        if (openTrades.length === 0) return;
+        const price = currentPrice;
+        for (let i = openTrades.length - 1; i >= 0; i--) {
+            const t = openTrades[i];
+            t.exit = price;
+            t.closed = true;
+            const result = generateTradeResult(t);
+            balance += (t.amount + t.pnl);
+            totalPnl += t.pnl;
+            const entryIdx = entryPoints.findIndex(e => e.id === t.id);
+            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+            openTrades.splice(i, 1);
+        }
+        addHistory('🔒 All positions closed', 'white');
+        updateAllUI();
+        updateLivePnL(currentPrice);
+        drawChart();
+        loadTradeHistory();
+        
+        if (balance <= 0) {
+            balance = 0;
+            document.getElementById('balanceDisplay').className = 'balance-zero';
+            document.getElementById('equityDisplay').className = 'balance-zero';
+            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
+            isRunning = false;
+            stopAutoRun();
+        }
+    }
+
+    function takeProfit() {
+        const price = currentPrice;
+        let closed = 0;
+        for (let i = openTrades.length - 1; i >= 0; i--) {
+            const t = openTrades[i];
+            const pnl = t.type === 'buy' ? 
+                (price - t.entry) * (t.amount / t.entry) : 
+                (t.entry - price) * (t.amount / t.entry);
+            
+            if (pnl > 0) {
+                t.exit = price;
+                t.closed = true;
+                t.pnl = pnl;
+                balance += (t.amount + pnl);
+                totalPnl += pnl;
+                wins++;
+                const entryIdx = entryPoints.findIndex(e => e.id === t.id);
+                if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+                openTrades.splice(i, 1);
+                closed++;
+            }
+        }
+        if (closed > 0) {
+            addHistory(`💰 TP: ${closed} profitable positions closed`, 'green');
+            updateAllUI();
+            updateLivePnL(currentPrice);
+            drawChart();
+            loadTradeHistory();
+        }
+    }
+
+    function quickTrade(type) {
+        if (balance <= 0) {
+            alert('❌ Your balance is ZERO! Please deposit first.');
+            return;
+        }
+        
+        const amount = parseFloat(document.getElementById('quickTradeAmount').value);
+        const expiry = parseInt(document.getElementById('quickTradeExpiry').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
+        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        tradeCount++;
+        const price = currentPrice;
+        const trade = {
+            id: Date.now() + Math.random(),
+            type: type,
+            amount: amount,
+            entry: price,
+            exit: null,
+            pnl: 0,
+            currentPnl: 0,
+            closed: false,
+            expiry: expiry,
+            tradeNumber: tradeCount,
+            timestamp: Date.now(),
+            symbol: currentSymbol
+        };
+        openTrades.push(trade);
+        allTrades.push(trade);
+        balance -= amount;
+
+        entryPoints.push({
+            id: trade.id,
+            price: price,
+            type: type
+        });
+
+        const icon = type === 'buy' ? '📈' : '📉';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        
+        updateAllUI();
+        drawChart();
+        loadTradeHistory();
+    }
+
+    function placeTrade(type) {
+        if (balance <= 0) {
+            alert('❌ Your balance is ZERO! Please deposit first.');
+            return;
+        }
+        
+        const amount = parseFloat(document.getElementById('tradeAmount').value);
+        const expiry = parseInt(document.getElementById('tradeExpiry').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
+        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        tradeCount++;
+        const price = currentPrice;
+        const trade = {
+            id: Date.now() + Math.random(),
+            type: type,
+            amount: amount,
+            entry: price,
+            exit: null,
+            pnl: 0,
+            currentPnl: 0,
+            closed: false,
+            expiry: expiry,
+            tradeNumber: tradeCount,
+            timestamp: Date.now(),
+            symbol: currentSymbol
+        };
+        openTrades.push(trade);
+        allTrades.push(trade);
+        balance -= amount;
+
+        entryPoints.push({
+            id: trade.id,
+            price: price,
+            type: type
+        });
+
+        const icon = type === 'buy' ? '📈' : '📉';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        
+        updateAllUI();
+        drawChart();
+        loadTradeHistory();
+        showPage('trade');
+    }
+
+    // ================================================================
+    //  UI FUNCTIONS
+    // ================================================================
+
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawChart() {
+        const rect = canvas.getBoundingClientRect();
+        if (canvas.width !== rect.width * window.devicePixelRatio) {
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        const w = canvas.width / window.devicePixelRatio;
+        const h = canvas.height / window.devicePixelRatio;
+        ctx.clearRect(0, 0, w, h);
+
+        if (candles.length === 0) return;
+
+        let min = Infinity, max = -Infinity;
+        const showCandles = candles.slice(-100);
+        for (let c of showCandles) {
+            if (c.low < min) min = c.low;
+            if (c.high > max) max = c.high;
+        }
+        const padding = (max - min) * 0.12;
+        min -= padding;
+        max += padding;
+
+        const candleWidth = Math.max(2, w / showCandles.length * 0.6);
+        const spacing = w / showCandles.length;
+
+        for (let i = 0; i < showCandles.length; i++) {
+            const c = showCandles[i];
+            const x = i * spacing + (spacing - candleWidth) / 2;
+            const yHigh = h - ((c.high - min) / (max - min)) * h;
+            const yLow = h - ((c.low - min) / (max - min)) * h;
+            const yOpen = h - ((c.open - min) / (max - min)) * h;
+            const yClose = h - ((c.close - min) / (max - min)) * h;
+
+            const isBull = c.close >= c.open;
+            const color = isBull ? '#4caf50' : '#ef5350';
+            
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(x + candleWidth / 2, yHigh);
+            ctx.lineTo(x + candleWidth / 2, yLow);
+            ctx.stroke();
+
+            const bodyTop = Math.min(yOpen, yClose);
+            const bodyBottom = Math.max(yOpen, yClose);
+            const bodyHeight = Math.max(1, bodyBottom - bodyTop);
+            ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
+        }
+
+        entryPoints.forEach(entry => {
+            const idx = showCandles.length - 1;
+            const x = idx * spacing + spacing / 2;
+            const y = h - ((entry.price - min) / (max - min)) * h;
+            
+            const color = entry.type === 'buy' ? '#4caf50' : '#ef5350';
+            
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            
+            const size = 14;
+            ctx.beginPath();
+            if (entry.type === 'buy') {
+                ctx.moveTo(x, y - size);
+                ctx.lineTo(x - size, y + size/2);
+                ctx.lineTo(x - size/2, y + size/2);
+                ctx.lineTo(x - size/2, y + size);
+                ctx.lineTo(x + size/2, y + size);
+                ctx.lineTo(x + size/2, y + size/2);
+                ctx.lineTo(x + size, y + size/2);
+            } else {
+                ctx.moveTo(x, y + size);
+                ctx.lineTo(x - size, y - size/2);
+                ctx.lineTo(x - size/2, y - size/2);
+                ctx.lineTo(x - size/2, y - size);
+                ctx.lineTo(x + size/2, y - size);
+                ctx.lineTo(x + size/2, y - size/2);
+                ctx.lineTo(x + size, y - size/2);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.setLineDash([]);
+            
+            const labelX = 8;
+            const labelY = entry.type === 'buy' ? y - 28 : y + 16;
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            const text = `${entry.type.toUpperCase()} ${entry.price.toFixed(5)}`;
+            ctx.font = 'bold 10px Segoe UI';
+            const metrics = ctx.measureText(text);
+            const tw = metrics.width + 14;
+            const th = 22;
+            ctx.fillRect(labelX - 4, labelY - 4, tw, th);
+            
+            ctx.fillStyle = color;
+            ctx.font = 'bold 10px Segoe UI';
+            ctx.fillText(text, labelX + 4, labelY + 14);
+        });
+
+        const last = showCandles[showCandles.length - 1];
+        const lastY = h - ((last.close - min) / (max - min)) * h;
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(0, lastY);
+        ctx.lineTo(w, lastY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        if (entryPoints.length > 0) {
+            const lastEntry = entryPoints[entryPoints.length - 1];
+            const color = lastEntry.type === 'buy' ? '#4caf50' : '#ef5350';
+            document.getElementById('entryDisplay').innerHTML = 
+                `${lastEntry.type.toUpperCase()} @ ${lastEntry.price.toFixed(5)} <span style="color:${color}">▲</span>`;
+        } else {
+            document.getElementById('entryDisplay').innerHTML = 'No Entry';
+        }
+    }
+
+    function updateStats() {
+        if (candles.length === 0) return;
+        const last = candles[candles.length - 1];
+        const prev = candles.length > 1 ? candles[candles.length - 2] : last;
+        const change = ((last.close - prev.close) / prev.close * 100);
+        
+        document.getElementById('currentPrice').innerText = last.close.toFixed(5);
+        document.getElementById('statOpen').innerText = last.open.toFixed(5);
+        document.getElementById('statHigh').innerText = last.high.toFixed(5);
+        document.getElementById('statLow').innerText = last.low.toFixed(5);
+        document.getElementById('statClose').innerText = last.close.toFixed(5);
+        
+        const changeEl = document.getElementById('statChange');
+        changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+        changeEl.style.color = change >= 0 ? '#4caf50' : '#ef5350';
+    }
+
+    function updateBalance() {
+        const balDisplay = document.getElementById('balanceDisplay');
+        const eqDisplay = document.getElementById('equityDisplay');
+        balDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        eqDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        document.getElementById('profileBalance').innerText = balance.toFixed(0);
+        
+        if (balance <= 0) {
+            balDisplay.className = 'balance-zero';
+            eqDisplay.className = 'balance-zero';
+        } else {
+            balDisplay.className = '';
+            eqDisplay.className = '';
+        }
+    }
+
+    function updatePnL() {
+        const el = document.getElementById('pnlDisplay');
+        el.innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
+        el.className = totalPnl >= 0 ? 'green' : 'red';
+        document.getElementById('profilePnL').innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
+        document.getElementById('profilePnL').style.color = totalPnl >= 0 ? '#4caf50' : '#ef5350';
+    }
+
+    function updateOpenPositions() {
+        const div = document.getElementById('openPositions');
+        const count = document.getElementById('openCount');
+        const badge = document.getElementById('tradeBadge');
+        count.innerText = openTrades.length;
+        
+        if (openTrades.length === 0) {
+            div.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                <i class="fas fa-inbox"></i> No open trades</div>`;
+            badge.style.display = 'none';
+            return;
+        }
+        badge.style.display = 'inline';
+        badge.innerText = openTrades.length;
+
+        let html = '';
+        openTrades.forEach((t, i) => {
+            const typeClass = t.type === 'buy' ? 'buy' : 'sell';
+            const typeIcon = t.type === 'buy' ? 'fa-arrow-up' : 'fa-arrow-down';
+            const pnlClass = t.currentPnl >= 0 ? 'pnl-green' : 'pnl-red';
+            const pnlDisplay = t.currentPnl !== undefined ? (t.currentPnl >= 0 ? '+' : '') + t.currentPnl.toFixed(2) : '0.00';
+            html += `<div class="pos-item">
+                <span><i class="fas ${typeIcon} ${typeClass}"></i> #${t.tradeNumber} $${t.amount}</span>
+                <span>@ ${t.entry.toFixed(5)}</span>
+                <span class="${pnlClass}">${pnlDisplay}</span>
+                <span style="font-size:10px; color:#8899aa;">${t.expiry}m</span>
+            </div>`;
+        });
+        div.innerHTML = html;
+    }
+
+    function updateTradeInfo() {
+        const total = wins + losses;
+        document.getElementById('tradeCount').innerText = allTrades.length;
+        document.getElementById('profileTrades').innerText = allTrades.length;
+        document.getElementById('winsDisplay').innerText = `Wins: ${wins}`;
+        document.getElementById('lossesDisplay').innerText = `Losses: ${losses}`;
+        
+        const winRate = total > 0 ? (wins / total * 100) : 0;
+        document.getElementById('winRateDisplay').innerText = winRate.toFixed(0) + '%';
+        document.getElementById('winLossRatio').innerText = `Ratio: ${losses > 0 ? (wins / losses).toFixed(1) : wins > 0 ? wins.toFixed(1) : '0.0'}`;
+    }
+
+    function updateAllUI() {
+        updateBalance();
+        updatePnL();
+        updateOpenPositions();
+        updateTradeInfo();
+        updateLivePnL(currentPrice);
+        
+        document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
+        document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
+        
+        if (pendingBalance > 0) {
+            document.getElementById('pendingIndicator').style.display = 'inline-block';
+        } else {
+            document.getElementById('pendingIndicator').style.display = 'none';
+        }
+    }
+
+    function addHistory(msg, color = 'white') {
+        const box = document.getElementById('recentActivity');
+        const p = document.createElement('div');
+        p.style.cssText = `padding:3px 0; border-bottom:1px solid #1a2332; font-size:11px; color:${color};`;
+        const time = new Date().toLocaleTimeString();
+        p.innerHTML = `<i class="fas fa-clock" style="color:#8899aa; font-size:9px;"></i> ${time} - ${msg}`;
+        box.prepend(p);
+        while (box.children.length > 30) box.removeChild(box.lastChild);
+    }
+
+    function showNotification(msg, type = 'info') {
+        const colors = {
+            success: '#4caf50',
+            error: '#ef5350',
+            info: '#2a7de1',
+            warning: '#f57c00'
+        };
+        const div = document.createElement('div');
+        div.style.cssText = `
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            max-width: 400px; width: 90%;
+            background: #0d1520; border: 2px solid ${colors[type] || colors.info};
+            border-radius: 12px; padding: 12px 16px;
+            color: #fff; font-size: 13px; font-weight: 600;
+            z-index: 9999; box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+            text-align: center;
+        `;
+        div.innerHTML = msg;
+        document.body.appendChild(div);
+        setTimeout(() => {
+            div.style.opacity = '0';
+            div.style.transition = 'opacity 0.5s';
+            setTimeout(() => div.remove(), 500);
+        }, 4000);
+    }
+
+    function showPage(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${page}`).classList.add('active');
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.bottom-nav .nav-item[data-page="${page}"]`).classList.add('active');
+        if (page === 'dashboard') drawChart();
+        if (page === 'funds') {
+            loadDepositHistory();
+            loadWithdrawHistory();
+        }
+        if (page === 'history') {
+            loadTradeHistory();
+        }
+    }
+
+    function resetAll() {
+        if (!confirm('Reset all trading data?')) return;
+        stopAutoRun();
+        balance = 0;
+        totalPnl = 0;
+        openTrades = [];
+        allTrades = [];
+        tradeCount = 0;
+        wins = 0;
+        losses = 0;
+        entryPoints = [];
+        isRunning = true;
+        generateInitialCandles();
+        drawChart();
+        updateStats();
+        updateAllUI();
+        document.getElementById('recentActivity').innerHTML = '';
+        addHistory('🔄 Trading data reset', 'gold');
+        if (isRunning) startAutoRun();
+        loadTradeHistory();
+    }
+
+    function startAutoRun() {
+        if (candleInterval) clearInterval(candleInterval);
+        candleInterval = setInterval(() => {
+            if (isRunning) addCandle();
+        }, speed);
+    }
+
+    function stopAutoRun() {
+        if (candleInterval) {
+            clearInterval(candleInterval);
+            candleInterval = null;
+        }
+    }
+
+    // ================================================================
+    //  INIT
+    // ================================================================
+
+    // Initialize withdraw fields
+    updateWithdrawFields();
+
+    // Check session
+    const session = localStorage.getItem('proTraderSession');
+    if (session) {
+        try {
+            const data = JSON.parse(session);
+            if (data.userId) {
+                userDocId = data.userId;
+                db.collection('users').doc(userDocId).get().then((doc) => {
+                    if (doc.exists) {
+                        currentUser = { id: doc.id, ...doc.data() };
+                        showMainApp();
+                    } else {
+                        showAuth('login');
+                    }
+                }).catch(() => {
+                    showAuth('login');
+                });
+            } else {
+                showAuth('login');
+            }
+        } catch (e) {
+            showAuth('login');
+        }
+    } else {
+        showAuth('login');
+    }
+
+    generateInitialCandles();
+
+    console.log('🚀 ProTrader PrimXBet v2.0.1 - ERROR FIXED!');
+    console.log('🔥 Firebase connected successfully!');
+    console.log('✅ No index required - Manual sorting in JavaScript');
+    console.log('📊 7 Currencies Available');
+    console.log('📱 Withdrawal: JazzCash, EasyPaisa, Bank, Crypto');
+    console.log('📋 Trade History Page Added!');
+</script>
+</body>
+</html>
