@@ -640,6 +640,23 @@
         .input-group input:focus,
         .input-group select:focus { outline: none; border-color: #2a7de1; }
 
+        /* Win/Loss Prediction Display */
+        .prediction-box {
+            background: #0d1520;
+            border: 1px solid #1e2d42;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+        .prediction-box .pred-label { color: #8899aa; }
+        .prediction-box .pred-result { font-weight: 700; }
+        .prediction-box .pred-result.win { color: #4caf50; }
+        .prediction-box .pred-result.loss { color: #ef5350; }
+
         @media (max-width: 450px) {
             .container { padding: 6px 6px 80px 6px; }
             .quick-actions { grid-template-columns: repeat(4, 1fr); gap: 4px; }
@@ -862,7 +879,13 @@
                     </button>
                 </div>
                 <div class="trade-hint">
-                    <i class="fas fa-info-circle"></i> Realistic trading - Win/Loss pattern
+                    <i class="fas fa-info-circle"></i> 6 Wins / 4 Losses per 10 trades
+                </div>
+                
+                <!-- Prediction Display -->
+                <div class="prediction-box">
+                    <span class="pred-label">🎯 Next Trade Prediction:</span>
+                    <span class="pred-result" id="nextPrediction">Loading...</span>
                 </div>
             </div>
 
@@ -914,7 +937,13 @@
                     </button>
                 </div>
                 <div style="margin-top:8px; text-align:center; font-size:11px; color:#8899aa;">
-                    <i class="fas fa-info-circle"></i> Realistic trading - Random Win/Loss
+                    <i class="fas fa-info-circle"></i> 6 Wins / 4 Losses per 10 trades
+                </div>
+                
+                <!-- Prediction Display -->
+                <div class="prediction-box">
+                    <span class="pred-label">🎯 Next Trade Prediction:</span>
+                    <span class="pred-result" id="nextPrediction2">Loading...</span>
                 </div>
             </div>
 
@@ -1257,17 +1286,88 @@
     let currentPrice = 1.2000;
     let currentSymbol = 'EUR/USD';
     let currentBasePrice = 1.2000;
-
-    // Currency Data
-    const currencyData = {
-        'EUR/USD': { symbol: '€', base: 1.2000, change: 0.0015 },
-        'BTC/USD': { symbol: '₿', base: 65000, change: 150 },
-        'GOLD/USD': { symbol: 'Au', base: 2400, change: 5 },
-        'SOL/USD': { symbol: '◎', base: 180, change: 2 },
-        'ZEC/USD': { symbol: 'ⓩ', base: 45, change: 0.8 },
-        'USD/JPY': { symbol: '¥', base: 148, change: 0.5 },
-        'IND/USD': { symbol: '₹', base: 83, change: 0.2 }
-    };
+    
+    // ================================================================
+    //  WIN/LOSS PATTERN - 6 WINS / 4 LOSSES per 10 TRADES
+    // ================================================================
+    
+    // Predefined pattern: Mix of Win/Loss (6 Wins, 4 Losses)
+    // Pattern: W, W, L, W, L, W, W, L, W, L  (6 Wins, 4 Losses)
+    const WIN_LOSS_PATTERN = [
+        { result: 'win', percent: 0.12 },   // 1 - Win 12%
+        { result: 'win', percent: 0.08 },   // 2 - Win 8%
+        { result: 'loss', percent: 0.15 },  // 3 - Loss 15%
+        { result: 'win', percent: 0.20 },   // 4 - Win 20%
+        { result: 'loss', percent: 0.25 },  // 5 - Loss 25%
+        { result: 'win', percent: 0.10 },   // 6 - Win 10%
+        { result: 'win', percent: 0.18 },   // 7 - Win 18%
+        { result: 'loss', percent: 0.30 },  // 8 - Loss 30%
+        { result: 'win', percent: 0.15 },   // 9 - Win 15%
+        { result: 'loss', percent: 0.20 }   // 10 - Loss 20%
+    ];
+    
+    // Track current position in pattern
+    let patternIndex = 0;
+    
+    // ================================================================
+    //  GET NEXT TRADE RESULT FROM PATTERN
+    // ================================================================
+    
+    function getNextTradeResult() {
+        // Get the next result from pattern
+        const result = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        // Move to next index
+        patternIndex++;
+        return result;
+    }
+    
+    // ================================================================
+    //  UPDATE PREDICTION DISPLAY
+    // ================================================================
+    
+    function updatePredictionDisplay() {
+        const nextResult = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predEl = document.getElementById('nextPrediction');
+        const predEl2 = document.getElementById('nextPrediction2');
+        
+        if (nextResult) {
+            const isWin = nextResult.result === 'win';
+            const percent = (nextResult.percent * 100).toFixed(0);
+            const text = isWin ? `✅ WIN +${percent}%` : `❌ LOSS -${percent}%`;
+            const className = isWin ? 'win' : 'loss';
+            
+            if (predEl) {
+                predEl.textContent = text;
+                predEl.className = 'pred-result ' + className;
+            }
+            if (predEl2) {
+                predEl2.textContent = text;
+                predEl2.className = 'pred-result ' + className;
+            }
+        }
+    }
+    
+    // ================================================================
+    //  GENERATE TRADE RESULT (Using Pattern)
+    // ================================================================
+    
+    function generateTradeResult(trade) {
+        const nextResult = getNextTradeResult();
+        const isWin = nextResult.result === 'win';
+        const percent = nextResult.percent;
+        
+        if (isWin) {
+            const pnl = trade.amount * percent;
+            trade.pnl = pnl;
+            wins++;
+            return { result: 'win', pnl: pnl, percent: percent };
+        } else {
+            const pnl = -(trade.amount * percent);
+            trade.pnl = pnl;
+            losses++;
+            return { result: 'loss', pnl: pnl, percent: percent };
+        }
+    }
 
     // ================================================================
     //  CURRENCY FUNCTIONS
@@ -1416,6 +1516,7 @@
                 trades: [],
                 deposits: [],
                 withdrawals: [],
+                patternIndex: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 kycStatus: 'verified'
             });
@@ -1451,7 +1552,7 @@
     }
 
     // ================================================================
-    //  DEPOSIT FUNCTIONS (FIXED - No Index Required)
+    //  DEPOSIT FUNCTIONS
     // ================================================================
 
     async function requestDeposit() {
@@ -1572,7 +1673,7 @@
     }
 
     // ================================================================
-    //  WITHDRAW FUNCTIONS (FIXED - No Index Required)
+    //  WITHDRAW FUNCTIONS
     // ================================================================
 
     async function processWithdraw() {
@@ -1663,26 +1764,23 @@
     }
 
     // ================================================================
-    //  HISTORY FUNCTIONS (FIXED - No Index Required)
+    //  HISTORY FUNCTIONS
     // ================================================================
 
     async function loadDepositHistory() {
         if (!userDocId) return;
         try {
-            // Query without orderBy to avoid index requirement
             const snapshot = await db.collection('deposits')
                 .where('userId', '==', userDocId)
                 .get();
             
             const container = document.getElementById('depositHistory');
             
-            // Manual sorting in JavaScript
             const deposits = [];
             snapshot.forEach(doc => {
                 deposits.push({ id: doc.id, ...doc.data() });
             });
             
-            // Sort by createdAt descending (newest first)
             deposits.sort((a, b) => {
                 const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
                 const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
@@ -1717,7 +1815,6 @@
             container.innerHTML = html;
         } catch (error) {
             console.error('Error loading deposit history:', error);
-            // Show empty state on error
             document.getElementById('depositHistory').innerHTML = 
                 `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
                     <i class="fas fa-inbox"></i> No deposits yet</div>`;
@@ -1727,20 +1824,17 @@
     async function loadWithdrawHistory() {
         if (!userDocId) return;
         try {
-            // Query without orderBy to avoid index requirement
             const snapshot = await db.collection('withdrawals')
                 .where('userId', '==', userDocId)
                 .get();
             
             const container = document.getElementById('withdrawHistory');
             
-            // Manual sorting in JavaScript
             const withdrawals = [];
             snapshot.forEach(doc => {
                 withdrawals.push({ id: doc.id, ...doc.data() });
             });
             
-            // Sort by createdAt descending (newest first)
             withdrawals.sort((a, b) => {
                 const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
                 const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
@@ -1775,7 +1869,6 @@
             container.innerHTML = html;
         } catch (error) {
             console.error('Error loading withdrawal history:', error);
-            // Show empty state on error
             document.getElementById('withdrawHistory').innerHTML = 
                 `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
                     <i class="fas fa-inbox"></i> No withdrawals yet</div>`;
@@ -1783,7 +1876,7 @@
     }
 
     // ================================================================
-    //  TRADE HISTORY (FIXED)
+    //  TRADE HISTORY
     // ================================================================
 
     function loadTradeHistory() {
@@ -1799,7 +1892,6 @@
             filteredTrades = filteredTrades.filter(t => !t.closed);
         }
         
-        // Sort by timestamp (newest first)
         filteredTrades.sort((a, b) => b.timestamp - a.timestamp);
         
         if (filteredTrades.length === 0) {
@@ -1865,6 +1957,11 @@
                     allTrades = data.trades || [];
                     tradeCount = allTrades.length;
                     
+                    // Restore pattern index from Firebase
+                    if (data.patternIndex !== undefined) {
+                        patternIndex = data.patternIndex;
+                    }
+                    
                     openTrades = allTrades.filter(t => !t.closed);
                     entryPoints = openTrades.map(t => ({
                         id: t.id,
@@ -1876,6 +1973,7 @@
                     drawChart();
                     updateStats();
                     loadTradeHistory();
+                    updatePredictionDisplay();
                     
                     if (pendingBalance > 0) {
                         document.getElementById('pendingIndicator').style.display = 'inline-block';
@@ -1954,7 +2052,6 @@
         errorEl.style.display = 'none';
         successEl.style.display = 'none';
 
-        // Validation
         if (!name) { errorEl.innerText = '❌ Please enter your full name'; errorEl.style.display = 'block'; return; }
         if (!email) { errorEl.innerText = '❌ Please enter email address'; errorEl.style.display = 'block'; return; }
         if (!email.includes('@') || !email.includes('.')) { errorEl.innerText = '❌ Please enter a valid email'; errorEl.style.display = 'block'; return; }
@@ -1962,7 +2059,6 @@
         if (!address) { errorEl.innerText = '❌ Please enter your address'; errorEl.style.display = 'block'; return; }
         if (!idNumber) { errorEl.innerText = '❌ Please enter ID Card number'; errorEl.style.display = 'block'; return; }
 
-        // Check if email already exists
         const existingUser = await getUserFromFirestore(email);
         if (existingUser) {
             errorEl.innerText = '❌ This email is already registered. Please login.';
@@ -2092,6 +2188,7 @@
         loadDepositHistory();
         loadWithdrawHistory();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function loadUserDataFromFirestore() {
@@ -2106,17 +2203,22 @@
         openTrades = allTrades.filter(t => !t.closed);
         entryPoints = openTrades.map(t => ({ id: t.id, price: t.entry, type: t.type }));
         
+        if (currentUser.patternIndex !== undefined) {
+            patternIndex = currentUser.patternIndex;
+        }
+        
         updateAllUI();
         drawChart();
         updateStats();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
         document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
     }
 
     // ================================================================
-    //  TRADING ENGINE
+    //  TRADING ENGINE (UPDATED with Pattern)
     // ================================================================
 
     function uploadAvatar(event) {
@@ -2199,20 +2301,25 @@
         document.getElementById('activeTradeCount').innerText = openTrades.length;
     }
 
-    function generateTradeResult(trade) {
-        const isWin = Math.random() < 0.55;
+    // ================================================================
+    //  TRADE RESULT - Using Pattern (6 Wins / 4 Losses)
+    // ================================================================
+    
+    function generateTradeResultWithPattern(trade) {
+        const nextResult = getNextTradeResult();
+        const isWin = nextResult.result === 'win';
+        const percent = nextResult.percent;
+        
         if (isWin) {
-            const profitPercent = 0.05 + (Math.random() * 0.20);
-            const pnl = trade.amount * profitPercent;
+            const pnl = trade.amount * percent;
             trade.pnl = pnl;
             wins++;
-            return { result: 'win', pnl: pnl, percent: profitPercent };
+            return { result: 'win', pnl: pnl, percent: percent };
         } else {
-            const lossPercent = 0.10 + (Math.random() * 0.30);
-            const pnl = -(trade.amount * lossPercent);
+            const pnl = -(trade.amount * percent);
             trade.pnl = pnl;
             losses++;
-            return { result: 'loss', pnl: pnl, percent: lossPercent };
+            return { result: 'loss', pnl: pnl, percent: percent };
         }
     }
 
@@ -2232,7 +2339,8 @@
             trade.exit = exitPrice;
             trade.closed = true;
             
-            const result = generateTradeResult(trade);
+            // Use pattern-based result
+            const result = generateTradeResultWithPattern(trade);
             const newBalance = balance + trade.amount + trade.pnl;
             balance = newBalance;
             totalPnl += trade.pnl;
@@ -2256,7 +2364,8 @@
                 totalPnl: totalPnl,
                 wins: wins,
                 losses: losses,
-                trades: allTrades
+                trades: allTrades,
+                patternIndex: patternIndex
             });
         } catch (error) {
             console.error('Error saving trades:', error);
@@ -2266,6 +2375,7 @@
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -2284,7 +2394,7 @@
             const t = openTrades[i];
             t.exit = price;
             t.closed = true;
-            const result = generateTradeResult(t);
+            const result = generateTradeResultWithPattern(t);
             balance += (t.amount + t.pnl);
             totalPnl += t.pnl;
             const entryIdx = entryPoints.findIndex(e => e.id === t.id);
@@ -2296,6 +2406,7 @@
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -2335,6 +2446,7 @@
             updateLivePnL(currentPrice);
             drawChart();
             loadTradeHistory();
+            updatePredictionDisplay();
         }
     }
 
@@ -2376,12 +2488,15 @@
             type: type
         });
 
-        const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        // Show prediction before trade
+        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
+        addHistory(`📊 Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'gold');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function placeTrade(type) {
@@ -2422,12 +2537,14 @@
             type: type
         });
 
-        const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
+        addHistory(`📊 Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'gold');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         showPage('trade');
     }
 
@@ -2675,6 +2792,8 @@
         } else {
             document.getElementById('pendingIndicator').style.display = 'none';
         }
+        
+        updatePredictionDisplay();
     }
 
     function addHistory(msg, color = 'white') {
@@ -2730,7 +2849,7 @@
     }
 
     function resetAll() {
-        if (!confirm('Reset all trading data?')) return;
+        if (!confirm('Reset all trading data? Pattern will restart from beginning.')) return;
         stopAutoRun();
         balance = 0;
         totalPnl = 0;
@@ -2740,15 +2859,17 @@
         wins = 0;
         losses = 0;
         entryPoints = [];
+        patternIndex = 0;
         isRunning = true;
         generateInitialCandles();
         drawChart();
         updateStats();
         updateAllUI();
         document.getElementById('recentActivity').innerHTML = '';
-        addHistory('🔄 Trading data reset', 'gold');
+        addHistory('🔄 Trading data reset | Pattern restarted', 'gold');
         if (isRunning) startAutoRun();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function startAutoRun() {
@@ -2801,12 +2922,10 @@
 
     generateInitialCandles();
 
-    console.log('🚀 ProTrader PrimXBet v2.0.1 - ERROR FIXED!');
+    console.log('🚀 ProTrader PrimXBet v2.0.1 - 6 Wins / 4 Losses Pattern');
+    console.log('📊 Pattern: W, W, L, W, L, W, W, L, W, L');
+    console.log('✅ 6 Wins, 4 Losses per 10 trades');
     console.log('🔥 Firebase connected successfully!');
-    console.log('✅ No index required - Manual sorting in JavaScript');
-    console.log('📊 7 Currencies Available');
-    console.log('📱 Withdrawal: JazzCash, EasyPaisa, Bank, Crypto');
-    console.log('📋 Trade History Page Added!');
 </script>
 </body>
 </html>
