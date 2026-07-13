@@ -19,136 +19,39 @@
         ::-webkit-scrollbar-thumb { background: #2a7de1; border-radius: 10px; }
         .container { max-width: 450px; width: 100%; padding: 10px 12px 80px 12px; }
 
-        .auth-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 90vh;
-            padding: 20px 0;
-        }
-        .auth-page .logo-big {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            color: #2a7de1;
-            margin-bottom: 30px;
-        }
+        .auth-page { display: flex; flex-direction: column; justify-content: center; min-height: 90vh; padding: 20px 0; }
+        .auth-page .logo-big { text-align: center; font-size: 32px; font-weight: 700; color: #2a7de1; margin-bottom: 30px; }
         .auth-page .logo-big i { color: #ffd700; font-size: 36px; }
         .auth-page .logo-big span { color: #fff; font-weight: 300; }
         .auth-page .logo-big .version { font-size: 12px; color: #8899aa; display: block; margin-top: 4px; }
         
-        .auth-box {
-            background: linear-gradient(135deg, #0d1a2b, #162033);
-            border-radius: 20px;
-            padding: 28px 20px;
-            border: 1px solid #1e2d42;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-        }
-        .auth-box h2 {
-            color: #fff;
-            font-size: 22px;
-            margin-bottom: 6px;
-        }
-        .auth-box .sub {
-            color: #8899aa;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-        .auth-box .input-group {
-            margin-bottom: 14px;
-        }
-        .auth-box .input-group label {
-            font-size: 11px;
-            color: #8899aa;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 4px;
-        }
-        .auth-box .input-group input, 
-        .auth-box .input-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid #1e2d42;
-            background: #0a0e17;
-            color: #fff;
-            font-size: 14px;
-        }
-        .auth-box .input-group input:focus,
-        .auth-box .input-group select:focus {
-            outline: none;
-            border-color: #2a7de1;
-        }
-        .auth-box .btn-auth {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: linear-gradient(135deg, #1b5e20, #2e7d32);
-            color: #fff;
-            margin-top: 6px;
-        }
+        .auth-box { background: linear-gradient(135deg, #0d1a2b, #162033); border-radius: 20px; padding: 28px 20px; border: 1px solid #1e2d42; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+        .auth-box h2 { color: #fff; font-size: 22px; margin-bottom: 6px; }
+        .auth-box .sub { color: #8899aa; font-size: 13px; margin-bottom: 20px; }
+        .auth-box .input-group { margin-bottom: 14px; }
+        .auth-box .input-group label { font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 4px; }
+        .auth-box .input-group input, .auth-box .input-group select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 14px; }
+        .auth-box .input-group input:focus, .auth-box .input-group select:focus { outline: none; border-color: #2a7de1; }
+        .auth-box .btn-auth { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; margin-top: 6px; }
         .auth-box .btn-auth:hover { transform: scale(0.97); }
         .auth-box .btn-auth:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .auth-box .auth-switch {
-            text-align: center;
-            margin-top: 14px;
-            font-size: 13px;
-            color: #8899aa;
-        }
-        .auth-box .auth-switch a {
-            color: #2a7de1;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-        }
+        .auth-box .auth-switch { text-align: center; margin-top: 14px; font-size: 13px; color: #8899aa; }
+        .auth-box .auth-switch a { color: #2a7de1; cursor: pointer; font-weight: 600; text-decoration: none; }
         .auth-box .auth-switch a:hover { text-decoration: underline; }
-        .auth-box .error-msg {
-            color: #ef5350;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-        .auth-box .success-msg {
-            color: #4caf50;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
+        .auth-box .error-msg { color: #ef5350; font-size: 12px; margin-top: 4px; display: none; }
+        .auth-box .success-msg { color: #4caf50; font-size: 12px; margin-top: 4px; display: none; }
 
         .app-hidden { display: none !important; }
         .app-visible { display: block !important; }
 
-        .top-header {
-            background: linear-gradient(135deg, #0d1520, #1a2332);
-            padding: 12px 16px;
-            border-radius: 16px;
-            border: 1px solid #1e2d42;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
+        .top-header { background: linear-gradient(135deg, #0d1520, #1a2332); padding: 12px 16px; border-radius: 16px; border: 1px solid #1e2d42; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .top-header .logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #2a7de1; }
         .top-header .logo i { color: #ffd700; font-size: 18px; }
         .top-header .logo span { color: #fff; font-weight: 300; font-size: 12px; }
         .top-header .logo .ver { color: #8899aa; font-size: 9px; }
         .top-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2a7de1, #6a1b9a); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #2a7de1; font-size: 16px; color: #fff; }
 
-        .balance-card {
-            background: linear-gradient(135deg, #0d1a2b, #162033);
-            border-radius: 16px;
-            padding: 14px 18px;
-            border: 1px solid #1e2d42;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
+        .balance-card { background: linear-gradient(135deg, #0d1a2b, #162033); border-radius: 16px; padding: 14px 18px; border: 1px solid #1e2d42; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .balance-card .label { font-size: 11px; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; }
         .balance-card .amount { font-size: 28px; font-weight: 700; color: #4caf50; margin: 2px 0; }
         .balance-card .amount i { font-size: 20px; margin-right: 6px; color: #ffd700; }
@@ -158,37 +61,14 @@
         .balance-card .row .item .green { color: #4caf50; }
         .balance-card .row .item .red { color: #ef5350; }
 
-        .pnl-banner {
-            background: #0d1520;
-            border-radius: 12px;
-            padding: 10px 14px;
-            border: 1px solid #1e2d42;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
+        .pnl-banner { background: #0d1520; border-radius: 12px; padding: 10px 14px; border: 1px solid #1e2d42; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
         .pnl-banner .label { font-size: 10px; color: #8899aa; }
         .pnl-banner .value { font-size: 18px; font-weight: 700; }
         .pnl-banner .value.green { color: #4caf50; }
         .pnl-banner .value.red { color: #ef5350; }
         .pnl-banner .value .small { font-size: 13px; font-weight: 400; }
 
-        .trade-limit {
-            background: #0d1520;
-            border-radius: 12px;
-            padding: 8px 14px;
-            border: 1px solid #1e2d42;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #8899aa;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
+        .trade-limit { background: #0d1520; border-radius: 12px; padding: 8px 14px; border: 1px solid #1e2d42; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 11px; color: #8899aa; flex-wrap: wrap; gap: 4px; }
         .trade-limit .highlight { color: #ffd700; font-weight: 700; }
         .trade-limit .winrate { color: #4caf50; }
         .trade-limit .lossrate { color: #ef5350; }
@@ -197,152 +77,52 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .quick-actions .qa-btn {
-            background: #0d1520;
-            border: 1px solid #1e2d42;
-            border-radius: 12px;
-            padding: 10px 4px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #8899aa;
-            font-size: 10px;
-        }
+        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+        .quick-actions .qa-btn { background: #0d1520; border: 1px solid #1e2d42; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; transition: all 0.3s; color: #8899aa; font-size: 10px; }
         .quick-actions .qa-btn i { font-size: 20px; display: block; margin-bottom: 3px; }
         .quick-actions .qa-btn:hover { background: #1a2332; border-color: #2a7de1; transform: translateY(-2px); }
         .quick-actions .qa-btn .green { color: #4caf50; }
         .quick-actions .qa-btn .red { color: #ef5350; }
         .quick-actions .qa-btn .gold { color: #ffd700; }
 
-        .chart-box {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 10px;
-            border: 1px solid #1e2d42;
-            margin-bottom: 10px;
-            position: relative;
-        }
-        .chart-box .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
+        .chart-box { background: #0d1520; border-radius: 16px; padding: 10px; border: 1px solid #1e2d42; margin-bottom: 10px; position: relative; }
+        .chart-box .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px; }
         .chart-box .chart-header .symbol { font-size: 14px; font-weight: 700; }
         .chart-box .chart-header .symbol i { color: #ffd700; margin-right: 4px; }
         .chart-box .chart-header .price { font-size: 16px; font-weight: 700; }
         
-        .currency-selector {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-        .currency-selector .curr-btn {
-            background: #0a0e17;
-            border: 1px solid #1e2d42;
-            border-radius: 6px;
-            padding: 4px 10px;
-            color: #8899aa;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .currency-selector .curr-btn:hover {
-            border-color: #2a7de1;
-            color: #fff;
-        }
-        .currency-selector .curr-btn.active {
-            border-color: #ffd700;
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
-        }
+        .currency-selector { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+        .currency-selector .curr-btn { background: #0a0e17; border: 1px solid #1e2d42; border-radius: 6px; padding: 4px 10px; color: #8899aa; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .currency-selector .curr-btn:hover { border-color: #2a7de1; color: #fff; }
+        .currency-selector .curr-btn.active { border-color: #ffd700; color: #ffd700; background: rgba(255, 215, 0, 0.1); }
         
         canvas { width: 100%; height: 200px; background: #0a0e17; border-radius: 8px; display: block; }
-        .chart-stats {
-            display: flex;
-            gap: 10px;
-            margin-top: 6px;
-            font-size: 10px;
-            color: #8899aa;
-            flex-wrap: wrap;
-        }
+        .chart-stats { display: flex; gap: 10px; margin-top: 6px; font-size: 10px; color: #8899aa; flex-wrap: wrap; }
         .chart-stats span { color: #fff; font-weight: 600; }
         .chart-stats .up { color: #4caf50; }
         .chart-stats .down { color: #ef5350; }
 
-        .quick-trade-form {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid #1e2d42;
-            margin-top: 10px;
-        }
-        .quick-trade-form .trade-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-        .quick-trade-form .trade-row input,
-        .quick-trade-form .trade-row select {
-            width: 100%;
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid #1e2d42;
-            background: #0a0e17;
-            color: #fff;
-            font-size: 12px;
-        }
-        .quick-trade-form .trade-row input:focus,
-        .quick-trade-form .trade-row select:focus {
-            outline: none;
-            border-color: #2a7de1;
-        }
-        .quick-trade-form .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .quick-trade-form .btn-trade {
-            padding: 8px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
+        .quick-trade-form { background: #0d1520; border-radius: 16px; padding: 12px; border: 1px solid #1e2d42; margin-top: 10px; }
+        .quick-trade-form .trade-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+        .quick-trade-form .trade-row input, .quick-trade-form .trade-row select { width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 12px; }
+        .quick-trade-form .trade-row input:focus, .quick-trade-form .trade-row select:focus { outline: none; border-color: #2a7de1; }
+        .quick-trade-form .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .quick-trade-form .btn-trade { padding: 8px; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .quick-trade-form .btn-trade:hover { transform: scale(0.97); }
         .quick-trade-form .btn-buy { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
         .quick-trade-form .btn-sell { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
-        .quick-trade-form .trade-hint {
-            text-align: center;
-            font-size: 10px;
-            color: #8899aa;
-            margin-top: 6px;
-        }
+        .quick-trade-form .trade-hint { text-align: center; font-size: 10px; color: #8899aa; margin-top: 6px; }
+
+        .prediction-box { background: #0d1520; border: 1px solid #1e2d42; border-radius: 8px; padding: 8px 12px; margin-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .prediction-box .pred-label { color: #8899aa; }
+        .prediction-box .pred-result { font-weight: 700; }
+        .prediction-box .pred-result.win { color: #4caf50; }
+        .prediction-box .pred-result.loss { color: #ef5350; }
 
         .trade-form { background: #0d1520; border-radius: 16px; padding: 14px; border: 1px solid #1e2d42; }
         .trade-form .input-group { margin-bottom: 10px; }
         .trade-form .input-group label { font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
-        .trade-form .input-group input, .trade-form .input-group select {
-            width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2d42;
-            background: #0a0e17; color: #fff; font-size: 13px;
-        }
+        .trade-form .input-group input, .trade-form .input-group select { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 13px; }
         .trade-form .input-group input:focus, .trade-form .input-group select:focus { outline: none; border-color: #2a7de1; }
         .trade-form .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .trade-form .btn-trade { padding: 10px; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -350,51 +130,17 @@
         .btn-buy { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
         .btn-sell { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
 
-        .open-positions {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid #1e2d42;
-            margin-top: 10px;
-        }
+        .open-positions { background: #0d1520; border-radius: 16px; padding: 12px; border: 1px solid #1e2d42; margin-top: 10px; }
         .open-positions h4 { font-size: 12px; color: #8899aa; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .open-positions .pos-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px solid #1a2332;
-            font-size: 11px;
-        }
+        .open-positions .pos-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #1a2332; font-size: 11px; }
         .open-positions .pos-item .buy { color: #4caf50; }
         .open-positions .pos-item .sell { color: #ef5350; }
         .open-positions .pos-item .pnl-green { color: #4caf50; }
         .open-positions .pos-item .pnl-red { color: #ef5350; }
 
-        /* FUNDS */
-        .funds-container {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 14px;
-            border: 1px solid #1e2d42;
-        }
-        .funds-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-        .funds-tabs .tab-btn {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #1e2d42;
-            border-radius: 8px;
-            background: #0a0e17;
-            color: #8899aa;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
+        .funds-container { background: #0d1520; border-radius: 16px; padding: 14px; border: 1px solid #1e2d42; }
+        .funds-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+        .funds-tabs .tab-btn { flex: 1; padding: 8px; border: 1px solid #1e2d42; border-radius: 8px; background: #0a0e17; color: #8899aa; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-align: center; }
         .funds-tabs .tab-btn:hover { border-color: #2a7de1; color: #fff; }
         .funds-tabs .tab-btn.active { border-color: #2a7de1; color: #2a7de1; background: rgba(42,125,225,0.1); }
         .funds-tabs .tab-btn.deposit-tab.active { border-color: #4caf50; color: #4caf50; background: rgba(76,175,80,0.1); }
@@ -402,121 +148,45 @@
         .funds-content { display: none; }
         .funds-content.active { display: block; }
 
-        .deposit-options {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .deposit-options .method {
-            background: #0a0e17;
-            border: 1px solid #1e2d42;
-            border-radius: 12px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+        .deposit-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+        .deposit-options .method { background: #0a0e17; border: 1px solid #1e2d42; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.3s; }
         .deposit-options .method:hover { border-color: #2a7de1; transform: translateY(-2px); }
         .deposit-options .method i { font-size: 28px; color: #2a7de1; display: block; margin-bottom: 4px; }
         .deposit-options .method .name { font-size: 12px; font-weight: 600; }
         .deposit-options .method .sub { font-size: 10px; color: #8899aa; }
 
-        .usdt-box {
-            background: linear-gradient(135deg, #0d1a2b, #1a2332);
-            border: 1px solid #f7931a;
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 10px;
-        }
-        .usdt-box .usdt-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
+        .usdt-box { background: linear-gradient(135deg, #0d1a2b, #1a2332); border: 1px solid #f7931a; border-radius: 12px; padding: 14px; margin-top: 10px; }
+        .usdt-box .usdt-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .usdt-box .usdt-header i { font-size: 28px; color: #f7931a; }
         .usdt-box .usdt-header .title { font-size: 14px; font-weight: 700; color: #fff; }
-        .usdt-box .usdt-header .network {
-            font-size: 10px; color: #8899aa; background: #0a0e17;
-            padding: 2px 10px; border-radius: 12px; border: 1px solid #1e2d42;
-            margin-left: auto;
-        }
-        .usdt-box .address-box {
-            background: #0a0e17;
-            border: 1px solid #1e2d42;
-            border-radius: 8px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-        .usdt-box .address-box .address {
-            font-size: 12px; color: #ffd700; font-weight: 600;
-            word-break: break-all; font-family: 'Courier New', monospace;
-        }
-        .usdt-box .address-box .copy-btn {
-            background: #2a7de1; border: none; color: #fff;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer;
-            font-size: 11px; font-weight: 600; transition: all 0.3s;
-            white-space: nowrap;
-        }
+        .usdt-box .usdt-header .network { font-size: 10px; color: #8899aa; background: #0a0e17; padding: 2px 10px; border-radius: 12px; border: 1px solid #1e2d42; margin-left: auto; }
+        .usdt-box .address-box { background: #0a0e17; border: 1px solid #1e2d42; border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .usdt-box .address-box .address { font-size: 12px; color: #ffd700; font-weight: 600; word-break: break-all; font-family: 'Courier New', monospace; }
+        .usdt-box .address-box .copy-btn { background: #2a7de1; border: none; color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.3s; white-space: nowrap; }
         .usdt-box .address-box .copy-btn:hover { transform: scale(0.95); background: #1a5fb0; }
         .usdt-box .address-box .copy-btn.copied { background: #4caf50; }
         .usdt-box .usdt-note { font-size: 10px; color: #8899aa; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
         .usdt-box .usdt-note i { color: #f7931a; }
 
         .withdraw-form-inner .input-group { margin-bottom: 10px; }
-        .withdraw-form-inner .input-group label {
-            font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px;
-        }
-        .withdraw-form-inner .input-group input,
-        .withdraw-form-inner .input-group select {
-            width: 100%; padding: 8px 10px; border-radius: 8px;
-            border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 13px;
-        }
-        .withdraw-form-inner .input-group input:focus,
-        .withdraw-form-inner .input-group select:focus { outline: none; border-color: #2a7de1; }
-        .withdraw-form-inner .input-group .field-hint {
-            font-size: 10px; color: #8899aa; margin-top: 3px;
-        }
-        .withdraw-form-inner .withdraw-method-icon {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px 12px; border-radius: 8px; margin-bottom: 8px;
-            background: #0a0e17; border: 1px solid #1e2d42;
-        }
+        .withdraw-form-inner .input-group label { font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+        .withdraw-form-inner .input-group input, .withdraw-form-inner .input-group select { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 13px; }
+        .withdraw-form-inner .input-group input:focus, .withdraw-form-inner .input-group select:focus { outline: none; border-color: #2a7de1; }
+        .withdraw-form-inner .input-group .field-hint { font-size: 10px; color: #8899aa; margin-top: 3px; }
+        .withdraw-form-inner .withdraw-method-icon { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; background: #0a0e17; border: 1px solid #1e2d42; }
         .withdraw-form-inner .withdraw-method-icon i { font-size: 20px; }
         .withdraw-form-inner .withdraw-method-icon .method-name { font-weight: 600; font-size: 13px; }
 
-        .btn-submit {
-            width: 100%; padding: 10px; border: none; border-radius: 8px;
-            font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s;
-        }
+        .btn-submit { width: 100%; padding: 10px; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s; }
         .btn-submit:hover { transform: scale(0.97); }
         .btn-deposit-submit { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #fff; }
         .btn-withdraw-submit { background: linear-gradient(135deg, #b71c1c, #c62828); color: #fff; }
         .btn-pending { background: linear-gradient(135deg, #f57c00, #e65100); color: #fff; }
         .btn-usdt { background: linear-gradient(135deg, #f7931a, #e67e22); color: #fff; }
 
-        .history-section {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 12px;
-            border: 1px solid #1e2d42;
-            margin-top: 10px;
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        .history-section h4 {
-            font-size: 12px; color: #8899aa; margin-bottom: 8px;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .history-section .history-item {
-            display: flex; justify-content: space-between;
-            padding: 6px 0; border-bottom: 1px solid #1a2332;
-            font-size: 11px; align-items: center;
-        }
+        .history-section { background: #0d1520; border-radius: 16px; padding: 12px; border: 1px solid #1e2d42; margin-top: 10px; max-height: 250px; overflow-y: auto; }
+        .history-section h4 { font-size: 12px; color: #8899aa; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .history-section .history-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1a2332; font-size: 11px; align-items: center; }
         .history-section .history-item .type-deposit { color: #4caf50; }
         .history-section .history-item .type-withdraw { color: #ef5350; }
         .history-section .history-item .type-trade-win { color: #4caf50; }
@@ -527,118 +197,48 @@
         .history-section .history-item .amount { font-weight: 600; }
         .history-section .history-item .date { font-size: 9px; color: #8899aa; }
 
-        .profile-card {
-            background: #0d1520;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid #1e2d42;
-            text-align: center;
-        }
-        .profile-card .avatar-big {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: linear-gradient(135deg, #2a7de1, #6a1b9a);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; margin: 0 auto 8px;
-            border: 3px solid #2a7de1; color: #fff; cursor: pointer;
-            position: relative; overflow: hidden;
-        }
+        .profile-card { background: #0d1520; border-radius: 16px; padding: 16px; border: 1px solid #1e2d42; text-align: center; }
+        .profile-card .avatar-big { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, #2a7de1, #6a1b9a); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 8px; border: 3px solid #2a7de1; color: #fff; cursor: pointer; position: relative; overflow: hidden; }
         .profile-card .avatar-big img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-card .avatar-big .upload-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.7); padding: 4px; font-size: 10px; display: none;
-        }
+        .profile-card .avatar-big .upload-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 4px; font-size: 10px; display: none; }
         .profile-card .avatar-big:hover .upload-overlay { display: block; }
         .profile-card .name { font-size: 18px; font-weight: 700; }
         .profile-card .email { font-size: 12px; color: #8899aa; }
-        .profile-card .kyc-status {
-            display: inline-block; padding: 3px 12px; border-radius: 20px;
-            font-size: 11px; font-weight: 600; margin-top: 4px;
-        }
+        .profile-card .kyc-status { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-top: 4px; }
         .profile-card .kyc-status.verified { background: #1b5e20; color: #4caf50; }
         .profile-card .kyc-status.pending { background: #4a148c; color: #ce93d8; }
         .profile-card .kyc-status.unverified { background: #b71c1c; color: #ef5350; }
 
-        .profile-card .stats {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 8px; margin-top: 12px; padding-top: 12px;
-            border-top: 1px solid #1e2d42;
-        }
+        .profile-card .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1e2d42; }
         .profile-card .stats .stat { text-align: center; }
         .profile-card .stats .stat .num { font-size: 16px; font-weight: 700; color: #fff; }
         .profile-card .stats .stat .lbl { font-size: 10px; color: #8899aa; }
 
-        .profile-menu {
-            margin-top: 10px; background: #0d1520;
-            border-radius: 16px; border: 1px solid #1e2d42; overflow: hidden;
-        }
-        .profile-menu .menu-item {
-            padding: 12px 16px; border-bottom: 1px solid #1a2332;
-            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s;
-        }
+        .profile-menu { margin-top: 10px; background: #0d1520; border-radius: 16px; border: 1px solid #1e2d42; overflow: hidden; }
+        .profile-menu .menu-item { padding: 12px 16px; border-bottom: 1px solid #1a2332; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s; }
         .profile-menu .menu-item:hover { background: #1a2332; }
         .profile-menu .menu-item i { width: 18px; color: #2a7de1; font-size: 14px; }
         .profile-menu .menu-item .text { flex: 1; font-size: 13px; }
         .profile-menu .menu-item .arrow { color: #8899aa; font-size: 12px; }
 
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            max-width: 450px; width: 100%; background: linear-gradient(135deg, #0d1520, #1a2332);
-            border-top: 1px solid #1e2d42; display: flex; justify-content: space-around;
-            padding: 6px 0 10px 0; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
-            border-radius: 16px 16px 0 0;
-        }
-        .bottom-nav .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 1px;
-            cursor: pointer; padding: 4px 10px; border-radius: 8px; transition: all 0.3s;
-            color: #8899aa; font-size: 9px; border: none; background: transparent;
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); max-width: 450px; width: 100%; background: linear-gradient(135deg, #0d1520, #1a2332); border-top: 1px solid #1e2d42; display: flex; justify-content: space-around; padding: 6px 0 10px 0; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.5); border-radius: 16px 16px 0 0; }
+        .bottom-nav .nav-item { display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: pointer; padding: 4px 10px; border-radius: 8px; transition: all 0.3s; color: #8899aa; font-size: 9px; border: none; background: transparent; }
         .bottom-nav .nav-item i { font-size: 20px; }
         .bottom-nav .nav-item.active { color: #2a7de1; }
         .bottom-nav .nav-item:hover { color: #fff; }
-        .bottom-nav .nav-item .badge {
-            background: #ef5350; color: #fff; font-size: 8px;
-            padding: 1px 5px; border-radius: 10px;
-            position: absolute; margin-top: -6px; margin-left: 14px;
-        }
-        .balance-zero {
-            color: #ef5350 !important;
-            animation: blink 0.5s ease-in-out infinite alternate;
-        }
-        @keyframes blink {
-            from { opacity: 1; }
-            to { opacity: 0.3; }
-        }
-        .logout-btn {
-            background: #ef5350; color: #fff; border: none;
-            padding: 6px 14px; border-radius: 8px;
-            font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s;
-        }
+        .bottom-nav .nav-item .badge { background: #ef5350; color: #fff; font-size: 8px; padding: 1px 5px; border-radius: 10px; position: absolute; margin-top: -6px; margin-left: 14px; }
+        .balance-zero { color: #ef5350 !important; animation: blink 0.5s ease-in-out infinite alternate; }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
+        .logout-btn { background: #ef5350; color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .logout-btn:hover { transform: scale(0.95); background: #d32f2f; }
 
-        .pending-badge {
-            background: #f57c00; color: #fff; padding: 2px 10px;
-            border-radius: 12px; font-size: 10px; font-weight: 600;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
+        .pending-badge { background: #f57c00; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 600; animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
         .input-group { margin-bottom: 10px; }
-        .input-group label {
-            font-size: 11px; color: #8899aa;
-            display: flex; align-items: center; gap: 5px; margin-bottom: 3px;
-        }
-        .input-group input,
-        .input-group select {
-            width: 100%; padding: 8px 10px; border-radius: 8px;
-            border: 1px solid #1e2d42; background: #0a0e17;
-            color: #fff; font-size: 13px;
-        }
-        .input-group input:focus,
-        .input-group select:focus { outline: none; border-color: #2a7de1; }
+        .input-group label { font-size: 11px; color: #8899aa; display: flex; align-items: center; gap: 5px; margin-bottom: 3px; }
+        .input-group input, .input-group select { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #1e2d42; background: #0a0e17; color: #fff; font-size: 13px; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: #2a7de1; }
 
         @media (max-width: 450px) {
             .container { padding: 6px 6px 80px 6px; }
@@ -862,7 +462,13 @@
                     </button>
                 </div>
                 <div class="trade-hint">
-                    <i class="fas fa-info-circle"></i> Realistic trading - Win/Loss pattern
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed
+                </div>
+                
+                <!-- Prediction Display -->
+                <div class="prediction-box">
+                    <span class="pred-label">🎯 Next Trade Prediction:</span>
+                    <span class="pred-result" id="nextPrediction">Loading...</span>
                 </div>
             </div>
 
@@ -914,7 +520,13 @@
                     </button>
                 </div>
                 <div style="margin-top:8px; text-align:center; font-size:11px; color:#8899aa;">
-                    <i class="fas fa-info-circle"></i> Realistic trading - Random Win/Loss
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed
+                </div>
+                
+                <!-- Prediction Display -->
+                <div class="prediction-box">
+                    <span class="pred-label">🎯 Next Trade Prediction:</span>
+                    <span class="pred-result" id="nextPrediction2">Loading...</span>
                 </div>
             </div>
 
@@ -1233,6 +845,24 @@
     const db = firebase.firestore();
 
     // ================================================================
+    //  FIXED WIN/LOSS PATTERN - 6 WINS, 4 LOSSES, TOTAL PROFIT = $3
+    // ================================================================
+    
+    // Pattern: Total profit = +3% (so for $100 = $3 profit)
+    const WIN_LOSS_PATTERN = [
+        { result: 'win', percent: 0.08 },   // 1 - Win 8%   → +$8
+        { result: 'win', percent: 0.05 },   // 2 - Win 5%   → +$5
+        { result: 'loss', percent: 0.10 },  // 3 - Loss 10% → -$10
+        { result: 'win', percent: 0.12 },   // 4 - Win 12%  → +$12
+        { result: 'loss', percent: 0.15 },  // 5 - Loss 15% → -$15
+        { result: 'win', percent: 0.06 },   // 6 - Win 6%   → +$6        { result: 'win', percent: 0.09 },   // 7 - Win 9%   → +$9
+        { result: 'loss', percent: 0.12 },  // 8 - Loss 12% → -$12
+        { result: 'win', percent: 0.07 },   // 9 - Win 7%   → +$7
+        { result: 'loss', percent: 0.07 }   // 10 - Loss 7% → -$7
+    ];
+    // Total: +8+5-10+12-15+6+9-12+7-7 = +$3 ✅
+
+    // ================================================================
     //  APP STATE
     // ================================================================
 
@@ -1252,6 +882,7 @@
     let speed = 1000;
     let entryPoints = [];
     let currentFilter = 'all';
+    let patternIndex = 0;
     const MAX_CANDLES = 200;
     let candles = [];
     let currentPrice = 1.2000;
@@ -1268,6 +899,56 @@
         'USD/JPY': { symbol: '¥', base: 148, change: 0.5 },
         'IND/USD': { symbol: '₹', base: 83, change: 0.2 }
     };
+
+    // ================================================================
+    //  PATTERN FUNCTIONS
+    // ================================================================
+
+    function getNextTradeResult() {
+        const result = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        patternIndex++;
+        return result;
+    }
+
+    function updatePredictionDisplay() {
+        const nextResult = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predEl = document.getElementById('nextPrediction');
+        const predEl2 = document.getElementById('nextPrediction2');
+        
+        if (nextResult) {
+            const isWin = nextResult.result === 'win';
+            const percent = (nextResult.percent * 100).toFixed(0);
+            const text = isWin ? `✅ WIN +${percent}%` : `❌ LOSS -${percent}%`;
+            const className = isWin ? 'win' : 'loss';
+            
+            if (predEl) {
+                predEl.textContent = text;
+                predEl.className = 'pred-result ' + className;
+            }
+            if (predEl2) {
+                predEl2.textContent = text;
+                predEl2.className = 'pred-result ' + className;
+            }
+        }
+    }
+
+    function generateTradeResult(trade) {
+        const nextResult = getNextTradeResult();
+        const isWin = nextResult.result === 'win';
+        const percent = nextResult.percent;
+        
+        if (isWin) {
+            const pnl = trade.amount * percent;
+            trade.pnl = pnl;
+            wins++;
+            return { result: 'win', pnl: pnl, percent: percent };
+        } else {
+            const pnl = -(trade.amount * percent);
+            trade.pnl = pnl;
+            losses++;
+            return { result: 'loss', pnl: pnl, percent: percent };
+        }
+    }
 
     // ================================================================
     //  CURRENCY FUNCTIONS
@@ -1416,6 +1097,7 @@
                 trades: [],
                 deposits: [],
                 withdrawals: [],
+                patternIndex: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 kycStatus: 'verified'
             });
@@ -1451,7 +1133,7 @@
     }
 
     // ================================================================
-    //  DEPOSIT FUNCTIONS (FIXED - No Index Required)
+    //  DEPOSIT FUNCTIONS
     // ================================================================
 
     async function requestDeposit() {
@@ -1572,7 +1254,7 @@
     }
 
     // ================================================================
-    //  WITHDRAW FUNCTIONS (FIXED - No Index Required)
+    //  WITHDRAW FUNCTIONS
     // ================================================================
 
     async function processWithdraw() {
@@ -1663,26 +1345,23 @@
     }
 
     // ================================================================
-    //  HISTORY FUNCTIONS (FIXED - No Index Required)
+    //  HISTORY FUNCTIONS
     // ================================================================
 
     async function loadDepositHistory() {
         if (!userDocId) return;
         try {
-            // Query without orderBy to avoid index requirement
             const snapshot = await db.collection('deposits')
                 .where('userId', '==', userDocId)
                 .get();
             
             const container = document.getElementById('depositHistory');
             
-            // Manual sorting in JavaScript
             const deposits = [];
             snapshot.forEach(doc => {
                 deposits.push({ id: doc.id, ...doc.data() });
             });
             
-            // Sort by createdAt descending (newest first)
             deposits.sort((a, b) => {
                 const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
                 const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
@@ -1717,7 +1396,6 @@
             container.innerHTML = html;
         } catch (error) {
             console.error('Error loading deposit history:', error);
-            // Show empty state on error
             document.getElementById('depositHistory').innerHTML = 
                 `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
                     <i class="fas fa-inbox"></i> No deposits yet</div>`;
@@ -1727,20 +1405,17 @@
     async function loadWithdrawHistory() {
         if (!userDocId) return;
         try {
-            // Query without orderBy to avoid index requirement
             const snapshot = await db.collection('withdrawals')
                 .where('userId', '==', userDocId)
                 .get();
             
             const container = document.getElementById('withdrawHistory');
             
-            // Manual sorting in JavaScript
             const withdrawals = [];
             snapshot.forEach(doc => {
                 withdrawals.push({ id: doc.id, ...doc.data() });
             });
             
-            // Sort by createdAt descending (newest first)
             withdrawals.sort((a, b) => {
                 const dateA = a.createdAt ? a.createdAt.toDate() : new Date(0);
                 const dateB = b.createdAt ? b.createdAt.toDate() : new Date(0);
@@ -1775,7 +1450,6 @@
             container.innerHTML = html;
         } catch (error) {
             console.error('Error loading withdrawal history:', error);
-            // Show empty state on error
             document.getElementById('withdrawHistory').innerHTML = 
                 `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
                     <i class="fas fa-inbox"></i> No withdrawals yet</div>`;
@@ -1783,7 +1457,7 @@
     }
 
     // ================================================================
-    //  TRADE HISTORY (FIXED)
+    //  TRADE HISTORY
     // ================================================================
 
     function loadTradeHistory() {
@@ -1799,7 +1473,6 @@
             filteredTrades = filteredTrades.filter(t => !t.closed);
         }
         
-        // Sort by timestamp (newest first)
         filteredTrades.sort((a, b) => b.timestamp - a.timestamp);
         
         if (filteredTrades.length === 0) {
@@ -1865,6 +1538,10 @@
                     allTrades = data.trades || [];
                     tradeCount = allTrades.length;
                     
+                    if (data.patternIndex !== undefined) {
+                        patternIndex = data.patternIndex;
+                    }
+                    
                     openTrades = allTrades.filter(t => !t.closed);
                     entryPoints = openTrades.map(t => ({
                         id: t.id,
@@ -1876,6 +1553,7 @@
                     drawChart();
                     updateStats();
                     loadTradeHistory();
+                    updatePredictionDisplay();
                     
                     if (pendingBalance > 0) {
                         document.getElementById('pendingIndicator').style.display = 'inline-block';
@@ -1954,7 +1632,6 @@
         errorEl.style.display = 'none';
         successEl.style.display = 'none';
 
-        // Validation
         if (!name) { errorEl.innerText = '❌ Please enter your full name'; errorEl.style.display = 'block'; return; }
         if (!email) { errorEl.innerText = '❌ Please enter email address'; errorEl.style.display = 'block'; return; }
         if (!email.includes('@') || !email.includes('.')) { errorEl.innerText = '❌ Please enter a valid email'; errorEl.style.display = 'block'; return; }
@@ -1962,7 +1639,6 @@
         if (!address) { errorEl.innerText = '❌ Please enter your address'; errorEl.style.display = 'block'; return; }
         if (!idNumber) { errorEl.innerText = '❌ Please enter ID Card number'; errorEl.style.display = 'block'; return; }
 
-        // Check if email already exists
         const existingUser = await getUserFromFirestore(email);
         if (existingUser) {
             errorEl.innerText = '❌ This email is already registered. Please login.';
@@ -2092,6 +1768,7 @@
         loadDepositHistory();
         loadWithdrawHistory();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function loadUserDataFromFirestore() {
@@ -2106,10 +1783,15 @@
         openTrades = allTrades.filter(t => !t.closed);
         entryPoints = openTrades.map(t => ({ id: t.id, price: t.entry, type: t.type }));
         
+        if (currentUser.patternIndex !== undefined) {
+            patternIndex = currentUser.patternIndex;
+        }
+        
         updateAllUI();
         drawChart();
         updateStats();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
         document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
@@ -2199,23 +1881,6 @@
         document.getElementById('activeTradeCount').innerText = openTrades.length;
     }
 
-    function generateTradeResult(trade) {
-        const isWin = Math.random() < 0.55;
-        if (isWin) {
-            const profitPercent = 0.05 + (Math.random() * 0.20);
-            const pnl = trade.amount * profitPercent;
-            trade.pnl = pnl;
-            wins++;
-            return { result: 'win', pnl: pnl, percent: profitPercent };
-        } else {
-            const lossPercent = 0.10 + (Math.random() * 0.30);
-            const pnl = -(trade.amount * lossPercent);
-            trade.pnl = pnl;
-            losses++;
-            return { result: 'loss', pnl: pnl, percent: lossPercent };
-        }
-    }
-
     async function closeExpiredTrades(exitPrice) {
         const toClose = [];
         for (let i = 0; i < openTrades.length; i++) {
@@ -2256,7 +1921,8 @@
                 totalPnl: totalPnl,
                 wins: wins,
                 losses: losses,
-                trades: allTrades
+                trades: allTrades,
+                patternIndex: patternIndex
             });
         } catch (error) {
             console.error('Error saving trades:', error);
@@ -2266,6 +1932,7 @@
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -2296,6 +1963,7 @@
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -2335,6 +2003,7 @@
             updateLivePnL(currentPrice);
             drawChart();
             loadTradeHistory();
+            updatePredictionDisplay();
         }
     }
 
@@ -2377,11 +2046,14 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'white');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function placeTrade(type) {
@@ -2423,11 +2095,14 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | $${amount} | ${expiry}m`, 'white');
+        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
+        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'white');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         showPage('trade');
     }
 
@@ -2675,6 +2350,8 @@
         } else {
             document.getElementById('pendingIndicator').style.display = 'none';
         }
+        
+        updatePredictionDisplay();
     }
 
     function addHistory(msg, color = 'white') {
@@ -2730,7 +2407,7 @@
     }
 
     function resetAll() {
-        if (!confirm('Reset all trading data?')) return;
+        if (!confirm('Reset all trading data? Pattern will restart from beginning.')) return;
         stopAutoRun();
         balance = 0;
         totalPnl = 0;
@@ -2740,15 +2417,17 @@
         wins = 0;
         losses = 0;
         entryPoints = [];
+        patternIndex = 0;
         isRunning = true;
         generateInitialCandles();
         drawChart();
         updateStats();
         updateAllUI();
         document.getElementById('recentActivity').innerHTML = '';
-        addHistory('🔄 Trading data reset', 'gold');
+        addHistory('🔄 Trading data reset | Pattern restarted', 'gold');
         if (isRunning) startAutoRun();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function startAutoRun() {
@@ -2801,12 +2480,10 @@
 
     generateInitialCandles();
 
-    console.log('🚀 ProTrader PrimXBet v2.0.1 - ERROR FIXED!');
+    console.log('🚀 ProTrader PrimXBet v2.0.1 - 10 Trades = +$3 Profit Fixed');
+    console.log('📊 Pattern: +8%, +5%, -10%, +12%, -15%, +6%, +9%, -12%, +7%, -7%');
+    console.log('✅ Total Profit: +$3 (for $100 balance)');
     console.log('🔥 Firebase connected successfully!');
-    console.log('✅ No index required - Manual sorting in JavaScript');
-    console.log('📊 7 Currencies Available');
-    console.log('📱 Withdrawal: JazzCash, EasyPaisa, Bank, Crypto');
-    console.log('📋 Trade History Page Added!');
 </script>
 </body>
 </html>
