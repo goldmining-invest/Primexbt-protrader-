@@ -12,7 +12,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        /* -------- SAME STYLES AS BEFORE (keeping it clean) -------- */
+        /* -------- SAME STYLES (keeping it clean) -------- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #0a0e17; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
         ::-webkit-scrollbar { width: 4px; }
@@ -20,7 +20,6 @@
         ::-webkit-scrollbar-thumb { background: #2a7de1; border-radius: 10px; }
         .container { max-width: 450px; width: 100%; padding: 10px 12px 80px 12px; }
 
-        /* Auth Pages */
         .auth-page { display: flex; flex-direction: column; justify-content: center; min-height: 90vh; padding: 20px 0; }
         .auth-page .logo-big { text-align: center; font-size: 32px; font-weight: 700; color: #2a7de1; margin-bottom: 30px; }
         .auth-page .logo-big i { color: #ffd700; font-size: 36px; }
@@ -46,7 +45,6 @@
         .app-hidden { display: none !important; }
         .app-visible { display: block !important; }
 
-        /* Top Header */
         .top-header { background: linear-gradient(135deg, #0d1520, #1a2332); padding: 12px 16px; border-radius: 16px; border: 1px solid #1e2d42; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .top-header .logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #2a7de1; }
         .top-header .logo i { color: #ffd700; font-size: 18px; }
@@ -54,7 +52,6 @@
         .top-header .logo .ver { color: #8899aa; font-size: 9px; }
         .top-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2a7de1, #6a1b9a); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #2a7de1; font-size: 16px; color: #fff; }
 
-        /* Balance Card */
         .balance-card { background: linear-gradient(135deg, #0d1a2b, #162033); border-radius: 16px; padding: 14px 18px; border: 1px solid #1e2d42; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .balance-card .label { font-size: 11px; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; }
         .balance-card .amount { font-size: 28px; font-weight: 700; color: #4caf50; margin: 2px 0; }
@@ -472,7 +469,7 @@
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result win" id="nextPrediction">✅ WIN +0.03%</span>
+                    <span class="pred-result win" id="nextPrediction">✅ WIN +0.05%</span>
                 </div>
             </div>
 
@@ -530,7 +527,7 @@
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result win" id="nextPrediction2">✅ WIN +0.03%</span>
+                    <span class="pred-result win" id="nextPrediction2">✅ WIN +0.05%</span>
                 </div>
             </div>
 
@@ -851,7 +848,6 @@
     //  BINANCE API - LIVE PRICE FETCH
     // ================================================================
     
-    // Using Binance Public API (no API key required for public endpoints)
     let currentSymbol = 'BTCUSDT';
     let currentPrice = 0;
     let priceHistory = [];
@@ -895,37 +891,47 @@
 
     // ================================================================
     //  PROFIT LOGIC: 10 Trades = $3 Total Profit (All Wins)
+    //  Profit Percentages: 0.05% to 0.10% (Cents)
     // ================================================================
     
     const TOTAL_PROFIT = 3; // Fixed $3 profit for 10 trades
     const TRADE_COUNT = 10;
+    const MIN_PERCENT = 0.0005; // 0.05%
+    const MAX_PERCENT = 0.0010; // 0.10%
     
-    // Generate profit percentages for 10 trades that sum to TOTAL_PROFIT / totalAmount
-    // Each trade gets a random percentage but total profit = $3
     function generateProfitPattern(tradeAmount) {
         const totalAmount = tradeAmount * TRADE_COUNT;
-        const totalProfitPercent = (TOTAL_PROFIT / totalAmount) * 100;
+        const totalProfitPercent = TOTAL_PROFIT / totalAmount;
         
-        // Create 10 random percentages that sum to totalProfitPercent
+        // Generate 10 random percentages between 0.05% and 0.10%
         let percentages = [];
-        let remaining = totalProfitPercent;
+        let sum = 0;
         
-        for (let i = 0; i < TRADE_COUNT - 1; i++) {
-            const max = remaining * 0.3; // Each trade max 30% of remaining
-            const min = Math.max(0.01, remaining * 0.05);
-            const p = min + Math.random() * (max - min);
+        for (let i = 0; i < TRADE_COUNT; i++) {
+            const p = MIN_PERCENT + Math.random() * (MAX_PERCENT - MIN_PERCENT);
             percentages.push(p);
-            remaining -= p;
+            sum += p;
         }
-        percentages.push(Math.max(0.01, remaining));
         
-        // Shuffle the array for variety
+        // Scale to match exactly totalProfitPercent
+        const scale = totalProfitPercent / sum;
+        percentages = percentages.map(p => p * scale);
+        
+        // Ensure no percentage is below 0.02% or above 0.15%
+        percentages = percentages.map(p => Math.max(0.0002, Math.min(0.0015, p)));
+        
+        // Recalculate sum and adjust again
+        let newSum = percentages.reduce((a, b) => a + b, 0);
+        const newScale = totalProfitPercent / newSum;
+        percentages = percentages.map(p => p * newScale);
+        
+        // Shuffle for variety
         for (let i = percentages.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [percentages[i], percentages[j]] = [percentages[j], percentages[i]];
         }
         
-        return percentages.map(p => p / 100); // Convert to decimal
+        return percentages;
     }
 
     let profitPattern = [];
@@ -934,11 +940,13 @@
     function resetProfitPattern(tradeAmount) {
         profitPattern = generateProfitPattern(tradeAmount);
         patternIndex = 0;
-        console.log('📊 New Profit Pattern:', profitPattern.map(p => (p * 100).toFixed(2) + '%'));
+        console.log('📊 New Profit Pattern (cents):', profitPattern.map(p => (p * 100).toFixed(3) + '%'));
+        console.log('📊 Total Profit %:', (profitPattern.reduce((a,b) => a+b, 0) * 100).toFixed(3) + '%');
+        updatePredictionDisplay();
     }
 
     function getNextProfitPercent() {
-        if (profitPattern.length === 0) return 0.003; // Default 0.3%
+        if (profitPattern.length === 0) return 0.0005; // Default 0.05%
         const p = profitPattern[patternIndex % profitPattern.length];
         patternIndex++;
         return p;
@@ -995,7 +1003,6 @@
             lastPrice = data.price;
             document.getElementById('currentPrice').innerText = data.price.toFixed(2);
             
-            // Update stats
             document.getElementById('statOpen').innerText = data.open.toFixed(2);
             document.getElementById('statHigh').innerText = data.high.toFixed(2);
             document.getElementById('statLow').innerText = data.low.toFixed(2);
@@ -1005,17 +1012,12 @@
             changeEl.innerText = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
             changeEl.style.color = data.change >= 0 ? '#4caf50' : '#ef5350';
             
-            // Update live P&L
             updateLivePnL(data.price);
             
-            // Add to history
             priceHistory.push(data.price);
             if (priceHistory.length > MAX_HISTORY) priceHistory.shift();
             
-            // Draw chart
             drawChart();
-            
-            // Check expired trades
             closeExpiredTrades(data.price);
         }
     }
@@ -1049,7 +1051,6 @@
         const h = canvas.height / window.devicePixelRatio;
         ctx.clearRect(0, 0, w, h);
 
-        // Use chartData if available, otherwise use priceHistory
         let data = chartData.length > 0 ? chartData : [];
         if (data.length === 0 && priceHistory.length > 0) {
             data = priceHistory.map(p => ({ open: p, high: p, low: p, close: p }));
@@ -1109,7 +1110,6 @@
             ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
         }
 
-        // Draw entry points
         entryPoints.forEach(entry => {
             const idx = showData.length - 1;
             const x = idx * spacing + spacing / 2;
@@ -1158,7 +1158,6 @@
             ctx.setLineDash([]);
         });
 
-        // Current price line
         if (showData.length > 0) {
             const last = showData[showData.length - 1];
             const lastY = h - ((last.close - min) / (max - min)) * h;
@@ -1172,7 +1171,6 @@
             ctx.setLineDash([]);
         }
 
-        // Entry display
         if (entryPoints.length > 0) {
             const lastEntry = entryPoints[entryPoints.length - 1];
             const color = lastEntry.type === 'buy' ? '#4caf50' : '#ef5350';
@@ -1224,7 +1222,6 @@
             trade.exit = exitPrice;
             trade.closed = true;
             
-            // Calculate profit based on pattern
             const profitPercent = getNextProfitPercent();
             const pnl = trade.amount * profitPercent;
             trade.pnl = pnl;
@@ -1236,7 +1233,7 @@
             const pnlStr = pnl >= 0 ? `+${pnl.toFixed(2)}` : pnl.toFixed(2);
             const color = pnl >= 0 ? 'green' : 'red';
             const emoji = pnl >= 0 ? '✅ WIN' : '❌ LOSS';
-            const percentStr = (profitPercent * 100).toFixed(2) + '%';
+            const percentStr = (profitPercent * 100).toFixed(3) + '%';
             
             addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(2)} | ${percentStr} | PnL: $${pnlStr}`, color);
             
@@ -1384,8 +1381,8 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
-        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
         addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
         
         updateAllUI();
@@ -1438,8 +1435,8 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
-        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
         addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
         
         updateAllUI();
@@ -1454,8 +1451,8 @@
     // ================================================================
 
     function updatePredictionDisplay() {
-        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
-        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
         const text = `✅ WIN +${percentStr}`;
         
         const predEl = document.getElementById('nextPrediction');
@@ -1580,12 +1577,11 @@
         candleInterval = setInterval(() => {
             if (isRunning) {
                 fetchAndUpdatePrice();
-                // Also fetch klines occasionally for chart data
-                if (Math.random() < 0.1) { // 10% chance each update
+                if (Math.random() < 0.1) {
                     fetchHistoricalKlines();
                 }
             }
-        }, 5000); // Update every 5 seconds
+        }, 5000);
     }
 
     function stopAutoRun() {
@@ -1596,7 +1592,7 @@
     }
 
     // ================================================================
-    //  FIREBASE FUNCTIONS (Same as before - keeping for reference)
+    //  FIREBASE FUNCTIONS (Same as before)
     // ================================================================
 
     async function createUserInFirestore(userData) {
@@ -2306,7 +2302,6 @@
         
         showPage('dashboard');
         
-        // Initialize with BTC
         fetchAndUpdatePrice();
         fetchHistoricalKlines();
         
@@ -2318,7 +2313,6 @@
         loadTradeHistory();
         updatePredictionDisplay();
         
-        // Reset profit pattern
         resetProfitPattern(100);
     }
 
@@ -2504,10 +2498,8 @@
     //  INIT
     // ================================================================
 
-    // Initialize withdraw fields
     updateWithdrawFields();
 
-    // Check session
     const session = localStorage.getItem('proTraderSession');
     if (session) {
         try {
@@ -2534,18 +2526,16 @@
         showAuth('login');
     }
 
-    // Initial price fetch
     setTimeout(() => {
         fetchAndUpdatePrice();
         fetchHistoricalKlines();
     }, 500);
 
-    // Set default profit pattern
     resetProfitPattern(100);
 
     console.log('🚀 ProTrader PrimXBet v2.0.1 - Binance Live API');
     console.log('📊 10 Trades = $3 Profit Fixed (All Wins)');
-    console.log('✅ Profit auto-adjusts based on trade amount');
+    console.log('💰 Profit: 0.05% to 0.10% per trade (Cents)');
     console.log('🔥 Binance API connected successfully!');
 </script>
 </body>
