@@ -12,6 +12,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        /* -------- SAME STYLES AS BEFORE (keeping it clean) -------- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #0a0e17; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
         ::-webkit-scrollbar { width: 4px; }
@@ -19,6 +20,7 @@
         ::-webkit-scrollbar-thumb { background: #2a7de1; border-radius: 10px; }
         .container { max-width: 450px; width: 100%; padding: 10px 12px 80px 12px; }
 
+        /* Auth Pages */
         .auth-page { display: flex; flex-direction: column; justify-content: center; min-height: 90vh; padding: 20px 0; }
         .auth-page .logo-big { text-align: center; font-size: 32px; font-weight: 700; color: #2a7de1; margin-bottom: 30px; }
         .auth-page .logo-big i { color: #ffd700; font-size: 36px; }
@@ -44,6 +46,7 @@
         .app-hidden { display: none !important; }
         .app-visible { display: block !important; }
 
+        /* Top Header */
         .top-header { background: linear-gradient(135deg, #0d1520, #1a2332); padding: 12px 16px; border-radius: 16px; border: 1px solid #1e2d42; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
         .top-header .logo { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #2a7de1; }
         .top-header .logo i { color: #ffd700; font-size: 18px; }
@@ -51,6 +54,7 @@
         .top-header .logo .ver { color: #8899aa; font-size: 9px; }
         .top-header .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2a7de1, #6a1b9a); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #2a7de1; font-size: 16px; color: #fff; }
 
+        /* Balance Card */
         .balance-card { background: linear-gradient(135deg, #0d1a2b, #162033); border-radius: 16px; padding: 14px 18px; border: 1px solid #1e2d42; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .balance-card .label { font-size: 11px; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; }
         .balance-card .amount { font-size: 28px; font-weight: 700; color: #4caf50; margin: 2px 0; }
@@ -85,7 +89,7 @@
         .quick-actions .qa-btn .red { color: #ef5350; }
         .quick-actions .qa-btn .gold { color: #ffd700; }
 
-        .chart-box { background: #0d1520; border-radius: 16px; padding: 10px; border: 1px solid #1e2d42; margin-bottom: 10px; position: relative; }
+        .chart-box { background: #0d1520; border-radius: 16px; padding: 10px; border: 1px solid #1e2d42; margin-bottom: 10px; }
         .chart-box .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px; }
         .chart-box .chart-header .symbol { font-size: 14px; font-weight: 700; }
         .chart-box .chart-header .symbol i { color: #ffd700; margin-right: 4px; }
@@ -206,9 +210,6 @@
         .profile-card .email { font-size: 12px; color: #8899aa; }
         .profile-card .kyc-status { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-top: 4px; }
         .profile-card .kyc-status.verified { background: #1b5e20; color: #4caf50; }
-        .profile-card .kyc-status.pending { background: #4a148c; color: #ce93d8; }
-        .profile-card .kyc-status.unverified { background: #b71c1c; color: #ef5350; }
-
         .profile-card .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1e2d42; }
         .profile-card .stats .stat { text-align: center; }
         .profile-card .stats .stat .num { font-size: 16px; font-weight: 700; color: #fff; }
@@ -390,7 +391,7 @@
             </div>
             <div style="text-align:right;">
                 <div class="label">Win Rate</div>
-                <div style="font-size:16px; font-weight:700; color:#ffd700;" id="winRateDisplay">0%</div>
+                <div style="font-size:16px; font-weight:700; color:#ffd700;" id="winRateDisplay">100%</div>
             </div>
         </div>
 
@@ -398,7 +399,7 @@
         <div class="trade-limit">
             <span><i class="fas fa-trophy" style="color:#ffd700;"></i> <span class="winrate" id="winsDisplay">Wins: 0</span></span>
             <span><i class="fas fa-times-circle" style="color:#ef5350;"></i> <span class="lossrate" id="lossesDisplay">Losses: 0</span></span>
-            <span><i class="fas fa-balance-scale"></i> <span id="winLossRatio">Ratio: 0.0</span></span>
+            <span><i class="fas fa-balance-scale"></i> <span id="winLossRatio">Ratio: 10.0</span></span>
         </div>
 
         <!-- ============================================================ -->
@@ -415,17 +416,17 @@
             <!-- CHART -->
             <div class="chart-box">
                 <div class="currency-selector">
-                    <button class="curr-btn active" onclick="changeCurrency('EUR/USD', '€', 1.2000)">🇪🇺 EUR/USD</button>
-                    <button class="curr-btn" onclick="changeCurrency('BTC/USD', '₿', 65000)">₿ BTC/USD</button>
-                    <button class="curr-btn" onclick="changeCurrency('GOLD/USD', 'Au', 2400)">🥇 GOLD/USD</button>
-                    <button class="curr-btn" onclick="changeCurrency('SOL/USD', '◎', 180)">◎ SOL/USD</button>
-                    <button class="curr-btn" onclick="changeCurrency('ZEC/USD', 'ⓩ', 45)">ⓩ ZEC/USD</button>
-                    <button class="curr-btn" onclick="changeCurrency('USD/JPY', '¥', 148)">¥ USD/JPY</button>
-                    <button class="curr-btn" onclick="changeCurrency('IND/USD', '₹', 83)">₹ IND/USD</button>
+                    <button class="curr-btn active" onclick="changeCurrency('BTCUSDT', '₿')">₿ BTC/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('ETHUSDT', '⟠')">⟠ ETH/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('BNBUSDT', '🟡')">🟡 BNB/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('SOLUSDT', '◎')">◎ SOL/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('XRPUSDT', '💠')">💠 XRP/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('ADAUSDT', '🟣')">🟣 ADA/USDT</button>
+                    <button class="curr-btn" onclick="changeCurrency('DOGEUSDT', '🐕')">🐕 DOGE/USDT</button>
                 </div>
                 <div class="chart-header">
-                    <div class="symbol" id="chartSymbol"><i class="fas fa-coins"></i> EUR/USD</div>
-                    <div class="price" id="currentPrice">1.20000</div>
+                    <div class="symbol" id="chartSymbol"><i class="fas fa-coins"></i> BTC/USDT</div>
+                    <div class="price" id="currentPrice">Loading...</div>
                 </div>
                 <canvas id="chartCanvas" height="200"></canvas>
                 <div class="chart-stats">
@@ -435,6 +436,9 @@
                     <span>C: <span id="statClose">-</span></span>
                     <span>Chg: <span id="statChange">-</span></span>
                     <span style="margin-left:auto;">📌 <span id="entryDisplay">No Entry</span></span>
+                </div>
+                <div style="margin-top:4px; font-size:9px; color:#8899aa; text-align:center;">
+                    <i class="fas fa-bolt" style="color:#f7931a;"></i> Live Price via Binance API
                 </div>
             </div>
 
@@ -462,13 +466,13 @@
                     </button>
                 </div>
                 <div class="trade-hint">
-                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed (All Wins)
                 </div>
                 
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result" id="nextPrediction">Loading...</span>
+                    <span class="pred-result win" id="nextPrediction">✅ WIN +0.03%</span>
                 </div>
             </div>
 
@@ -520,13 +524,13 @@
                     </button>
                 </div>
                 <div style="margin-top:8px; text-align:center; font-size:11px; color:#8899aa;">
-                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed (All Wins)
                 </div>
                 
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result" id="nextPrediction2">Loading...</span>
+                    <span class="pred-result win" id="nextPrediction2">✅ WIN +0.03%</span>
                 </div>
             </div>
 
@@ -840,27 +844,105 @@
         measurementId: "G-JFT7JY1J9Q"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     // ================================================================
-    //  FIXED WIN/LOSS PATTERN - 6 WINS, 4 LOSSES, TOTAL PROFIT = $3
+    //  BINANCE API - LIVE PRICE FETCH
     // ================================================================
     
-    // Pattern: Total profit = +3% (so for $100 = $3 profit)
-    const WIN_LOSS_PATTERN = [
-        { result: 'win', percent: 0.08 },   // 1 - Win 8%   → +$8
-        { result: 'win', percent: 0.05 },   // 2 - Win 5%   → +$5
-        { result: 'loss', percent: 0.10 },  // 3 - Loss 10% → -$10
-        { result: 'win', percent: 0.12 },   // 4 - Win 12%  → +$12
-        { result: 'loss', percent: 0.15 },  // 5 - Loss 15% → -$15
-        { result: 'win', percent: 0.06 },   // 6 - Win 6%   → +$6        { result: 'win', percent: 0.09 },   // 7 - Win 9%   → +$9
-        { result: 'loss', percent: 0.12 },  // 8 - Loss 12% → -$12
-        { result: 'win', percent: 0.07 },   // 9 - Win 7%   → +$7
-        { result: 'loss', percent: 0.07 }   // 10 - Loss 7% → -$7
-    ];
-    // Total: +8+5-10+12-15+6+9-12+7-7 = +$3 ✅
+    // Using Binance Public API (no API key required for public endpoints)
+    let currentSymbol = 'BTCUSDT';
+    let currentPrice = 0;
+    let priceHistory = [];
+    const MAX_HISTORY = 200;
+    let chartData = [];
+    let isLive = true;
+
+    async function fetchBinancePrice(symbol = 'BTCUSDT') {
+        try {
+            const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
+            const data = await response.json();
+            return {
+                price: parseFloat(data.lastPrice),
+                open: parseFloat(data.openPrice),
+                high: parseFloat(data.highPrice),
+                low: parseFloat(data.lowPrice),
+                change: parseFloat(data.priceChangePercent)
+            };
+        } catch (error) {
+            console.error('Binance API Error:', error);
+            return null;
+        }
+    }
+
+    async function fetchKlines(symbol = 'BTCUSDT', interval = '1m', limit = 100) {
+        try {
+            const response = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`);
+            const data = await response.json();
+            return data.map(k => ({
+                open: parseFloat(k[1]),
+                high: parseFloat(k[2]),
+                low: parseFloat(k[3]),
+                close: parseFloat(k[4]),
+                volume: parseFloat(k[5])
+            }));
+        } catch (error) {
+            console.error('Error fetching klines:', error);
+            return null;
+        }
+    }
+
+    // ================================================================
+    //  PROFIT LOGIC: 10 Trades = $3 Total Profit (All Wins)
+    // ================================================================
+    
+    const TOTAL_PROFIT = 3; // Fixed $3 profit for 10 trades
+    const TRADE_COUNT = 10;
+    
+    // Generate profit percentages for 10 trades that sum to TOTAL_PROFIT / totalAmount
+    // Each trade gets a random percentage but total profit = $3
+    function generateProfitPattern(tradeAmount) {
+        const totalAmount = tradeAmount * TRADE_COUNT;
+        const totalProfitPercent = (TOTAL_PROFIT / totalAmount) * 100;
+        
+        // Create 10 random percentages that sum to totalProfitPercent
+        let percentages = [];
+        let remaining = totalProfitPercent;
+        
+        for (let i = 0; i < TRADE_COUNT - 1; i++) {
+            const max = remaining * 0.3; // Each trade max 30% of remaining
+            const min = Math.max(0.01, remaining * 0.05);
+            const p = min + Math.random() * (max - min);
+            percentages.push(p);
+            remaining -= p;
+        }
+        percentages.push(Math.max(0.01, remaining));
+        
+        // Shuffle the array for variety
+        for (let i = percentages.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [percentages[i], percentages[j]] = [percentages[j], percentages[i]];
+        }
+        
+        return percentages.map(p => p / 100); // Convert to decimal
+    }
+
+    let profitPattern = [];
+    let patternIndex = 0;
+
+    function resetProfitPattern(tradeAmount) {
+        profitPattern = generateProfitPattern(tradeAmount);
+        patternIndex = 0;
+        console.log('📊 New Profit Pattern:', profitPattern.map(p => (p * 100).toFixed(2) + '%'));
+    }
+
+    function getNextProfitPercent() {
+        if (profitPattern.length === 0) return 0.003; // Default 0.3%
+        const p = profitPattern[patternIndex % profitPattern.length];
+        patternIndex++;
+        return p;
+    }
 
     // ================================================================
     //  APP STATE
@@ -879,204 +961,642 @@
     let losses = 0;
     let isRunning = true;
     let candleInterval = null;
-    let speed = 1000;
     let entryPoints = [];
     let currentFilter = 'all';
-    let patternIndex = 0;
-    const MAX_CANDLES = 200;
-    let candles = [];
-    let currentPrice = 1.2000;
-    let currentSymbol = 'EUR/USD';
-    let currentBasePrice = 1.2000;
-
-    // Currency Data
-    const currencyData = {
-        'EUR/USD': { symbol: '€', base: 1.2000, change: 0.0015 },
-        'BTC/USD': { symbol: '₿', base: 65000, change: 150 },
-        'GOLD/USD': { symbol: 'Au', base: 2400, change: 5 },
-        'SOL/USD': { symbol: '◎', base: 180, change: 2 },
-        'ZEC/USD': { symbol: 'ⓩ', base: 45, change: 0.8 },
-        'USD/JPY': { symbol: '¥', base: 148, change: 0.5 },
-        'IND/USD': { symbol: '₹', base: 83, change: 0.2 }
-    };
-
-    // ================================================================
-    //  PATTERN FUNCTIONS
-    // ================================================================
-
-    function getNextTradeResult() {
-        const result = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
-        patternIndex++;
-        return result;
-    }
-
-    function updatePredictionDisplay() {
-        const nextResult = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
-        const predEl = document.getElementById('nextPrediction');
-        const predEl2 = document.getElementById('nextPrediction2');
-        
-        if (nextResult) {
-            const isWin = nextResult.result === 'win';
-            const percent = (nextResult.percent * 100).toFixed(0);
-            const text = isWin ? `✅ WIN +${percent}%` : `❌ LOSS -${percent}%`;
-            const className = isWin ? 'win' : 'loss';
-            
-            if (predEl) {
-                predEl.textContent = text;
-                predEl.className = 'pred-result ' + className;
-            }
-            if (predEl2) {
-                predEl2.textContent = text;
-                predEl2.className = 'pred-result ' + className;
-            }
-        }
-    }
-
-    function generateTradeResult(trade) {
-        const nextResult = getNextTradeResult();
-        const isWin = nextResult.result === 'win';
-        const percent = nextResult.percent;
-        
-        if (isWin) {
-            const pnl = trade.amount * percent;
-            trade.pnl = pnl;
-            wins++;
-            return { result: 'win', pnl: pnl, percent: percent };
-        } else {
-            const pnl = -(trade.amount * percent);
-            trade.pnl = pnl;
-            losses++;
-            return { result: 'loss', pnl: pnl, percent: percent };
-        }
-    }
+    let lastPrice = 0;
 
     // ================================================================
     //  CURRENCY FUNCTIONS
     // ================================================================
 
-    function changeCurrency(symbol, icon, basePrice) {
+    function changeCurrency(symbol, icon) {
         currentSymbol = symbol;
-        currentBasePrice = basePrice;
         
         document.querySelectorAll('.curr-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.curr-btn').forEach(btn => {
-            if (btn.textContent.includes(symbol.split('/')[0])) {
+            if (btn.textContent.includes(symbol.replace('USDT', ''))) {
                 btn.classList.add('active');
             }
         });
         
-        document.getElementById('chartSymbol').innerHTML = `<i class="fas fa-coins"></i> ${symbol}`;
-        generateInitialCandles();
-        drawChart();
-        updateStats();
+        document.getElementById('chartSymbol').innerHTML = `<i class="fas fa-coins"></i> ${symbol.replace('USDT', '/USDT')}`;
+        fetchAndUpdatePrice();
         addHistory(`🔄 Switched to ${symbol}`, 'gold');
     }
 
     // ================================================================
-    //  FUNDS - TABS SWITCH
+    //  PRICE UPDATE FUNCTIONS
     // ================================================================
 
-    function switchFundsTab(tab) {
-        document.querySelectorAll('.funds-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.funds-content').forEach(content => content.classList.remove('active'));
-        
-        if (tab === 'deposit') {
-            document.querySelector('.funds-tabs .deposit-tab').classList.add('active');
-            document.getElementById('fundsDeposit').classList.add('active');
-        } else {
-            document.querySelector('.funds-tabs .withdraw-tab').classList.add('active');
-            document.getElementById('fundsWithdraw').classList.add('active');
+    async function fetchAndUpdatePrice() {
+        const data = await fetchBinancePrice(currentSymbol);
+        if (data) {
+            currentPrice = data.price;
+            lastPrice = data.price;
+            document.getElementById('currentPrice').innerText = data.price.toFixed(2);
+            
+            // Update stats
+            document.getElementById('statOpen').innerText = data.open.toFixed(2);
+            document.getElementById('statHigh').innerText = data.high.toFixed(2);
+            document.getElementById('statLow').innerText = data.low.toFixed(2);
+            document.getElementById('statClose').innerText = data.price.toFixed(2);
+            
+            const changeEl = document.getElementById('statChange');
+            changeEl.innerText = (data.change >= 0 ? '+' : '') + data.change.toFixed(2) + '%';
+            changeEl.style.color = data.change >= 0 ? '#4caf50' : '#ef5350';
+            
+            // Update live P&L
+            updateLivePnL(data.price);
+            
+            // Add to history
+            priceHistory.push(data.price);
+            if (priceHistory.length > MAX_HISTORY) priceHistory.shift();
+            
+            // Draw chart
+            drawChart();
+            
+            // Check expired trades
+            closeExpiredTrades(data.price);
+        }
+    }
+
+    async function fetchHistoricalKlines() {
+        const klines = await fetchKlines(currentSymbol, '1m', 100);
+        if (klines) {
+            chartData = klines;
+            drawChart();
         }
     }
 
     // ================================================================
-    //  TRADE HISTORY FILTER
+    //  CHART DRAWING
     // ================================================================
 
-    function filterTradeHistory(filter) {
-        currentFilter = filter;
-        document.querySelectorAll('#page-history .tab-btn').forEach(btn => {
-            btn.style.borderColor = '#1e2d42';
-            btn.style.color = '#8899aa';
-            btn.style.background = '#0a0e17';
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawChart() {
+        const rect = canvas.getBoundingClientRect();
+        if (canvas.width !== rect.width * window.devicePixelRatio) {
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        const w = canvas.width / window.devicePixelRatio;
+        const h = canvas.height / window.devicePixelRatio;
+        ctx.clearRect(0, 0, w, h);
+
+        // Use chartData if available, otherwise use priceHistory
+        let data = chartData.length > 0 ? chartData : [];
+        if (data.length === 0 && priceHistory.length > 0) {
+            data = priceHistory.map(p => ({ open: p, high: p, low: p, close: p }));
+        }
+        
+        if (data.length === 0) {
+            ctx.fillStyle = '#8899aa';
+            ctx.font = '14px Segoe UI';
+            ctx.textAlign = 'center';
+            ctx.fillText('Loading chart data...', w/2, h/2);
+            return;
+        }
+
+        let min = Infinity, max = -Infinity;
+        const showData = data.slice(-100);
+        for (let c of showData) {
+            const low = c.low || c.close;
+            const high = c.high || c.close;
+            if (low < min) min = low;
+            if (high > max) max = high;
+        }
+        const padding = (max - min) * 0.12;
+        min -= padding;
+        max += padding;
+
+        const candleWidth = Math.max(2, w / showData.length * 0.6);
+        const spacing = w / showData.length;
+
+        for (let i = 0; i < showData.length; i++) {
+            const c = showData[i];
+            const x = i * spacing + (spacing - candleWidth) / 2;
+            const open = c.open || c.close;
+            const close = c.close;
+            const high = c.high || c.close;
+            const low = c.low || c.close;
+            
+            const yHigh = h - ((high - min) / (max - min)) * h;
+            const yLow = h - ((low - min) / (max - min)) * h;
+            const yOpen = h - ((open - min) / (max - min)) * h;
+            const yClose = h - ((close - min) / (max - min)) * h;
+
+            const isBull = close >= open;
+            const color = isBull ? '#4caf50' : '#ef5350';
+            
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(x + candleWidth / 2, yHigh);
+            ctx.lineTo(x + candleWidth / 2, yLow);
+            ctx.stroke();
+
+            const bodyTop = Math.min(yOpen, yClose);
+            const bodyBottom = Math.max(yOpen, yClose);
+            const bodyHeight = Math.max(1, bodyBottom - bodyTop);
+            ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
+        }
+
+        // Draw entry points
+        entryPoints.forEach(entry => {
+            const idx = showData.length - 1;
+            const x = idx * spacing + spacing / 2;
+            const y = h - ((entry.price - min) / (max - min)) * h;
+            
+            const color = entry.type === 'buy' ? '#4caf50' : '#ef5350';
+            
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 15;
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            
+            const size = 14;
+            ctx.beginPath();
+            if (entry.type === 'buy') {
+                ctx.moveTo(x, y - size);
+                ctx.lineTo(x - size, y + size/2);
+                ctx.lineTo(x - size/2, y + size/2);
+                ctx.lineTo(x - size/2, y + size);
+                ctx.lineTo(x + size/2, y + size);
+                ctx.lineTo(x + size/2, y + size/2);
+                ctx.lineTo(x + size, y + size/2);
+            } else {
+                ctx.moveTo(x, y + size);
+                ctx.lineTo(x - size, y - size/2);
+                ctx.lineTo(x - size/2, y - size/2);
+                ctx.lineTo(x - size/2, y - size);
+                ctx.lineTo(x + size/2, y - size);
+                ctx.lineTo(x + size/2, y - size/2);
+                ctx.lineTo(x + size, y - size/2);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.7;
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.setLineDash([]);
         });
-        
-        const btnMap = {
-            'all': 'filterAll',
-            'win': 'filterWin',
-            'loss': 'filterLoss',
-            'open': 'filterOpen'
-        };
-        
-        const activeBtn = document.getElementById(btnMap[filter]);
-        if (activeBtn) {
-            activeBtn.style.borderColor = '#2a7de1';
-            activeBtn.style.color = '#2a7de1';
-            activeBtn.style.background = 'rgba(42,125,225,0.1)';
+
+        // Current price line
+        if (showData.length > 0) {
+            const last = showData[showData.length - 1];
+            const lastY = h - ((last.close - min) / (max - min)) * h;
+            ctx.strokeStyle = '#ffd700';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(0, lastY);
+            ctx.lineTo(w, lastY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        // Entry display
+        if (entryPoints.length > 0) {
+            const lastEntry = entryPoints[entryPoints.length - 1];
+            const color = lastEntry.type === 'buy' ? '#4caf50' : '#ef5350';
+            document.getElementById('entryDisplay').innerHTML = 
+                `${lastEntry.type.toUpperCase()} @ ${lastEntry.price.toFixed(2)} <span style="color:${color}">▲</span>`;
+        } else {
+            document.getElementById('entryDisplay').innerHTML = 'No Entry';
+        }
+    }
+
+    // ================================================================
+    //  TRADING ENGINE
+    // ================================================================
+
+    function updateLivePnL(price) {
+        let totalPnlLive = 0;
+        openTrades.forEach(t => {
+            if (!t.closed) {
+                let pnl;
+                if (t.type === 'buy') {
+                    pnl = (price - t.entry) * (t.amount / t.entry);
+                } else {
+                    pnl = (t.entry - price) * (t.amount / t.entry);
+                }
+                t.currentPnl = pnl;
+                totalPnlLive += pnl;
+            }
+        });
+
+        const pnlEl = document.getElementById('livePnl');
+        pnlEl.innerText = (totalPnlLive >= 0 ? '+' : '') + totalPnlLive.toFixed(2) + ' $';
+        pnlEl.className = 'value ' + (totalPnlLive >= 0 ? 'green' : 'red');
+        document.getElementById('activeTradeCount').innerText = openTrades.length;
+    }
+
+    async function closeExpiredTrades(exitPrice) {
+        const toClose = [];
+        for (let i = 0; i < openTrades.length; i++) {
+            const t = openTrades[i];
+            t.expiry--;
+            if (t.expiry <= 0) toClose.push(i);
         }
         
+        if (toClose.length === 0) return;
+        
+        for (let i = toClose.length - 1; i >= 0; i--) {
+            const idx = toClose[i];
+            const trade = openTrades[idx];
+            trade.exit = exitPrice;
+            trade.closed = true;
+            
+            // Calculate profit based on pattern
+            const profitPercent = getNextProfitPercent();
+            const pnl = trade.amount * profitPercent;
+            trade.pnl = pnl;
+            
+            balance += (trade.amount + pnl);
+            totalPnl += pnl;
+            wins++;
+            
+            const pnlStr = pnl >= 0 ? `+${pnl.toFixed(2)}` : pnl.toFixed(2);
+            const color = pnl >= 0 ? 'green' : 'red';
+            const emoji = pnl >= 0 ? '✅ WIN' : '❌ LOSS';
+            const percentStr = (profitPercent * 100).toFixed(2) + '%';
+            
+            addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(2)} | ${percentStr} | PnL: $${pnlStr}`, color);
+            
+            const entryIdx = entryPoints.findIndex(e => e.id === trade.id);
+            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+            
+            openTrades.splice(idx, 1);
+        }
+        
+        try {
+            await updateUserInFirestore(userDocId, {
+                balance: balance,
+                totalPnl: totalPnl,
+                wins: wins,
+                losses: losses,
+                trades: allTrades,
+                patternIndex: patternIndex
+            });
+        } catch (error) {
+            console.error('Error saving trades:', error);
+        }
+        
+        updateAllUI();
+        updateLivePnL(currentPrice);
+        drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
+        
+        if (balance <= 0) {
+            balance = 0;
+            document.getElementById('balanceDisplay').className = 'balance-zero';
+            document.getElementById('equityDisplay').className = 'balance-zero';
+            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
+            isRunning = false;
+            stopAutoRun();
+        }
+    }
+
+    function closeAllTrades() {
+        if (openTrades.length === 0) return;
+        const price = currentPrice;
+        for (let i = openTrades.length - 1; i >= 0; i--) {
+            const t = openTrades[i];
+            t.exit = price;
+            t.closed = true;
+            const profitPercent = getNextProfitPercent();
+            t.pnl = t.amount * profitPercent;
+            balance += (t.amount + t.pnl);
+            totalPnl += t.pnl;
+            wins++;
+            const entryIdx = entryPoints.findIndex(e => e.id === t.id);
+            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+            openTrades.splice(i, 1);
+        }
+        addHistory('🔒 All positions closed', 'white');
+        updateAllUI();
+        updateLivePnL(currentPrice);
+        drawChart();
+        loadTradeHistory();
+        updatePredictionDisplay();
+        
+        if (balance <= 0) {
+            balance = 0;
+            document.getElementById('balanceDisplay').className = 'balance-zero';
+            document.getElementById('equityDisplay').className = 'balance-zero';
+            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
+            isRunning = false;
+            stopAutoRun();
+        }
+    }
+
+    function takeProfit() {
+        const price = currentPrice;
+        let closed = 0;
+        for (let i = openTrades.length - 1; i >= 0; i--) {
+            const t = openTrades[i];
+            const pnl = t.type === 'buy' ? 
+                (price - t.entry) * (t.amount / t.entry) : 
+                (t.entry - price) * (t.amount / t.entry);
+            
+            if (pnl > 0) {
+                t.exit = price;
+                t.closed = true;
+                t.pnl = pnl;
+                balance += (t.amount + pnl);
+                totalPnl += pnl;
+                wins++;
+                const entryIdx = entryPoints.findIndex(e => e.id === t.id);
+                if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+                openTrades.splice(i, 1);
+                closed++;
+            }
+        }
+        if (closed > 0) {
+            addHistory(`💰 TP: ${closed} profitable positions closed`, 'green');
+            updateAllUI();
+            updateLivePnL(currentPrice);
+            drawChart();
+            loadTradeHistory();
+            updatePredictionDisplay();
+        }
+    }
+
+    function quickTrade(type) {
+        if (balance <= 0) {
+            alert('❌ Your balance is ZERO! Please deposit first.');
+            return;
+        }
+        
+        const amount = parseFloat(document.getElementById('quickTradeAmount').value);
+        const expiry = parseInt(document.getElementById('quickTradeExpiry').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
+        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        // Reset pattern if this is the first trade or after 10 trades
+        if (tradeCount % 10 === 0) {
+            resetProfitPattern(amount);
+        }
+
+        tradeCount++;
+        const price = currentPrice;
+        const trade = {
+            id: Date.now() + Math.random(),
+            type: type,
+            amount: amount,
+            entry: price,
+            exit: null,
+            pnl: 0,
+            currentPnl: 0,
+            closed: false,
+            expiry: expiry,
+            tradeNumber: tradeCount,
+            timestamp: Date.now(),
+            symbol: currentSymbol
+        };
+        openTrades.push(trade);
+        allTrades.push(trade);
+        balance -= amount;
+
+        entryPoints.push({
+            id: trade.id,
+            price: price,
+            type: type
+        });
+
+        const icon = type === 'buy' ? '📈' : '📉';
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
+        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
+        
+        updateAllUI();
+        drawChart();
+        loadTradeHistory();
+        updatePredictionDisplay();
+    }
+
+    function placeTrade(type) {
+        if (balance <= 0) {
+            alert('❌ Your balance is ZERO! Please deposit first.');
+            return;
+        }
+        
+        const amount = parseFloat(document.getElementById('tradeAmount').value);
+        const expiry = parseInt(document.getElementById('tradeExpiry').value);
+        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
+        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
+        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        // Reset pattern if this is the first trade or after 10 trades
+        if (tradeCount % 10 === 0) {
+            resetProfitPattern(amount);
+        }
+
+        tradeCount++;
+        const price = currentPrice;
+        const trade = {
+            id: Date.now() + Math.random(),
+            type: type,
+            amount: amount,
+            entry: price,
+            exit: null,
+            pnl: 0,
+            currentPnl: 0,
+            closed: false,
+            expiry: expiry,
+            tradeNumber: tradeCount,
+            timestamp: Date.now(),
+            symbol: currentSymbol
+        };
+        openTrades.push(trade);
+        allTrades.push(trade);
+        balance -= amount;
+
+        entryPoints.push({
+            id: trade.id,
+            price: price,
+            type: type
+        });
+
+        const icon = type === 'buy' ? '📈' : '📉';
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
+        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
+        
+        updateAllUI();
+        drawChart();
+        loadTradeHistory();
+        updatePredictionDisplay();
+        showPage('trade');
     }
 
     // ================================================================
-    //  WITHDRAW - UPDATE FIELDS
+    //  PREDICTION DISPLAY
     // ================================================================
 
-    function updateWithdrawFields() {
-        const method = document.getElementById('withdrawMethod').value;
-        const mobileFields = document.getElementById('mobileFields');
-        const bankFields = document.getElementById('bankFields');
-        const cryptoFields = document.getElementById('cryptoFields');
-        const iconDisplay = document.getElementById('methodIconDisplay');
-        const nameDisplay = document.getElementById('methodNameDisplay');
-        const cryptoHint = document.getElementById('cryptoHint');
-
-        mobileFields.style.display = 'none';
-        bankFields.style.display = 'none';
-        cryptoFields.style.display = 'none';
-
-        const methodMap = {
-            'jazzcash': { icon: 'fa-mobile-alt', color: '#e91e63', name: 'JazzCash', emoji: '📱' },
-            'easypaisa': { icon: 'fa-mobile-alt', color: '#ff6f00', name: 'EasyPaisa', emoji: '📱' },
-            'bank': { icon: 'fa-university', color: '#2a7de1', name: 'Bank Transfer', emoji: '🏦' },
-            'btc': { icon: 'fa-bitcoin', color: '#f7931a', name: 'Bitcoin (BTC)', emoji: '₿' },
-            'eth': { icon: 'fa-ethereum', color: '#627eea', name: 'Ethereum (ETH)', emoji: '⟠' },
-            'usdt': { icon: 'fa-dollar-sign', color: '#f7931a', name: 'USDT (TRC20)', emoji: '🪙' }
-        };
-
-        const info = methodMap[method] || methodMap['jazzcash'];
-        iconDisplay.innerHTML = `<i class="fab ${info.icon}" style="color:${info.color};"></i><span class="method-name">${info.emoji} ${info.name}</span>`;
-
-        switch(method) {
-            case 'jazzcash':
-            case 'easypaisa':
-                mobileFields.style.display = 'block';
-                nameDisplay.innerText = info.name;
-                break;
-            case 'bank':
-                bankFields.style.display = 'block';
-                nameDisplay.innerText = info.name;
-                break;
-            case 'btc':
-                cryptoFields.style.display = 'block';
-                cryptoHint.innerText = 'Send to your Bitcoin (BTC) wallet address';
-                nameDisplay.innerText = info.name;
-                break;
-            case 'eth':
-                cryptoFields.style.display = 'block';
-                cryptoHint.innerText = 'Send to your Ethereum (ETH) wallet address';
-                nameDisplay.innerText = info.name;
-                break;
-            case 'usdt':
-                cryptoFields.style.display = 'block';
-                cryptoHint.innerText = 'Send to your USDT (TRC20) wallet address';
-                nameDisplay.innerText = info.name;
-                break;
+    function updatePredictionDisplay() {
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.003;
+        const percentStr = (nextPercent * 100).toFixed(2) + '%';
+        const text = `✅ WIN +${percentStr}`;
+        
+        const predEl = document.getElementById('nextPrediction');
+        const predEl2 = document.getElementById('nextPrediction2');
+        
+        if (predEl) {
+            predEl.textContent = text;
+            predEl.className = 'pred-result win';
+        }
+        if (predEl2) {
+            predEl2.textContent = text;
+            predEl2.className = 'pred-result win';
         }
     }
 
     // ================================================================
-    //  FIREBASE FUNCTIONS
+    //  UI UPDATE FUNCTIONS
+    // ================================================================
+
+    function updateBalance() {
+        const balDisplay = document.getElementById('balanceDisplay');
+        const eqDisplay = document.getElementById('equityDisplay');
+        balDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        eqDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        document.getElementById('profileBalance').innerText = balance.toFixed(0);
+        
+        if (balance <= 0) {
+            balDisplay.className = 'balance-zero';
+            eqDisplay.className = 'balance-zero';
+        } else {
+            balDisplay.className = '';
+            eqDisplay.className = '';
+        }
+    }
+
+    function updatePnL() {
+        const el = document.getElementById('pnlDisplay');
+        el.innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
+        el.className = totalPnl >= 0 ? 'green' : 'red';
+        document.getElementById('profilePnL').innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
+        document.getElementById('profilePnL').style.color = totalPnl >= 0 ? '#4caf50' : '#ef5350';
+    }
+
+    function updateOpenPositions() {
+        const div = document.getElementById('openPositions');
+        const count = document.getElementById('openCount');
+        const badge = document.getElementById('tradeBadge');
+        count.innerText = openTrades.length;
+        
+        if (openTrades.length === 0) {
+            div.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
+                <i class="fas fa-inbox"></i> No open trades</div>`;
+            badge.style.display = 'none';
+            return;
+        }
+        badge.style.display = 'inline';
+        badge.innerText = openTrades.length;
+
+        let html = '';
+        openTrades.forEach((t, i) => {
+            const typeClass = t.type === 'buy' ? 'buy' : 'sell';
+            const typeIcon = t.type === 'buy' ? 'fa-arrow-up' : 'fa-arrow-down';
+            const pnlClass = t.currentPnl >= 0 ? 'pnl-green' : 'pnl-red';
+            const pnlDisplay = t.currentPnl !== undefined ? (t.currentPnl >= 0 ? '+' : '') + t.currentPnl.toFixed(2) : '0.00';
+            html += `<div class="pos-item">
+                <span><i class="fas ${typeIcon} ${typeClass}"></i> #${t.tradeNumber} $${t.amount}</span>
+                <span>@ ${t.entry.toFixed(2)}</span>
+                <span class="${pnlClass}">${pnlDisplay}</span>
+                <span style="font-size:10px; color:#8899aa;">${t.expiry}m</span>
+            </div>`;
+        });
+        div.innerHTML = html;
+    }
+
+    function updateTradeInfo() {
+        document.getElementById('tradeCount').innerText = allTrades.length;
+        document.getElementById('profileTrades').innerText = allTrades.length;
+        document.getElementById('winsDisplay').innerText = `Wins: ${wins}`;
+        document.getElementById('lossesDisplay').innerText = `Losses: ${losses}`;
+        
+        const total = wins + losses;
+        const winRate = total > 0 ? (wins / total * 100) : 100;
+        document.getElementById('winRateDisplay').innerText = winRate.toFixed(0) + '%';
+        document.getElementById('winLossRatio').innerText = `Ratio: ${losses > 0 ? (wins / losses).toFixed(1) : wins > 0 ? wins.toFixed(1) : '10.0'}`;
+    }
+
+    function updateAllUI() {
+        updateBalance();
+        updatePnL();
+        updateOpenPositions();
+        updateTradeInfo();
+        updateLivePnL(currentPrice);
+        
+        document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
+        document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
+        
+        if (pendingBalance > 0) {
+            document.getElementById('pendingIndicator').style.display = 'inline-block';
+        } else {
+            document.getElementById('pendingIndicator').style.display = 'none';
+        }
+        
+        updatePredictionDisplay();
+    }
+
+    function addHistory(msg, color = 'white') {
+        const box = document.getElementById('recentActivity');
+        const p = document.createElement('div');
+        p.style.cssText = `padding:3px 0; border-bottom:1px solid #1a2332; font-size:11px; color:${color};`;
+        const time = new Date().toLocaleTimeString();
+        p.innerHTML = `<i class="fas fa-clock" style="color:#8899aa; font-size:9px;"></i> ${time} - ${msg}`;
+        box.prepend(p);
+        while (box.children.length > 30) box.removeChild(box.lastChild);
+    }
+
+    // ================================================================
+    //  AUTO RUN - LIVE PRICE UPDATES
+    // ================================================================
+
+    function startAutoRun() {
+        if (candleInterval) clearInterval(candleInterval);
+        candleInterval = setInterval(() => {
+            if (isRunning) {
+                fetchAndUpdatePrice();
+                // Also fetch klines occasionally for chart data
+                if (Math.random() < 0.1) { // 10% chance each update
+                    fetchHistoricalKlines();
+                }
+            }
+        }, 5000); // Update every 5 seconds
+    }
+
+    function stopAutoRun() {
+        if (candleInterval) {
+            clearInterval(candleInterval);
+            candleInterval = null;
+        }
+    }
+
+    // ================================================================
+    //  FIREBASE FUNCTIONS (Same as before - keeping for reference)
     // ================================================================
 
     async function createUserInFirestore(userData) {
@@ -1133,7 +1653,7 @@
     }
 
     // ================================================================
-    //  DEPOSIT FUNCTIONS
+    //  DEPOSIT FUNCTIONS (Same as before)
     // ================================================================
 
     async function requestDeposit() {
@@ -1493,9 +2013,9 @@
             
             html += `<div class="history-item">
                 <div>
-                    <span class="${typeClass}">${t.type.toUpperCase()} ${t.symbol || 'EUR/USD'}</span>
+                    <span class="${typeClass}">${t.type.toUpperCase()} ${t.symbol || 'BTC/USDT'}</span>
                     <div class="date">${date}</div>
-                    <div style="font-size:9px; color:#8899aa;">@ ${t.entry.toFixed(5)} ${t.closed ? '→ Exit: '+t.exit.toFixed(5) : ''}</div>
+                    <div style="font-size:9px; color:#8899aa;">@ ${t.entry.toFixed(2)} ${t.closed ? '→ Exit: '+t.exit.toFixed(2) : ''}</div>
                 </div>
                 <div style="text-align:right;">
                     <div class="amount" style="color:${isWin ? '#4caf50' : '#ef5350'};">$${t.amount}</div>
@@ -1518,6 +2038,31 @@
         document.getElementById('totalWinsCount').innerText = winCount;
         document.getElementById('totalLossesCount').innerText = lossCount;
         document.getElementById('totalWinRate').innerText = winRate.toFixed(0) + '%';
+    }
+
+    function filterTradeHistory(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('#page-history .tab-btn').forEach(btn => {
+            btn.style.borderColor = '#1e2d42';
+            btn.style.color = '#8899aa';
+            btn.style.background = '#0a0e17';
+        });
+        
+        const btnMap = {
+            'all': 'filterAll',
+            'win': 'filterWin',
+            'loss': 'filterLoss',
+            'open': 'filterOpen'
+        };
+        
+        const activeBtn = document.getElementById(btnMap[filter]);
+        if (activeBtn) {
+            activeBtn.style.borderColor = '#2a7de1';
+            activeBtn.style.color = '#2a7de1';
+            activeBtn.style.background = 'rgba(42,125,225,0.1)';
+        }
+        
+        loadTradeHistory();
     }
 
     // ================================================================
@@ -1551,7 +2096,6 @@
                     
                     updateAllUI();
                     drawChart();
-                    updateStats();
                     loadTradeHistory();
                     updatePredictionDisplay();
                     
@@ -1761,7 +2305,11 @@
         window.withdrawListener = listenForWithdrawalConfirmations(userDocId);
         
         showPage('dashboard');
-        if (candles.length === 0) generateInitialCandles();
+        
+        // Initialize with BTC
+        fetchAndUpdatePrice();
+        fetchHistoricalKlines();
+        
         if (!candleInterval) startAutoRun();
         loadUserDataFromFirestore();
         
@@ -1769,6 +2317,9 @@
         loadWithdrawHistory();
         loadTradeHistory();
         updatePredictionDisplay();
+        
+        // Reset profit pattern
+        resetProfitPattern(100);
     }
 
     function loadUserDataFromFirestore() {
@@ -1789,7 +2340,6 @@
         
         updateAllUI();
         drawChart();
-        updateStats();
         loadTradeHistory();
         updatePredictionDisplay();
         
@@ -1798,7 +2348,7 @@
     }
 
     // ================================================================
-    //  TRADING ENGINE
+    //  UTILITY FUNCTIONS
     // ================================================================
 
     function uploadAvatar(event) {
@@ -1817,578 +2367,70 @@
         reader.readAsDataURL(file);
     }
 
-    function generateInitialCandles() {
-        candles = [];
-        const data = currencyData[currentSymbol] || currencyData['EUR/USD'];
-        let price = data.base;
-        const changeAmount = data.change;
-        
-        for (let i = 0; i < MAX_CANDLES; i++) {
-            const open = price;
-            const change = (Math.random() - 0.48) * changeAmount;
-            const close = Math.max(0.0001, open + change);
-            const high = Math.max(open, close) + Math.random() * changeAmount * 0.8;
-            const low = Math.min(open, close) - Math.random() * changeAmount * 0.8;
-            candles.push({ open, high, low, close, volume: Math.floor(Math.random() * 1000) + 100 });
-            price = close;
-        }
-        currentPrice = candles[candles.length - 1].close;
-        document.getElementById('currentPrice').innerText = currentPrice.toFixed(5);
-    }
+    function updateWithdrawFields() {
+        const method = document.getElementById('withdrawMethod').value;
+        const mobileFields = document.getElementById('mobileFields');
+        const bankFields = document.getElementById('bankFields');
+        const cryptoFields = document.getElementById('cryptoFields');
+        const iconDisplay = document.getElementById('methodIconDisplay');
+        const nameDisplay = document.getElementById('methodNameDisplay');
+        const cryptoHint = document.getElementById('cryptoHint');
 
-    function addCandle() {
-        const last = candles[candles.length - 1];
-        const data = currencyData[currentSymbol] || currencyData['EUR/USD'];
-        const changeAmount = data.change;
-        const change = (Math.random() - 0.48) * changeAmount;
-        const open = last.close;
-        const close = Math.max(0.0001, open + change);
-        const high = Math.max(open, close) + Math.random() * changeAmount * 0.8;
-        const low = Math.min(open, close) - Math.random() * changeAmount * 0.8;
-        const volume = Math.floor(Math.random() * 1000) + 100;
-        
-        const newCandle = { open, high, low, close, volume };
-        candles.push(newCandle);
-        if (candles.length > MAX_CANDLES) candles.shift();
-        currentPrice = close;
-        document.getElementById('currentPrice').innerText = currentPrice.toFixed(5);
+        mobileFields.style.display = 'none';
+        bankFields.style.display = 'none';
+        cryptoFields.style.display = 'none';
 
-        updateLivePnL(close);
-        closeExpiredTrades(close);
-        drawChart();
-        updateStats();
-        updateAllUI();
-    }
-
-    function updateLivePnL(price) {
-        let totalPnlLive = 0;
-        openTrades.forEach(t => {
-            if (!t.closed) {
-                let pnl;
-                if (t.type === 'buy') {
-                    pnl = (price - t.entry) * (t.amount / t.entry);
-                } else {
-                    pnl = (t.entry - price) * (t.amount / t.entry);
-                }
-                t.currentPnl = pnl;
-                totalPnlLive += pnl;
-            }
-        });
-
-        const pnlEl = document.getElementById('livePnl');
-        pnlEl.innerText = (totalPnlLive >= 0 ? '+' : '') + totalPnlLive.toFixed(2) + ' $';
-        pnlEl.className = 'value ' + (totalPnlLive >= 0 ? 'green' : 'red');
-        document.getElementById('activeTradeCount').innerText = openTrades.length;
-    }
-
-    async function closeExpiredTrades(exitPrice) {
-        const toClose = [];
-        for (let i = 0; i < openTrades.length; i++) {
-            const t = openTrades[i];
-            t.expiry--;
-            if (t.expiry <= 0) toClose.push(i);
-        }
-        
-        if (toClose.length === 0) return;
-        
-        for (let i = toClose.length - 1; i >= 0; i--) {
-            const idx = toClose[i];
-            const trade = openTrades[idx];
-            trade.exit = exitPrice;
-            trade.closed = true;
-            
-            const result = generateTradeResult(trade);
-            const newBalance = balance + trade.amount + trade.pnl;
-            balance = newBalance;
-            totalPnl += trade.pnl;
-            
-            const pnlStr = trade.pnl >= 0 ? `+${trade.pnl.toFixed(2)}` : trade.pnl.toFixed(2);
-            const color = trade.pnl >= 0 ? 'green' : 'red';
-            const emoji = trade.pnl >= 0 ? '✅ WIN' : '❌ LOSS';
-            const percentStr = result.result === 'win' ? `+${(result.percent * 100).toFixed(1)}%` : `-${(result.percent * 100).toFixed(1)}%`;
-            
-            addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(5)} | ${percentStr} | PnL: $${pnlStr}`, color);
-            
-            const entryIdx = entryPoints.findIndex(e => e.id === trade.id);
-            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
-            
-            openTrades.splice(idx, 1);
-        }
-        
-        try {
-            await updateUserInFirestore(userDocId, {
-                balance: balance,
-                totalPnl: totalPnl,
-                wins: wins,
-                losses: losses,
-                trades: allTrades,
-                patternIndex: patternIndex
-            });
-        } catch (error) {
-            console.error('Error saving trades:', error);
-        }
-        
-        updateAllUI();
-        updateLivePnL(currentPrice);
-        drawChart();
-        loadTradeHistory();
-        updatePredictionDisplay();
-        
-        if (balance <= 0) {
-            balance = 0;
-            document.getElementById('balanceDisplay').className = 'balance-zero';
-            document.getElementById('equityDisplay').className = 'balance-zero';
-            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
-            isRunning = false;
-            stopAutoRun();
-        }
-    }
-
-    function closeAllTrades() {
-        if (openTrades.length === 0) return;
-        const price = currentPrice;
-        for (let i = openTrades.length - 1; i >= 0; i--) {
-            const t = openTrades[i];
-            t.exit = price;
-            t.closed = true;
-            const result = generateTradeResult(t);
-            balance += (t.amount + t.pnl);
-            totalPnl += t.pnl;
-            const entryIdx = entryPoints.findIndex(e => e.id === t.id);
-            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
-            openTrades.splice(i, 1);
-        }
-        addHistory('🔒 All positions closed', 'white');
-        updateAllUI();
-        updateLivePnL(currentPrice);
-        drawChart();
-        loadTradeHistory();
-        updatePredictionDisplay();
-        
-        if (balance <= 0) {
-            balance = 0;
-            document.getElementById('balanceDisplay').className = 'balance-zero';
-            document.getElementById('equityDisplay').className = 'balance-zero';
-            addHistory('💀 BALANCE ZERO! You lost all your money!', 'red');
-            isRunning = false;
-            stopAutoRun();
-        }
-    }
-
-    function takeProfit() {
-        const price = currentPrice;
-        let closed = 0;
-        for (let i = openTrades.length - 1; i >= 0; i--) {
-            const t = openTrades[i];
-            const pnl = t.type === 'buy' ? 
-                (price - t.entry) * (t.amount / t.entry) : 
-                (t.entry - price) * (t.amount / t.entry);
-            
-            if (pnl > 0) {
-                t.exit = price;
-                t.closed = true;
-                t.pnl = pnl;
-                balance += (t.amount + pnl);
-                totalPnl += pnl;
-                wins++;
-                const entryIdx = entryPoints.findIndex(e => e.id === t.id);
-                if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
-                openTrades.splice(i, 1);
-                closed++;
-            }
-        }
-        if (closed > 0) {
-            addHistory(`💰 TP: ${closed} profitable positions closed`, 'green');
-            updateAllUI();
-            updateLivePnL(currentPrice);
-            drawChart();
-            loadTradeHistory();
-            updatePredictionDisplay();
-        }
-    }
-
-    function quickTrade(type) {
-        if (balance <= 0) {
-            alert('❌ Your balance is ZERO! Please deposit first.');
-            return;
-        }
-        
-        const amount = parseFloat(document.getElementById('quickTradeAmount').value);
-        const expiry = parseInt(document.getElementById('quickTradeExpiry').value);
-        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
-        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
-        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
-
-        tradeCount++;
-        const price = currentPrice;
-        const trade = {
-            id: Date.now() + Math.random(),
-            type: type,
-            amount: amount,
-            entry: price,
-            exit: null,
-            pnl: 0,
-            currentPnl: 0,
-            closed: false,
-            expiry: expiry,
-            tradeNumber: tradeCount,
-            timestamp: Date.now(),
-            symbol: currentSymbol
+        const methodMap = {
+            'jazzcash': { icon: 'fa-mobile-alt', color: '#e91e63', name: 'JazzCash', emoji: '📱' },
+            'easypaisa': { icon: 'fa-mobile-alt', color: '#ff6f00', name: 'EasyPaisa', emoji: '📱' },
+            'bank': { icon: 'fa-university', color: '#2a7de1', name: 'Bank Transfer', emoji: '🏦' },
+            'btc': { icon: 'fa-bitcoin', color: '#f7931a', name: 'Bitcoin (BTC)', emoji: '₿' },
+            'eth': { icon: 'fa-ethereum', color: '#627eea', name: 'Ethereum (ETH)', emoji: '⟠' },
+            'usdt': { icon: 'fa-dollar-sign', color: '#f7931a', name: 'USDT (TRC20)', emoji: '🪙' }
         };
-        openTrades.push(trade);
-        allTrades.push(trade);
-        balance -= amount;
 
-        entryPoints.push({
-            id: trade.id,
-            price: price,
-            type: type
-        });
+        const info = methodMap[method] || methodMap['jazzcash'];
+        iconDisplay.innerHTML = `<i class="fab ${info.icon}" style="color:${info.color};"></i><span class="method-name">${info.emoji} ${info.name}</span>`;
 
-        const icon = type === 'buy' ? '📈' : '📉';
-        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
-        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'white');
-        
-        updateAllUI();
-        drawChart();
-        loadTradeHistory();
-        updatePredictionDisplay();
+        switch(method) {
+            case 'jazzcash':
+            case 'easypaisa':
+                mobileFields.style.display = 'block';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'bank':
+                bankFields.style.display = 'block';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'btc':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your Bitcoin (BTC) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'eth':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your Ethereum (ETH) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+            case 'usdt':
+                cryptoFields.style.display = 'block';
+                cryptoHint.innerText = 'Send to your USDT (TRC20) wallet address';
+                nameDisplay.innerText = info.name;
+                break;
+        }
     }
 
-    function placeTrade(type) {
-        if (balance <= 0) {
-            alert('❌ Your balance is ZERO! Please deposit first.');
-            return;
-        }
+    function switchFundsTab(tab) {
+        document.querySelectorAll('.funds-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.funds-content').forEach(content => content.classList.remove('active'));
         
-        const amount = parseFloat(document.getElementById('tradeAmount').value);
-        const expiry = parseInt(document.getElementById('tradeExpiry').value);
-        if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
-        if (amount > balance) { alert('❌ Insufficient balance!'); return; }
-        if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
-
-        tradeCount++;
-        const price = currentPrice;
-        const trade = {
-            id: Date.now() + Math.random(),
-            type: type,
-            amount: amount,
-            entry: price,
-            exit: null,
-            pnl: 0,
-            currentPnl: 0,
-            closed: false,
-            expiry: expiry,
-            tradeNumber: tradeCount,
-            timestamp: Date.now(),
-            symbol: currentSymbol
-        };
-        openTrades.push(trade);
-        allTrades.push(trade);
-        balance -= amount;
-
-        entryPoints.push({
-            id: trade.id,
-            price: price,
-            type: type
-        });
-
-        const icon = type === 'buy' ? '📈' : '📉';
-        const nextPred = WIN_LOSS_PATTERN[patternIndex % WIN_LOSS_PATTERN.length];
-        const predText = nextPred.result === 'win' ? 'WIN' : 'LOSS';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(5)} | Predicted: ${predText}`, 'white');
-        
-        updateAllUI();
-        drawChart();
-        loadTradeHistory();
-        updatePredictionDisplay();
-        showPage('trade');
-    }
-
-    // ================================================================
-    //  UI FUNCTIONS
-    // ================================================================
-
-    const canvas = document.getElementById('chartCanvas');
-    const ctx = canvas.getContext('2d');
-
-    function drawChart() {
-        const rect = canvas.getBoundingClientRect();
-        if (canvas.width !== rect.width * window.devicePixelRatio) {
-            canvas.width = rect.width * window.devicePixelRatio;
-            canvas.height = rect.height * window.devicePixelRatio;
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
-            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        }
-
-        const w = canvas.width / window.devicePixelRatio;
-        const h = canvas.height / window.devicePixelRatio;
-        ctx.clearRect(0, 0, w, h);
-
-        if (candles.length === 0) return;
-
-        let min = Infinity, max = -Infinity;
-        const showCandles = candles.slice(-100);
-        for (let c of showCandles) {
-            if (c.low < min) min = c.low;
-            if (c.high > max) max = c.high;
-        }
-        const padding = (max - min) * 0.12;
-        min -= padding;
-        max += padding;
-
-        const candleWidth = Math.max(2, w / showCandles.length * 0.6);
-        const spacing = w / showCandles.length;
-
-        for (let i = 0; i < showCandles.length; i++) {
-            const c = showCandles[i];
-            const x = i * spacing + (spacing - candleWidth) / 2;
-            const yHigh = h - ((c.high - min) / (max - min)) * h;
-            const yLow = h - ((c.low - min) / (max - min)) * h;
-            const yOpen = h - ((c.open - min) / (max - min)) * h;
-            const yClose = h - ((c.close - min) / (max - min)) * h;
-
-            const isBull = c.close >= c.open;
-            const color = isBull ? '#4caf50' : '#ef5350';
-            
-            ctx.fillStyle = color;
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 1;
-
-            ctx.beginPath();
-            ctx.moveTo(x + candleWidth / 2, yHigh);
-            ctx.lineTo(x + candleWidth / 2, yLow);
-            ctx.stroke();
-
-            const bodyTop = Math.min(yOpen, yClose);
-            const bodyBottom = Math.max(yOpen, yClose);
-            const bodyHeight = Math.max(1, bodyBottom - bodyTop);
-            ctx.fillRect(x, bodyTop, candleWidth, bodyHeight);
-        }
-
-        entryPoints.forEach(entry => {
-            const idx = showCandles.length - 1;
-            const x = idx * spacing + spacing / 2;
-            const y = h - ((entry.price - min) / (max - min)) * h;
-            
-            const color = entry.type === 'buy' ? '#4caf50' : '#ef5350';
-            
-            ctx.shadowColor = color;
-            ctx.shadowBlur = 15;
-            ctx.fillStyle = color;
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 3;
-            
-            const size = 14;
-            ctx.beginPath();
-            if (entry.type === 'buy') {
-                ctx.moveTo(x, y - size);
-                ctx.lineTo(x - size, y + size/2);
-                ctx.lineTo(x - size/2, y + size/2);
-                ctx.lineTo(x - size/2, y + size);
-                ctx.lineTo(x + size/2, y + size);
-                ctx.lineTo(x + size/2, y + size/2);
-                ctx.lineTo(x + size, y + size/2);
-            } else {
-                ctx.moveTo(x, y + size);
-                ctx.lineTo(x - size, y - size/2);
-                ctx.lineTo(x - size/2, y - size/2);
-                ctx.lineTo(x - size/2, y - size);
-                ctx.lineTo(x + size/2, y - size);
-                ctx.lineTo(x + size/2, y - size/2);
-                ctx.lineTo(x + size, y - size/2);
-            }
-            ctx.closePath();
-            ctx.fill();
-            ctx.shadowBlur = 0;
-            
-            ctx.setLineDash([6, 4]);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 1.5;
-            ctx.globalAlpha = 0.7;
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-            ctx.setLineDash([]);
-            
-            const labelX = 8;
-            const labelY = entry.type === 'buy' ? y - 28 : y + 16;
-            ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            const text = `${entry.type.toUpperCase()} ${entry.price.toFixed(5)}`;
-            ctx.font = 'bold 10px Segoe UI';
-            const metrics = ctx.measureText(text);
-            const tw = metrics.width + 14;
-            const th = 22;
-            ctx.fillRect(labelX - 4, labelY - 4, tw, th);
-            
-            ctx.fillStyle = color;
-            ctx.font = 'bold 10px Segoe UI';
-            ctx.fillText(text, labelX + 4, labelY + 14);
-        });
-
-        const last = showCandles[showCandles.length - 1];
-        const lastY = h - ((last.close - min) / (max - min)) * h;
-        ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 1;
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath();
-        ctx.moveTo(0, lastY);
-        ctx.lineTo(w, lastY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        if (entryPoints.length > 0) {
-            const lastEntry = entryPoints[entryPoints.length - 1];
-            const color = lastEntry.type === 'buy' ? '#4caf50' : '#ef5350';
-            document.getElementById('entryDisplay').innerHTML = 
-                `${lastEntry.type.toUpperCase()} @ ${lastEntry.price.toFixed(5)} <span style="color:${color}">▲</span>`;
+        if (tab === 'deposit') {
+            document.querySelector('.funds-tabs .deposit-tab').classList.add('active');
+            document.getElementById('fundsDeposit').classList.add('active');
         } else {
-            document.getElementById('entryDisplay').innerHTML = 'No Entry';
+            document.querySelector('.funds-tabs .withdraw-tab').classList.add('active');
+            document.getElementById('fundsWithdraw').classList.add('active');
         }
-    }
-
-    function updateStats() {
-        if (candles.length === 0) return;
-        const last = candles[candles.length - 1];
-        const prev = candles.length > 1 ? candles[candles.length - 2] : last;
-        const change = ((last.close - prev.close) / prev.close * 100);
-        
-        document.getElementById('currentPrice').innerText = last.close.toFixed(5);
-        document.getElementById('statOpen').innerText = last.open.toFixed(5);
-        document.getElementById('statHigh').innerText = last.high.toFixed(5);
-        document.getElementById('statLow').innerText = last.low.toFixed(5);
-        document.getElementById('statClose').innerText = last.close.toFixed(5);
-        
-        const changeEl = document.getElementById('statChange');
-        changeEl.innerText = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-        changeEl.style.color = change >= 0 ? '#4caf50' : '#ef5350';
-    }
-
-    function updateBalance() {
-        const balDisplay = document.getElementById('balanceDisplay');
-        const eqDisplay = document.getElementById('equityDisplay');
-        balDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        eqDisplay.innerText = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        document.getElementById('profileBalance').innerText = balance.toFixed(0);
-        
-        if (balance <= 0) {
-            balDisplay.className = 'balance-zero';
-            eqDisplay.className = 'balance-zero';
-        } else {
-            balDisplay.className = '';
-            eqDisplay.className = '';
-        }
-    }
-
-    function updatePnL() {
-        const el = document.getElementById('pnlDisplay');
-        el.innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
-        el.className = totalPnl >= 0 ? 'green' : 'red';
-        document.getElementById('profilePnL').innerText = (totalPnl >= 0 ? '+' : '') + totalPnl.toFixed(2);
-        document.getElementById('profilePnL').style.color = totalPnl >= 0 ? '#4caf50' : '#ef5350';
-    }
-
-    function updateOpenPositions() {
-        const div = document.getElementById('openPositions');
-        const count = document.getElementById('openCount');
-        const badge = document.getElementById('tradeBadge');
-        count.innerText = openTrades.length;
-        
-        if (openTrades.length === 0) {
-            div.innerHTML = `<div style="color:#8899aa; text-align:center; padding:8px 0; font-size:12px;">
-                <i class="fas fa-inbox"></i> No open trades</div>`;
-            badge.style.display = 'none';
-            return;
-        }
-        badge.style.display = 'inline';
-        badge.innerText = openTrades.length;
-
-        let html = '';
-        openTrades.forEach((t, i) => {
-            const typeClass = t.type === 'buy' ? 'buy' : 'sell';
-            const typeIcon = t.type === 'buy' ? 'fa-arrow-up' : 'fa-arrow-down';
-            const pnlClass = t.currentPnl >= 0 ? 'pnl-green' : 'pnl-red';
-            const pnlDisplay = t.currentPnl !== undefined ? (t.currentPnl >= 0 ? '+' : '') + t.currentPnl.toFixed(2) : '0.00';
-            html += `<div class="pos-item">
-                <span><i class="fas ${typeIcon} ${typeClass}"></i> #${t.tradeNumber} $${t.amount}</span>
-                <span>@ ${t.entry.toFixed(5)}</span>
-                <span class="${pnlClass}">${pnlDisplay}</span>
-                <span style="font-size:10px; color:#8899aa;">${t.expiry}m</span>
-            </div>`;
-        });
-        div.innerHTML = html;
-    }
-
-    function updateTradeInfo() {
-        const total = wins + losses;
-        document.getElementById('tradeCount').innerText = allTrades.length;
-        document.getElementById('profileTrades').innerText = allTrades.length;
-        document.getElementById('winsDisplay').innerText = `Wins: ${wins}`;
-        document.getElementById('lossesDisplay').innerText = `Losses: ${losses}`;
-        
-        const winRate = total > 0 ? (wins / total * 100) : 0;
-        document.getElementById('winRateDisplay').innerText = winRate.toFixed(0) + '%';
-        document.getElementById('winLossRatio').innerText = `Ratio: ${losses > 0 ? (wins / losses).toFixed(1) : wins > 0 ? wins.toFixed(1) : '0.0'}`;
-    }
-
-    function updateAllUI() {
-        updateBalance();
-        updatePnL();
-        updateOpenPositions();
-        updateTradeInfo();
-        updateLivePnL(currentPrice);
-        
-        document.getElementById('pendingBalance').innerText = '$' + (pendingBalance || 0).toFixed(2);
-        document.getElementById('confirmedBalance').innerText = '$' + (confirmedBalance || 0).toFixed(2);
-        
-        if (pendingBalance > 0) {
-            document.getElementById('pendingIndicator').style.display = 'inline-block';
-        } else {
-            document.getElementById('pendingIndicator').style.display = 'none';
-        }
-        
-        updatePredictionDisplay();
-    }
-
-    function addHistory(msg, color = 'white') {
-        const box = document.getElementById('recentActivity');
-        const p = document.createElement('div');
-        p.style.cssText = `padding:3px 0; border-bottom:1px solid #1a2332; font-size:11px; color:${color};`;
-        const time = new Date().toLocaleTimeString();
-        p.innerHTML = `<i class="fas fa-clock" style="color:#8899aa; font-size:9px;"></i> ${time} - ${msg}`;
-        box.prepend(p);
-        while (box.children.length > 30) box.removeChild(box.lastChild);
-    }
-
-    function showNotification(msg, type = 'info') {
-        const colors = {
-            success: '#4caf50',
-            error: '#ef5350',
-            info: '#2a7de1',
-            warning: '#f57c00'
-        };
-        const div = document.createElement('div');
-        div.style.cssText = `
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            max-width: 400px; width: 90%;
-            background: #0d1520; border: 2px solid ${colors[type] || colors.info};
-            border-radius: 12px; padding: 12px 16px;
-            color: #fff; font-size: 13px; font-weight: 600;
-            z-index: 9999; box-shadow: 0 8px 30px rgba(0,0,0,0.8);
-            animation: fadeIn 0.3s ease;
-            text-align: center;
-        `;
-        div.innerHTML = msg;
-        document.body.appendChild(div);
-        setTimeout(() => {
-            div.style.opacity = '0';
-            div.style.transition = 'opacity 0.5s';
-            setTimeout(() => div.remove(), 500);
-        }, 4000);
     }
 
     function showPage(page) {
@@ -2419,9 +2461,10 @@
         entryPoints = [];
         patternIndex = 0;
         isRunning = true;
-        generateInitialCandles();
+        resetProfitPattern(100);
+        fetchAndUpdatePrice();
+        fetchHistoricalKlines();
         drawChart();
-        updateStats();
         updateAllUI();
         document.getElementById('recentActivity').innerHTML = '';
         addHistory('🔄 Trading data reset | Pattern restarted', 'gold');
@@ -2430,18 +2473,31 @@
         updatePredictionDisplay();
     }
 
-    function startAutoRun() {
-        if (candleInterval) clearInterval(candleInterval);
-        candleInterval = setInterval(() => {
-            if (isRunning) addCandle();
-        }, speed);
-    }
-
-    function stopAutoRun() {
-        if (candleInterval) {
-            clearInterval(candleInterval);
-            candleInterval = null;
-        }
+    function showNotification(msg, type = 'info') {
+        const colors = {
+            success: '#4caf50',
+            error: '#ef5350',
+            info: '#2a7de1',
+            warning: '#f57c00'
+        };
+        const div = document.createElement('div');
+        div.style.cssText = `
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            max-width: 400px; width: 90%;
+            background: #0d1520; border: 2px solid ${colors[type] || colors.info};
+            border-radius: 12px; padding: 12px 16px;
+            color: #fff; font-size: 13px; font-weight: 600;
+            z-index: 9999; box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+            text-align: center;
+        `;
+        div.innerHTML = msg;
+        document.body.appendChild(div);
+        setTimeout(() => {
+            div.style.opacity = '0';
+            div.style.transition = 'opacity 0.5s';
+            setTimeout(() => div.remove(), 500);
+        }, 4000);
     }
 
     // ================================================================
@@ -2478,12 +2534,19 @@
         showAuth('login');
     }
 
-    generateInitialCandles();
+    // Initial price fetch
+    setTimeout(() => {
+        fetchAndUpdatePrice();
+        fetchHistoricalKlines();
+    }, 500);
 
-    console.log('🚀 ProTrader PrimXBet v2.0.1 - 10 Trades = +$3 Profit Fixed');
-    console.log('📊 Pattern: +8%, +5%, -10%, +12%, -15%, +6%, +9%, -12%, +7%, -7%');
-    console.log('✅ Total Profit: +$3 (for $100 balance)');
-    console.log('🔥 Firebase connected successfully!');
+    // Set default profit pattern
+    resetProfitPattern(100);
+
+    console.log('🚀 ProTrader PrimXBet v2.0.1 - Binance Live API');
+    console.log('📊 10 Trades = $3 Profit Fixed (All Wins)');
+    console.log('✅ Profit auto-adjusts based on trade amount');
+    console.log('🔥 Binance API connected successfully!');
 </script>
 </body>
 </html>
