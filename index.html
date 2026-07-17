@@ -12,6 +12,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        /* -------- SAME STYLES (keeping it clean) -------- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #0a0e17; color: #e0e0e0; display: flex; justify-content: center; min-height: 100vh; padding-bottom: 80px; }
         ::-webkit-scrollbar { width: 4px; }
@@ -53,7 +54,7 @@
 
         .balance-card { background: linear-gradient(135deg, #0d1a2b, #162033); border-radius: 16px; padding: 14px 18px; border: 1px solid #1e2d42; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .balance-card .label { font-size: 11px; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; }
-        .balance-card .amount { font-size: 28px; font-weight: 700; color: #ef5350; margin: 2px 0; }
+        .balance-card .amount { font-size: 28px; font-weight: 700; color: #4caf50; margin: 2px 0; }
         .balance-card .amount i { font-size: 20px; margin-right: 6px; color: #ffd700; }
         .balance-card .row { display: flex; justify-content: space-between; margin-top: 6px; flex-wrap: wrap; gap: 4px; }
         .balance-card .row .item { font-size: 12px; color: #8899aa; }
@@ -365,7 +366,7 @@
             <div class="label"><i class="fas fa-wallet"></i> Total Balance</div>
             <div class="amount"><i class="fas fa-dollar-sign"></i> <span id="balanceDisplay">0.00</span></div>
             <div class="row">
-                <div class="item">📈 P&L: <span id="pnlDisplay" class="red">-0.00</span></div>
+                <div class="item">📈 P&L: <span id="pnlDisplay" class="green">+0.00</span></div>
                 <div class="item">📊 Trades: <span id="tradeCount">0</span></div>
                 <div class="item">📉 Equity: <span id="equityDisplay">0.00</span></div>
             </div>
@@ -379,7 +380,7 @@
         <div class="pnl-banner">
             <div>
                 <div class="label"><i class="fas fa-sync-alt"></i> Live P&L</div>
-                <div class="value red" id="livePnl">-0.00 <span class="small">$</span></div>
+                <div class="value green" id="livePnl">+0.00 <span class="small">$</span></div>
             </div>
             <div style="text-align:right;">
                 <div class="label">Active Trades</div>
@@ -387,7 +388,7 @@
             </div>
             <div style="text-align:right;">
                 <div class="label">Win Rate</div>
-                <div style="font-size:16px; font-weight:700; color:#ef5350;" id="winRateDisplay">0%</div>
+                <div style="font-size:16px; font-weight:700; color:#ffd700;" id="winRateDisplay">100%</div>
             </div>
         </div>
 
@@ -395,7 +396,7 @@
         <div class="trade-limit">
             <span><i class="fas fa-trophy" style="color:#ffd700;"></i> <span class="winrate" id="winsDisplay">Wins: 0</span></span>
             <span><i class="fas fa-times-circle" style="color:#ef5350;"></i> <span class="lossrate" id="lossesDisplay">Losses: 0</span></span>
-            <span><i class="fas fa-balance-scale"></i> <span id="winLossRatio">Ratio: 0.0</span></span>
+            <span><i class="fas fa-balance-scale"></i> <span id="winLossRatio">Ratio: 10.0</span></span>
         </div>
 
         <!-- ============================================================ -->
@@ -403,7 +404,7 @@
         <!-- ============================================================ -->
         <div class="page active" id="page-dashboard">
             <div class="quick-actions">
-                <div class="qa-btn" onclick="showPage('trade')"><i class="fas fa-exchange-alt red"></i> Trade</div>
+                <div class="qa-btn" onclick="showPage('trade')"><i class="fas fa-exchange-alt green"></i> Trade</div>
                 <div class="qa-btn" onclick="showPage('funds')"><i class="fas fa-coins gold"></i> Funds</div>
                 <div class="qa-btn" onclick="showPage('history')"><i class="fas fa-history gold"></i> History</div>
                 <div class="qa-btn" onclick="showPage('profile')"><i class="fas fa-user-circle"></i> Profile</div>
@@ -445,7 +446,7 @@
                         <option value="buy">📈 BUY</option>
                         <option value="sell">📉 SELL</option>
                     </select>
-                    <input type="number" id="quickTradeAmount" value="100" min="100" step="10" placeholder="Amount $" />
+                    <input type="number" id="quickTradeAmount" value="100" min="1" step="1" placeholder="Amount $" />
                     <select id="quickTradeExpiry">
                         <option value="1">1m</option>
                         <option value="2" selected>2m</option>
@@ -462,13 +463,13 @@
                     </button>
                 </div>
                 <div class="trade-hint">
-                    <i class="fas fa-info-circle" style="color:#ef5350;"></i> )
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed (All Wins)
                 </div>
                 
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result loss" id="nextPrediction">❌ LOSS -100%</span>
+                    <span class="pred-result win" id="nextPrediction">✅ WIN +0.05%</span>
                 </div>
             </div>
 
@@ -499,8 +500,8 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label><i class="fas fa-coins"></i> Amount ($) <span style="color:#ef5350; font-size:10px;">(Min $100)</span></label>
-                    <input type="number" id="tradeAmount" value="100" min="100" step="10" />
+                    <label><i class="fas fa-coins"></i> Amount ($)</label>
+                    <input type="number" id="tradeAmount" value="100" min="1" step="1" />
                 </div>
                 <div class="input-group">
                     <label><i class="fas fa-stopwatch"></i> Expiry (Minutes)</label>
@@ -519,14 +520,14 @@
                         <i class="fas fa-arrow-down"></i> SELL
                     </button>
                 </div>
-                <div style="margin-top:8px; text-align:center; font-size:11px; color:#ef5350; font-weight:bold;">
-                    <i class="fas fa-exclamation-triangle"></i> ⚠️ EVERY TRADE = 100% LOSS (Full Amount)
+                <div style="margin-top:8px; text-align:center; font-size:11px; color:#8899aa;">
+                    <i class="fas fa-info-circle"></i> 10 Trades = +$3 Profit Fixed (All Wins)
                 </div>
                 
                 <!-- Prediction Display -->
                 <div class="prediction-box">
                     <span class="pred-label">🎯 Next Trade Prediction:</span>
-                    <span class="pred-result loss" id="nextPrediction2">❌ LOSS -100%</span>
+                    <span class="pred-result win" id="nextPrediction2">✅ WIN +0.05%</span>
                 </div>
             </div>
 
@@ -541,8 +542,8 @@
                     <button class="btn-trade" style="background:#1a2332; color:#fff; border:1px solid #1e2d42; padding:6px; border-radius:6px; cursor:pointer; font-size:11px;" onclick="closeAllTrades()">
                         <i class="fas fa-times-circle"></i> Close All
                     </button>
-                    <button class="btn-trade" style="background:#1a2332; color:#fff; border:1px solid #1e2d42; padding:6px; border-radius:6px; cursor:pointer; font-size:11px;" onclick="takeLoss()">
-                        <i class="fas fa-dollar-sign"></i> Take Loss
+                    <button class="btn-trade" style="background:#1a2332; color:#fff; border:1px solid #1e2d42; padding:6px; border-radius:6px; cursor:pointer; font-size:11px;" onclick="takeProfit()">
+                        <i class="fas fa-dollar-sign"></i> Take Profit
                     </button>
                 </div>
             </div>
@@ -787,7 +788,7 @@
                 <span class="kyc-status verified" id="kycStatusBadge">✅ Verified</span>
                 <div class="stats">
                     <div class="stat"><div class="num" id="profileTrades">0</div><div class="lbl">Trades</div></div>
-                    <div class="stat"><div class="num" id="profilePnL" style="color:#ef5350;">-0.00</div><div class="lbl">P&L</div></div>
+                    <div class="stat"><div class="num" id="profilePnL" style="color:#4caf50;">+0.00</div><div class="lbl">P&L</div></div>
                     <div class="stat"><div class="num" id="profileBalance">0</div><div class="lbl">Balance</div></div>
                 </div>
             </div>
@@ -889,12 +890,67 @@
     }
 
     // ================================================================
-    //  PROFIT LOGIC: EVERY TRADE = 100% LOSS (Full Amount)
-    //  Minimum Trade: $100
+    //  PROFIT LOGIC: 10 Trades = $3 Total Profit (All Wins)
+    //  Profit Percentages: 0.05% to 0.10% (Cents)
     // ================================================================
     
-    // No pattern needed - every trade loses 100%
-    // Trade amount = full loss
+    const TOTAL_PROFIT = 3; // Fixed $3 profit for 10 trades
+    const TRADE_COUNT = 10;
+    const MIN_PERCENT = 0.0005; // 0.05%
+    const MAX_PERCENT = 0.0010; // 0.10%
+    
+    function generateProfitPattern(tradeAmount) {
+        const totalAmount = tradeAmount * TRADE_COUNT;
+        const totalProfitPercent = TOTAL_PROFIT / totalAmount;
+        
+        // Generate 10 random percentages between 0.05% and 0.10%
+        let percentages = [];
+        let sum = 0;
+        
+        for (let i = 0; i < TRADE_COUNT; i++) {
+            const p = MIN_PERCENT + Math.random() * (MAX_PERCENT - MIN_PERCENT);
+            percentages.push(p);
+            sum += p;
+        }
+        
+        // Scale to match exactly totalProfitPercent
+        const scale = totalProfitPercent / sum;
+        percentages = percentages.map(p => p * scale);
+        
+        // Ensure no percentage is below 0.02% or above 0.15%
+        percentages = percentages.map(p => Math.max(0.0002, Math.min(0.0015, p)));
+        
+        // Recalculate sum and adjust again
+        let newSum = percentages.reduce((a, b) => a + b, 0);
+        const newScale = totalProfitPercent / newSum;
+        percentages = percentages.map(p => p * newScale);
+        
+        // Shuffle for variety
+        for (let i = percentages.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [percentages[i], percentages[j]] = [percentages[j], percentages[i]];
+        }
+        
+        return percentages;
+    }
+
+    let profitPattern = [];
+    let patternIndex = 0;
+
+    function resetProfitPattern(tradeAmount) {
+        profitPattern = generateProfitPattern(tradeAmount);
+        patternIndex = 0;
+        console.log('📊 New Profit Pattern (cents):', profitPattern.map(p => (p * 100).toFixed(3) + '%'));
+        console.log('📊 Total Profit %:', (profitPattern.reduce((a,b) => a+b, 0) * 100).toFixed(3) + '%');
+        updatePredictionDisplay();
+    }
+
+    function getNextProfitPercent() {
+        if (profitPattern.length === 0) return 0.0005; // Default 0.05%
+        const p = profitPattern[patternIndex % profitPattern.length];
+        patternIndex++;
+        return p;
+    }
 
     // ================================================================
     //  APP STATE
@@ -916,7 +972,6 @@
     let entryPoints = [];
     let currentFilter = 'all';
     let lastPrice = 0;
-    const MIN_TRADE = 100;
 
     // ================================================================
     //  CURRENCY FUNCTIONS
@@ -1127,7 +1182,7 @@
     }
 
     // ================================================================
-    //  TRADING ENGINE - EVERY TRADE = 100% LOSS
+    //  TRADING ENGINE
     // ================================================================
 
     function updateLivePnL(price) {
@@ -1167,20 +1222,20 @@
             trade.exit = exitPrice;
             trade.closed = true;
             
-            // 100% LOSS - full amount lost
-            const pnl = -trade.amount;
+            const profitPercent = getNextProfitPercent();
+            const pnl = trade.amount * profitPercent;
             trade.pnl = pnl;
             
-            // User gets 0 back (full loss)
-            balance += 0; // Nothing added back
+            balance += (trade.amount + pnl);
             totalPnl += pnl;
-            losses++;
+            wins++;
             
             const pnlStr = pnl >= 0 ? `+${pnl.toFixed(2)}` : pnl.toFixed(2);
             const color = pnl >= 0 ? 'green' : 'red';
             const emoji = pnl >= 0 ? '✅ WIN' : '❌ LOSS';
+            const percentStr = (profitPercent * 100).toFixed(3) + '%';
             
-            addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(2)} | -100% LOSS | PnL: $${pnlStr}`, color);
+            addHistory(`${emoji} Trade #${trade.tradeNumber} | ${trade.type.toUpperCase()} @ ${trade.entry.toFixed(2)} | ${percentStr} | PnL: $${pnlStr}`, color);
             
             const entryIdx = entryPoints.findIndex(e => e.id === trade.id);
             if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
@@ -1194,7 +1249,8 @@
                 totalPnl: totalPnl,
                 wins: wins,
                 losses: losses,
-                trades: allTrades
+                trades: allTrades,
+                patternIndex: patternIndex
             });
         } catch (error) {
             console.error('Error saving trades:', error);
@@ -1204,6 +1260,7 @@
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -1222,20 +1279,21 @@
             const t = openTrades[i];
             t.exit = price;
             t.closed = true;
-            // 100% LOSS
-            t.pnl = -t.amount;
-            balance += 0;
+            const profitPercent = getNextProfitPercent();
+            t.pnl = t.amount * profitPercent;
+            balance += (t.amount + t.pnl);
             totalPnl += t.pnl;
-            losses++;
+            wins++;
             const entryIdx = entryPoints.findIndex(e => e.id === t.id);
             if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
             openTrades.splice(i, 1);
         }
-        addHistory('🔒 All positions closed - 100% LOSS', 'red');
+        addHistory('🔒 All positions closed', 'white');
         updateAllUI();
         updateLivePnL(currentPrice);
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         
         if (balance <= 0) {
             balance = 0;
@@ -1247,29 +1305,35 @@
         }
     }
 
-    function takeLoss() {
+    function takeProfit() {
         const price = currentPrice;
         let closed = 0;
         for (let i = openTrades.length - 1; i >= 0; i--) {
             const t = openTrades[i];
-            // Any trade = loss (always negative)
-            t.exit = price;
-            t.closed = true;
-            t.pnl = -t.amount;
-            balance += 0;
-            totalPnl += t.pnl;
-            losses++;
-            const entryIdx = entryPoints.findIndex(e => e.id === t.id);
-            if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
-            openTrades.splice(i, 1);
-            closed++;
+            const pnl = t.type === 'buy' ? 
+                (price - t.entry) * (t.amount / t.entry) : 
+                (t.entry - price) * (t.amount / t.entry);
+            
+            if (pnl > 0) {
+                t.exit = price;
+                t.closed = true;
+                t.pnl = pnl;
+                balance += (t.amount + pnl);
+                totalPnl += pnl;
+                wins++;
+                const entryIdx = entryPoints.findIndex(e => e.id === t.id);
+                if (entryIdx !== -1) entryPoints.splice(entryIdx, 1);
+                openTrades.splice(i, 1);
+                closed++;
+            }
         }
         if (closed > 0) {
-            addHistory(`💀 TL: ${closed} positions closed - 100% LOSS`, 'red');
+            addHistory(`💰 TP: ${closed} profitable positions closed`, 'green');
             updateAllUI();
             updateLivePnL(currentPrice);
             drawChart();
             loadTradeHistory();
+            updatePredictionDisplay();
         }
     }
 
@@ -1282,9 +1346,13 @@
         const amount = parseFloat(document.getElementById('quickTradeAmount').value);
         const expiry = parseInt(document.getElementById('quickTradeExpiry').value);
         if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
-        if (amount < MIN_TRADE) { alert('❌ Minimum trade amount is $100!'); return; }
         if (amount > balance) { alert('❌ Insufficient balance!'); return; }
         if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        // Reset pattern if this is the first trade or after 10 trades
+        if (tradeCount % 10 === 0) {
+            resetProfitPattern(amount);
+        }
 
         tradeCount++;
         const price = currentPrice;
@@ -1304,7 +1372,7 @@
         };
         openTrades.push(trade);
         allTrades.push(trade);
-        balance -= amount; // Full amount deducted
+        balance -= amount;
 
         entryPoints.push({
             id: trade.id,
@@ -1313,11 +1381,14 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | ⚠️ 100% LOSS Expected`, 'red');
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
     }
 
     function placeTrade(type) {
@@ -1329,9 +1400,13 @@
         const amount = parseFloat(document.getElementById('tradeAmount').value);
         const expiry = parseInt(document.getElementById('tradeExpiry').value);
         if (isNaN(amount) || amount <= 0) { alert('❌ Enter valid amount'); return; }
-        if (amount < MIN_TRADE) { alert('❌ Minimum trade amount is $100!'); return; }
         if (amount > balance) { alert('❌ Insufficient balance!'); return; }
         if (openTrades.length >= 10) { alert('❌ Max 10 open trades'); return; }
+
+        // Reset pattern if this is the first trade or after 10 trades
+        if (tradeCount % 10 === 0) {
+            resetProfitPattern(amount);
+        }
 
         tradeCount++;
         const price = currentPrice;
@@ -1351,7 +1426,7 @@
         };
         openTrades.push(trade);
         allTrades.push(trade);
-        balance -= amount; // Full amount deducted
+        balance -= amount;
 
         entryPoints.push({
             id: trade.id,
@@ -1360,11 +1435,14 @@
         });
 
         const icon = type === 'buy' ? '📈' : '📉';
-        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | ⚠️ 100% LOSS Expected`, 'red');
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
+        addHistory(`${icon} Trade #${tradeCount} ${type.toUpperCase()} @ ${price.toFixed(2)} | Expected: +${percentStr}`, 'white');
         
         updateAllUI();
         drawChart();
         loadTradeHistory();
+        updatePredictionDisplay();
         showPage('trade');
     }
 
@@ -1373,18 +1451,20 @@
     // ================================================================
 
     function updatePredictionDisplay() {
-        const text = `❌ LOSS -100%`;
+        const nextPercent = profitPattern[patternIndex % profitPattern.length] || 0.0005;
+        const percentStr = (nextPercent * 100).toFixed(3) + '%';
+        const text = `✅ WIN +${percentStr}`;
         
         const predEl = document.getElementById('nextPrediction');
         const predEl2 = document.getElementById('nextPrediction2');
         
         if (predEl) {
             predEl.textContent = text;
-            predEl.className = 'pred-result loss';
+            predEl.className = 'pred-result win';
         }
         if (predEl2) {
             predEl2.textContent = text;
-            predEl2.className = 'pred-result loss';
+            predEl2.className = 'pred-result win';
         }
     }
 
@@ -1442,7 +1522,6 @@
                 <span>@ ${t.entry.toFixed(2)}</span>
                 <span class="${pnlClass}">${pnlDisplay}</span>
                 <span style="font-size:10px; color:#8899aa;">${t.expiry}m</span>
-                <span style="font-size:9px; color:#ef5350;">💀 LOSS</span>
             </div>`;
         });
         div.innerHTML = html;
@@ -1455,9 +1534,9 @@
         document.getElementById('lossesDisplay').innerText = `Losses: ${losses}`;
         
         const total = wins + losses;
-        const winRate = total > 0 ? (wins / total * 100) : 0;
+        const winRate = total > 0 ? (wins / total * 100) : 100;
         document.getElementById('winRateDisplay').innerText = winRate.toFixed(0) + '%';
-        document.getElementById('winLossRatio').innerText = `Ratio: ${losses > 0 ? (wins / losses).toFixed(1) : wins > 0 ? wins.toFixed(1) : '0.0'}`;
+        document.getElementById('winLossRatio').innerText = `Ratio: ${losses > 0 ? (wins / losses).toFixed(1) : wins > 0 ? wins.toFixed(1) : '10.0'}`;
     }
 
     function updateAllUI() {
@@ -1513,7 +1592,7 @@
     }
 
     // ================================================================
-    //  FIREBASE FUNCTIONS (Same as before - keeping for reference)
+    //  FIREBASE FUNCTIONS (Same as before)
     // ================================================================
 
     async function createUserInFirestore(userData) {
@@ -1927,7 +2006,6 @@
             const statusColor = t.closed ? (isWin ? '#4caf50' : '#ef5350') : '#f57c00';
             const pnlDisplay = t.pnl !== undefined ? (t.pnl >= 0 ? '+' : '') + t.pnl.toFixed(2) : '0.00';
             const date = t.timestamp ? new Date(t.timestamp).toLocaleString() : 'N/A';
-            const lossPercent = t.closed ? '100%' : '⚠️';
             
             html += `<div class="history-item">
                 <div>
@@ -1939,7 +2017,6 @@
                     <div class="amount" style="color:${isWin ? '#4caf50' : '#ef5350'};">$${t.amount}</div>
                     <div style="font-size:11px; font-weight:600; color:${statusColor};">${status}</div>
                     <div style="font-size:10px; color:${isWin ? '#4caf50' : '#ef5350'};">${pnlDisplay}</div>
-                    <div style="font-size:8px; color:#ef5350;">${lossPercent} LOSS</div>
                 </div>
             </div>`;
         });
@@ -2002,6 +2079,10 @@
                     allTrades = data.trades || [];
                     tradeCount = allTrades.length;
                     
+                    if (data.patternIndex !== undefined) {
+                        patternIndex = data.patternIndex;
+                    }
+                    
                     openTrades = allTrades.filter(t => !t.closed);
                     entryPoints = openTrades.map(t => ({
                         id: t.id,
@@ -2012,6 +2093,7 @@
                     updateAllUI();
                     drawChart();
                     loadTradeHistory();
+                    updatePredictionDisplay();
                     
                     if (pendingBalance > 0) {
                         document.getElementById('pendingIndicator').style.display = 'inline-block';
@@ -2230,6 +2312,8 @@
         loadWithdrawHistory();
         loadTradeHistory();
         updatePredictionDisplay();
+        
+        resetProfitPattern(100);
     }
 
     function loadUserDataFromFirestore() {
@@ -2243,6 +2327,10 @@
         tradeCount = allTrades.length;
         openTrades = allTrades.filter(t => !t.closed);
         entryPoints = openTrades.map(t => ({ id: t.id, price: t.entry, type: t.type }));
+        
+        if (currentUser.patternIndex !== undefined) {
+            patternIndex = currentUser.patternIndex;
+        }
         
         updateAllUI();
         drawChart();
@@ -2355,7 +2443,7 @@
     }
 
     function resetAll() {
-        if (!confirm('Reset all trading data? All patterns will restart.')) return;
+        if (!confirm('Reset all trading data? Pattern will restart from beginning.')) return;
         stopAutoRun();
         balance = 0;
         totalPnl = 0;
@@ -2365,13 +2453,15 @@
         wins = 0;
         losses = 0;
         entryPoints = [];
+        patternIndex = 0;
         isRunning = true;
+        resetProfitPattern(100);
         fetchAndUpdatePrice();
         fetchHistoricalKlines();
         drawChart();
         updateAllUI();
         document.getElementById('recentActivity').innerHTML = '';
-        addHistory('🔄 Trading data reset | All losses restart', 'gold');
+        addHistory('🔄 Trading data reset | Pattern restarted', 'gold');
         if (isRunning) startAutoRun();
         loadTradeHistory();
         updatePredictionDisplay();
@@ -2441,9 +2531,11 @@
         fetchHistoricalKlines();
     }, 500);
 
+    resetProfitPattern(100);
+
     console.log('🚀 ProTrader PrimXBet v2.0.1 - Binance Live API');
-    console.log('⚠️ EVERY TRADE = 100% LOSS (Full Amount)');
-    console.log('💰 Minimum Trade: $100');
+    console.log('📊 10 Trades = $3 Profit Fixed (All Wins)');
+    console.log('💰 Profit: 0.05% to 0.10% per trade (Cents)');
     console.log('🔥 Binance API connected successfully!');
 </script>
 </body>
